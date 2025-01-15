@@ -1,3 +1,22 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+
+@use '@angular/material' as mat;
+@use './theme-colors.scss' as my-theme;
+
+html {
+  @include mat.theme((
+    color: (
+      theme-type: light,
+      primary: my-theme.$primary-palette,
+      tertiary: my-theme.$tertiary-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
 /* You can add global styles to this file, and also import other style files */
 
 @tailwind base;
@@ -6,3 +25,8 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+:root {
+    --primary-color: #176A9C;
+    --secondary-color: #2591B5;
+};
