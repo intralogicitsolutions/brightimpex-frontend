@@ -30,3 +30,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     --primary-color: #176A9C;
     --secondary-color: #2591B5;
 };
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--secondary-color);
+}
