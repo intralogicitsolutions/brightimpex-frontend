@@ -1,0 +1,15 @@
+.navigation-menu {
+    display: flex;
+    color: var(--primary-color);
+    align-items: center;
+    justify-content: center;
+
+    a {
+        font-size: 17px;
+        line-height: 21.62px;
+    }
+}
+
+.active-link {
+    text-decoration: underline;
+}
