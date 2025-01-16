@@ -1,0 +1,13 @@
+<div class="h-16 bg-white flex justify-between">
+    <div class="logo w-56">
+        <img src="assets/images/Bright-Impex-Logo-Full.png" alt="" class="h-full px-2">
+    </div>
+    <div class="navigation-menu">
+        @for (item of menus; track $index) {
+            <a class="px-3 cursor-pointer hover:underline" [routerLink]="item?.link" routerLinkActive="active-link">{{item?.name}}</a>
+        }
+    </div>
+    <div class="w-56">
+        <mat-icon svgIcon="assets/icons/call.svg"></mat-icon>
+    </div>
+</div>
