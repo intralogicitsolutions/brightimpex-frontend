@@ -19,9 +19,10 @@
         display: flex;
         align-items: center;
         line-height: 25.44px;
+        margin-top: 10px;
 
         .bold-font {
-            font-family: "Product Sans Medium";
+            font-family: "GoogleSans-Medium";
         }
 
         .icon {
@@ -29,5 +30,66 @@
             width: 28px;
             height: 28px;
         }
+    }
+}
+
+.catalogue-menu {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    line-height: 20.35px;
+}
+
+.active-catalogue {
+    background-color: #136A990A;
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.border-b-primary {
+    border-bottom: 1px solid #136A9966;
+}
+
+.border-r-primary {
+    border-right: 1px solid #136A9966;
+}
+
+.catalogue {
+    width: 226px;
+    height: 387px;
+    padding: 0px 8px;
+    margin-bottom: 15px;
+
+    img {
+        height: 324px;
+        width: 100%;
+        overflow: hidden;
+        object-fit: fill;
+    }
+
+    .name {
+        font-family: "GoogleSans-Medium";
+        font-size: 18px;
+        line-height: 23.44px;
+    }
+
+    .info {
+        font-size: 14px;
+        line-height: 18.35px;
+        padding-top: 2px;
+    }
+}
+
+:host ::ng-deep {
+    .mdc-label {
+        color: var(--primary-color);
+        font-size: 15px;
+        padding-left: 7px;
+    }
+
+    .filter-checkbox {
+        padding: 3px 0px;
     }
 }

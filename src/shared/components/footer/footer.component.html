@@ -1,3 +1,50 @@
 <div class="footer-section">
-    {{ "@2024 All Rights Reserved. Bright Impex." }}
+    <div class="w-full flex flex-col">
+        <div class="w-full flex">
+            <div class="w-1/4 px-12">
+                <img src="assets/images/Bright-Impex-Logo-Full.png" alt="" class="cursor-pointer" routerLink="/home">
+            </div>
+            <div class="w-1/4 px-4 pt-4 flex flex-col">
+                <span class="contact-header">Contact Info</span>
+                <div class="contact-info">
+                    <span>{{phone}}</span>
+                    <span>{{email}}</span>
+                </div>
+            </div>
+            <div class="w-1/4 px-4 pt-4 flex flex-col">
+                <span class="contact-header">Product Categories</span>
+                <div class="contact-info">
+                    <span class="cursor-pointer">Wall Collection</span>
+                    <span class="cursor-pointer">Floor Collection</span>
+                    <span class="cursor-pointer">Slab Collection</span>
+                    <span class="cursor-pointer">Parking Collection</span>
+                    <span class="cursor-pointer">Wooden Plank</span>
+                    <span class="cursor-pointer">Step Raiser</span>
+                </div>
+            </div>
+            <div class="w-1/4 px-4 pt-4 flex flex-col">
+                <span class="contact-header">Quick Links</span>
+                <div class="contact-info">
+                    <a routerLink="/home" routerLinkActive="active-link">Home</a>
+                    <a routerLink="/catalogue" routerLinkActive="active-link">Products</a>
+                    <a routerLink="/about-us" routerLinkActive="active-link">About Us</a>
+                    <a routerLink="/contact-us" routerLinkActive="active-link">Contact Us</a>
+                </div>
+            </div>
+        </div>
+        <div class="w-full devider">
+            <hr class="w-full">
+        </div>
+        <div class="copyright-text">
+            {{ copyrightText }}
+        </div>
+        <div class="flex relative -z-1">
+            <div class="first-logo">
+                <img src="assets/images/logo-full.png" alt="" class="h-full w-full">
+            </div>
+            <div class="second-logo">
+                <img src="assets/images/logo-full.png" alt="" class="h-full w-full">
+            </div>
+        </div>
+    </div>
 </div>

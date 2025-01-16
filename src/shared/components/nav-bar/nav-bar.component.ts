@@ -8,23 +8,4 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.scss',
 })
-export class NavBarComponent {
-  menus = [
-    {
-      name: 'Home',
-      link: '/home',
-    },
-    {
-      name: 'Products',
-      link: '/catalogue',
-    },
-    {
-      name: 'About Bright Impex',
-      link: '/about-us',
-    },
-    {
-      name: 'Contact Us',
-      link: '/contact-us',
-    },
-  ];
-}
+export class NavBarComponent {}

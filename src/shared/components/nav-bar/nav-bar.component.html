@@ -1,13 +1,19 @@
 <div class="h-16 bg-white flex justify-between">
-    <div class="logo w-56">
-        <img src="assets/images/Bright-Impex-Logo-Full.png" alt="" class="h-full px-2">
+    <div class="logo w-60">
+        <img src="assets/images/Bright-Impex-Logo-Full-1.png" alt="" class="h-full pl-6 pr-2 cursor-pointer" routerLink="/home">
     </div>
     <div class="navigation-menu">
-        @for (item of menus; track $index) {
-            <a class="px-3 cursor-pointer hover:underline" [routerLink]="item?.link" routerLinkActive="active-link">{{item?.name}}</a>
-        }
+        <a class="mx-3 cursor-pointer link-underline" routerLink="/home" routerLinkActive="active-link">Home</a>
+        <a class="mx-3 cursor-pointer link-underline" routerLink="/catalogue"
+            routerLinkActive="active-link">Products</a>
+        <a class="mx-3 cursor-pointer link-underline" routerLink="/about-us" routerLinkActive="active-link">About Bright
+            Impex</a>
+        <a class="mx-3 cursor-pointer link-underline" routerLink="/contact-us" routerLinkActive="active-link">Contact
+            Us</a>
     </div>
-    <div class="w-56">
-        <mat-icon svgIcon="assets/icons/call.svg"></mat-icon>
+    <div class="w-60 flex justify-end items-center">
+        <div class="pl-2 pr-8">
+            <img src="assets/icons/call.svg" alt="" class="cursor-pointer">
+        </div>
     </div>
 </div>

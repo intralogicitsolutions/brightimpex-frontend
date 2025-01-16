@@ -1,10 +1,115 @@
-<div class="header-section">
-    <div class="text">
-        Products
+<div [@fadeAnimation]="'/catalogue'" class="flex flex-col">
+    <div class="header-section">
+        <div class="text">
+            Products
+        </div>
+        <div class="sub-text">
+            Home
+            <img src="assets/icons/arrow-right.svg" alt="" class="mx-1 h-5">
+            <span class="bold-font">Products</span>
+        </div>
     </div>
-    <div class="sub-text">
-        Home
-        <mat-icon class="icon">chevron_right</mat-icon>
-        <span class="bold-font">Products</span>
+    <div class="flex flex-col px-16">
+        <div class="flex justify-between w-full h-16 items-center text-primary">
+            <a [routerLink]="'/catalogue/all'" routerLinkActive="active-catalogue" class="catalogue-menu">All</a>
+            <a [routerLink]="'/catalogue/wall-collection'" routerLinkActive="active-catalogue" class="catalogue-menu">Wall Collection</a>
+            <a [routerLink]="'/catalogue/floor-collection'" routerLinkActive="active-catalogue" class="catalogue-menu">Floor Collection</a>
+            <a [routerLink]="'/catalogue/wooden-plank'" routerLinkActive="active-catalogue" class="catalogue-menu">Wooden Plank</a>
+            <a [routerLink]="'/catalogue/parking-collection'" routerLinkActive="active-catalogue" class="catalogue-menu">Parking Collection</a>
+            <a [routerLink]="'/catalogue/slab-collection'" routerLinkActive="active-catalogue" class="catalogue-menu">Slab Collection</a>
+            <a [routerLink]="'/catalogue/step-raiser'" routerLinkActive="active-catalogue" class="catalogue-menu">Step Raiser</a>
+        </div>
+        <div class="flex w-full pt-8">
+            <div class="w-1/5 mb-2">
+                <div class="flex flex-col text-primary border-r-primary w-full">
+                    <div class="mb-2">
+                        <div class="w-full border-b-primary pb-2">Search Size</div>
+                        <div class="flex flex-col w-full pt-2">
+                            <mat-checkbox color="primary" class="filter-checkbox">12 x 18 mm</mat-checkbox>
+                            <mat-checkbox color="primary" class="filter-checkbox">12 x 24 mm</mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="mt-4 mb-2">
+                        <div class="w-full border-b-primary pb-2">Category</div>
+                        <div class="flex flex-col w-full pt-2">
+                            <mat-checkbox color="primary" class="filter-checkbox">Nano</mat-checkbox>
+                            <mat-checkbox color="primary" class="filter-checkbox">Full Body</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-4/5 flex flex-wrap px-4">
+                <div class="catalogue">
+                    <img src="assets/images/catalogues/1.jpg" alt="" class="w-full">
+                    <div class="flex flex-col w-full pt-2">
+                        <span class="name">Wall Collection</span>
+                        <span class="info">200 X 1200 mm - GVT </span>
+                    </div>
+                </div>
+                <div class="catalogue">
+                    <img src="assets/images/catalogues/2.jpg" alt="" class="w-full">
+                    <div class="flex flex-col w-full pt-2">
+                        <span class="name">Floor Collection</span>
+                        <span class="info">1000 X 1000 mm - Full Body </span>
+                    </div>
+                </div>
+                <div class="catalogue">
+                    <img src="assets/images/catalogues/3.jpg" alt="" class="w-full">
+                    <div class="flex flex-col w-full pt-2">
+                        <span class="name">Slab Collection</span>
+                        <span class="info">800 X 1600 mm - PGVT </span>
+                    </div>
+                </div>
+                <div class="catalogue">
+                    <img src="assets/images/catalogues/4.jpg" alt="" class="w-full">
+                    <div class="flex flex-col w-full pt-2">
+                        <span class="name">Wooden Plank</span>
+                        <span class="info">1200 X 1200 mm - Nano </span>
+                    </div>
+                </div>
+                <div class="catalogue">
+                    <img src="assets/images/catalogues/5.jpg" alt="" class="w-full">
+                    <div class="flex flex-col w-full pt-2">
+                        <span class="name">Step Raiser</span>
+                        <span class="info">800 X 800 mm - Charge </span>
+                    </div>
+                </div>
+                <div class="catalogue">
+                    <img src="assets/images/catalogues/6.jpg" alt="" class="w-full">
+                    <div class="flex flex-col w-full pt-2">
+                        <span class="name">Wall Collection</span>
+                        <span class="info">200 X 1200 mm - GVT </span>
+                    </div>
+                </div>
+                <div class="catalogue">
+                    <img src="assets/images/catalogues/7.jpg" alt="" class="w-full">
+                    <div class="flex flex-col w-full pt-2">
+                        <span class="name">Floor Collection</span>
+                        <span class="info">1000 X 1000 mm - Full Body </span>
+                    </div>
+                </div>
+                <div class="catalogue">
+                    <img src="assets/images/catalogues/8.jpg" alt="" class="w-full">
+                    <div class="flex flex-col w-full pt-2">
+                        <span class="name">Slab Collection</span>
+                        <span class="info">800 X 1600 mm - PGVT </span>
+                    </div>
+                </div>
+                <div class="catalogue">
+                    <img src="assets/images/catalogues/1.jpg" alt="" class="w-full">
+                    <div class="flex flex-col w-full pt-2">
+                        <span class="name">Wooden Plank</span>
+                        <span class="info">1200 X 1200 mm - Nano </span>
+                    </div>
+                </div>
+                <div class="catalogue">
+                    <img src="assets/images/catalogues/2.jpg" alt="" class="w-full">
+                    <div class="flex flex-col w-full pt-2">
+                        <span class="name">Wall Collection</span>
+                        <span class="info">200 X 1200 mm - GVT </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
