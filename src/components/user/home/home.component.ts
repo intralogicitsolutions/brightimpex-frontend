@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { fadeAnimation } from '../../../shared/animations/route-animations';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-home',
