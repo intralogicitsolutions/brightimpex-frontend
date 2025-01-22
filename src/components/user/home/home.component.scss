@@ -1,21 +1,115 @@
 .slider {
     width: 100%;
     height: calc(100vh - 66px);
+    overflow: hidden;
+}
 
-    .slider-img {
-        background-image: url('/assets/images/home/home-1.jpg');
-        background-size: cover;
-        background-position: center;
-        width: 100%;
-        height: 100%;
+.img-details {
+    position: relative;
+    top: -170px;
+    z-index: 10;
+}
+
+.img-info {
+    background-color: #FFFFFFF0;
+    width: fit-content;
+    padding: 20px 60px 20px 20px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0px 0px 20px 0px #00000014;
+
+    .info-header {
+        font-family: "Glamore";
+        font-size: 45px;
+        font-weight: 400;
+        line-height: 62.55px;
     }
 
-    .img-info {
-        top: -125px;
-        background-color: #FFFFFFF0;
-        width: fit-content;
-        padding: 20px 60px 20px 20px;
+    .info-details {
+        font-size: 18px;
+    }
+}
+
+.img-actions {
+    background-color: transparent;
+    width: 100%;
+    justify-content: flex-end;
+    padding: 0px 80px;
+    gap: 20px;
+    cursor: pointer;
+
+    .action-btn {
+        background: rgba(255, 255, 255, 0.8784313725);
         backdrop-filter: blur(12px);
-        box-shadow: 0px 0px 20px 0px #00000014;
+        padding: 10px;
+        border-radius: 60px;
+        height: 50px;
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.space {
+    display: inline-block;
+    width: 0.5ch;
+}
+
+.border-r-primary {
+    border-right: 1px solid #136A99
+}
+
+.home-image-container {
+    width: 100%;
+    height: 450px;
+    box-shadow: 0px 0px 60px 0px #0000000A;
+}
+
+.bg-color {
+    background: #FCFCFC;
+}
+
+.bg-container {
+    display: flex;
+    flex-direction: column;
+    background-image: url('/assets/images/bg-1.jpg');
+    height: auto;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    background: #FFFFFF;
+}
+
+.bg-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.74);
+    z-index: 1;
+
+}
+
+.bg-container>* {
+    position: relative;
+    z-index: 2;
+}
+
+.primary-btn {
+    font-size: 12px;
+    font-family: "GoogleSans";
+}
+
+.catalogue-img {
+    width: calc(20% - 1rem);
+    height: 361px;
+
+    img {
+        width: 100%;
+        height: calc(100% - 1.5rem);
+        object-fit: cover;
     }
 }

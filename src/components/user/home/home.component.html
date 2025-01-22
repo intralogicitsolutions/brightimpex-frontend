@@ -1,9 +1,71 @@
 <div [@fadeAnimation]="'/home'">
-    <div class="slider">
-        <div class="slider-img"></div>
-        <div class="flex flex-col relative img-info">
-            <div>WALL COLLECTION</div>
-            <div>Available Sizes: 12X18 mm, 12X24 mm</div>
+    <div class="relative overflow-hidden slider">
+        <div class="flex transition-transform duration-500 h-full w-full"
+            [ngStyle]="{ transform: 'translateX(' + currentTranslate() + '%)' }">
+            <img *ngFor="let image of images()" [src]="image?.img" alt="Image"
+                class="w-full flex-shrink-0 object-cover">
+        </div>
+
+        <div class="flex justify-between items-center img-details">
+            <div>
+                <div class="flex flex-col img-info">
+                    <div class="info-header">{{ currentSlide()?.name }}</div>
+                    <div class="info-details">
+                        Available Sizes:
+                        @for (item of currentSlide()?.sizes; track $index; let isLast = $last;) {
+                        <a href="javascript:void(0);" class="underline text-primary">{{ item }}@if(!isLast){,}</a>
+                        @if (!isLast) {
+                        <span class="space"></span>
+                        }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="flex img-actions">
+                    <div class="action-btn" (click)="prevSlide()">
+                        <img src="assets/icons/arrow-left.svg" alt="">
+                    </div>
+                    <div class="action-btn" (click)="nextSlide()">
+                        <img src="assets/icons/arrow-right.svg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex py-20 px-28 items-center bg-color">
+        <div class="border-r-primary text-3xl min-w-fit pr-20 glamore">
+            QUALITY IS<br>
+            <span style="font-size: 32px;">OUR PRIDE</span>
+        </div>
+        <p class="text-sm pl-20">
+            It reflects the company’s unwavering commitment to excellence in every ceramic tile it produces.
+            It signifies that quality isn’t just a standard—it’s a core value that defines the brand. From sourcing
+            premium materials to employing innovative craftsmanship, the company ensures that every tile
+            meets the highest standards of durability, design, and aesthetics.
+        </p>
+    </div>
+
+    <div class="flex flex-col px-28 bg-container">
+        <div class="home-image-container">
+            <img src="assets/images/home/home-2.jpg" alt="" class="h-full w-full object-cover">
+        </div>
+        <div class="flex py-16 justify-between items-center">
+            <div class="flex flex-col">
+                <span class="text-primary text-sm">BRIGHT IMPEX BRINGS TO YOU PREMIUM TILES</span>
+                <span class="text-3xl glamore">EXPLORE OUR WALL TILES</span>
+            </div>
+            <div class="flex justify-end">
+                <button mat-flat-button color="primary" class="primary-btn">View Wall Tiles</button>
+            </div>
+        </div>
+        <div class="flex flex-wrap gap-5 pb-20">
+            @for (item of catalogueImages(); track $index) {
+            <div class="flex flex-col" class="catalogue-img">
+                <img [src]="item?.img" alt="">
+                <span class="block h-6 text-base sans-medium">{{item?.name}}</span>
+            </div>
+            }
         </div>
     </div>
 </div>

@@ -41,7 +41,7 @@ html {
 
 @font-face {
   font-family: 'Glamore';
-  src: url('assets/fonts/Glamore/Glamore.otf') format('truetype');
+  src: url('assets/fonts/Glamore/Glamore.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
@@ -63,7 +63,17 @@ body {
   --mdc-checkbox-state-layer-size: 20px;
 }
 
-;
+.glamore {
+  font-family: "Glamore";
+}
+
+.sans {
+  font-family: "GoogleSans";
+}
+
+.sans-medium {
+  font-family: "GoogleSans-Medium";
+}
 
 .text-primary {
   color: var(--primary-color);
