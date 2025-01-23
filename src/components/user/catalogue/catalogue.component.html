@@ -4,26 +4,17 @@
             Wall Collection
         </div>
         <div class="sub-text">
-            Home
+            <a routerLink="/home">Home</a>
             <img src="assets/icons/chevron-right.svg" alt="" class="mx-1 h-5">
             <span class="bold-font">Products</span>
         </div>
     </div>
     <div class="flex flex-col px-16">
         <div class="flex justify-between w-full h-16 items-center text-primary">
-            <a [routerLink]="'/catalogue/all'" routerLinkActive="active-catalogue" class="catalogue-menu">All</a>
-            <a [routerLink]="'/catalogue/wall-collection'" routerLinkActive="active-catalogue"
-                class="catalogue-menu">Wall Collection</a>
-            <a [routerLink]="'/catalogue/floor-collection'" routerLinkActive="active-catalogue"
-                class="catalogue-menu">Floor Collection</a>
-            <a [routerLink]="'/catalogue/wooden-plank'" routerLinkActive="active-catalogue"
-                class="catalogue-menu">Wooden Plank</a>
-            <a [routerLink]="'/catalogue/parking-collection'" routerLinkActive="active-catalogue"
-                class="catalogue-menu">Parking Collection</a>
-            <a [routerLink]="'/catalogue/slab-collection'" routerLinkActive="active-catalogue"
-                class="catalogue-menu">Slab Collection</a>
-            <a [routerLink]="'/catalogue/step-raiser'" routerLinkActive="active-catalogue" class="catalogue-menu">Step
-                Raiser</a>
+            @for (category of catalogueCatagories(); track $index) {
+            <a [routerLink]="'/catalogue/' + category?.id" routerLinkActive="active-catalogue"
+                class="catalogue-menu">{{category?.name}}</a>
+            }
         </div>
         <div class="flex w-full pt-8">
             <div class="w-1/5 mb-2">
@@ -45,9 +36,10 @@
                 </div>
             </div>
             <div class="w-4/5 flex flex-wrap px-4">
+                @for (catalogue of filteredCatalogues(); track catalogue?.id) {
                 <div class="catalogue">
                     <div class="group relative overflow-hidden">
-                        <img ngSrc="assets/images/catalogues/1.jpg" width="210" height="324" alt=""
+                        <img [ngSrc]="catalogue?.img" width="210" height="324" alt=""
                             class="catalogue-img w-full transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm" />
 
                         <div
@@ -63,208 +55,11 @@
                         </div>
                     </div>
                     <div class="flex flex-col w-full pt-2">
-                        <span class="name">Wall Collection</span>
-                        <span class="info">200 X 1200 mm - GVT </span>
+                        <span class="name">{{catalogue?.name}}</span>
+                        <span class="info">{{catalogue?.desc}}</span>
                     </div>
                 </div>
-                <div class="catalogue">
-                    <div class="group relative overflow-hidden">
-                        <img ngSrc="assets/images/catalogues/2.jpg" width="210" height="324" alt=""
-                            class="catalogue-img w-full transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm" />
-
-                        <div
-                            class="absolute inset-0 flex items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button (click)="onPreview()"
-                                class="text-white py-2 px-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
-                            </button>
-                            <button (click)="onDownload()"
-                                class="text-white py-2 px-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex flex-col w-full pt-2">
-                        <span class="name">Floor Collection</span>
-                        <span class="info">1000 X 1000 mm - Full Body </span>
-                    </div>
-                </div>
-                <div class="catalogue">
-                    <div class="group relative overflow-hidden">
-                        <img ngSrc="assets/images/catalogues/3.jpg" width="210" height="324" alt=""
-                            class="catalogue-img w-full transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm" />
-
-                        <div
-                            class="absolute inset-0 flex items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button (click)="onPreview()"
-                                class="text-white py-2 px-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
-                            </button>
-                            <button (click)="onDownload()"
-                                class="text-white py-2 px-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex flex-col w-full pt-2">
-                        <span class="name">Slab Collection</span>
-                        <span class="info">800 X 1600 mm - PGVT </span>
-                    </div>
-                </div>
-                <div class="catalogue">
-                    <div class="group relative overflow-hidden">
-                        <img ngSrc="assets/images/catalogues/4.jpg" width="210" height="324" alt=""
-                            class="catalogue-img w-full transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm" />
-
-                        <div
-                            class="absolute inset-0 flex items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button (click)="onPreview()"
-                                class="text-white py-2 px-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
-                            </button>
-                            <button (click)="onDownload()"
-                                class="text-white py-2 px-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex flex-col w-full pt-2">
-                        <span class="name">Wooden Plank</span>
-                        <span class="info">1200 X 1200 mm - Nano </span>
-                    </div>
-                </div>
-                <div class="catalogue">
-                    <div class="group relative overflow-hidden">
-                        <img ngSrc="assets/images/catalogues/5.jpg" width="210" height="324" alt=""
-                            class="catalogue-img w-full transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm" />
-
-                        <div
-                            class="absolute inset-0 flex items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button (click)="onPreview()"
-                                class="text-white py-2 px-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
-                            </button>
-                            <button (click)="onDownload()"
-                                class="text-white py-2 px-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex flex-col w-full pt-2">
-                        <span class="name">Step Raiser</span>
-                        <span class="info">800 X 800 mm - Charge </span>
-                    </div>
-                </div>
-                <div class="catalogue">
-                    <div class="group relative overflow-hidden">
-                        <img ngSrc="assets/images/catalogues/6.jpg" width="210" height="324" alt=""
-                            class="catalogue-img w-full transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm" />
-
-                        <div
-                            class="absolute inset-0 flex items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button (click)="onPreview()"
-                                class="text-white py-2 px-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
-                            </button>
-                            <button (click)="onDownload()"
-                                class="text-white py-2 px-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex flex-col w-full pt-2">
-                        <span class="name">Wall Collection</span>
-                        <span class="info">200 X 1200 mm - GVT </span>
-                    </div>
-                </div>
-                <div class="catalogue">
-                    <div class="group relative overflow-hidden">
-                        <img ngSrc="assets/images/catalogues/7.jpg" width="210" height="324" alt=""
-                            class="catalogue-img w-full transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm" />
-
-                        <div
-                            class="absolute inset-0 flex items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button (click)="onPreview()"
-                                class="text-white py-2 px-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
-                            </button>
-                            <button (click)="onDownload()"
-                                class="text-white py-2 px-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex flex-col w-full pt-2">
-                        <span class="name">Floor Collection</span>
-                        <span class="info">1000 X 1000 mm - Full Body </span>
-                    </div>
-                </div>
-                <div class="catalogue">
-                    <div class="group relative overflow-hidden">
-                        <img ngSrc="assets/images/catalogues/8.jpg" width="210" height="324" alt=""
-                            class="catalogue-img w-full transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm" />
-
-                        <div
-                            class="absolute inset-0 flex items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button (click)="onPreview()"
-                                class="text-white py-2 px-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
-                            </button>
-                            <button (click)="onDownload()"
-                                class="text-white py-2 px-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex flex-col w-full pt-2">
-                        <span class="name">Slab Collection</span>
-                        <span class="info">800 X 1600 mm - PGVT </span>
-                    </div>
-                </div>
-                <div class="catalogue">
-                    <div class="group relative overflow-hidden">
-                        <img ngSrc="assets/images/catalogues/1.jpg" width="210" height="324" alt=""
-                            class="catalogue-img w-full transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm" />
-
-                        <div
-                            class="absolute inset-0 flex items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button (click)="onPreview()"
-                                class="text-white py-2 px-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
-                            </button>
-                            <button (click)="onDownload()"
-                                class="text-white py-2 px-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex flex-col w-full pt-2">
-                        <span class="name">Wooden Plank</span>
-                        <span class="info">1200 X 1200 mm - Nano </span>
-                    </div>
-                </div>
-                <div class="catalogue">
-                    <div class="group relative overflow-hidden">
-                        <img ngSrc="assets/images/catalogues/2.jpg" width="210" height="324" alt=""
-                            class="catalogue-img w-full transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm" />
-
-                        <div
-                            class="absolute inset-0 flex items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button (click)="onPreview()"
-                                class="text-white py-2 px-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
-                            </button>
-                            <button (click)="onDownload()"
-                                class="text-white py-2 px-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex flex-col w-full pt-2">
-                        <span class="name">Wall Collection</span>
-                        <span class="info">200 X 1200 mm - GVT </span>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </div>

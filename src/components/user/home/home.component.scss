@@ -78,7 +78,6 @@
     background-size: cover;
     background-position: center;
     position: relative;
-    background: #FFFFFF;
 }
 
 .bg-container::before {
@@ -98,9 +97,39 @@
     z-index: 2;
 }
 
+.bg-container-1 {
+    display: flex;
+    flex-direction: column;
+    background-image: url('/assets/images/bg-3.jpg');
+    height: auto;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.bg-container-1::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.74);
+    z-index: 1;
+
+}
+
+.bg-container-1>* {
+    position: relative;
+    z-index: 2;
+}
+
 .primary-btn {
     font-size: 12px;
     font-family: "GoogleSans";
+    box-shadow: 0px 4px 20px 0px #00000014;
+    background-color: #136A99 !important;
 }
 
 .catalogue-img {
@@ -110,6 +139,83 @@
     img {
         width: 100%;
         height: calc(100% - 1.5rem);
+        object-fit: cover;
+    }
+}
+
+.location-section {
+    height: 300px;
+
+    .bg-img {
+        height: 100%;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .location-btn {
+        font-size: 0.75rem;
+        line-height: 1rem;
+        background-color: #FFFFFF;
+        width: fit-content;
+        color: #000000;
+        margin-top: 1rem;
+    }
+
+    .explore-text {
+        box-shadow: 0px 4px 20px 0px #00000014;
+    }
+}
+
+.trending-section {
+    .image-container {
+        height: 400px !important;
+        width: 100%;
+
+        .slider {
+            height: 100% !important;
+        }
+
+        .img-details {
+            position: relative;
+            top: -100px;
+            z-index: 10;
+        }
+
+        .img-info {
+            padding: 20px 40px 20px 20px;
+
+            .info-header {
+                font-size: 20px;
+                line-height: 25px;
+            }
+        }
+
+        .img-actions {
+            padding: 0px 40px;
+            gap: 10px;
+
+            .action-btn {
+                height: 40px;
+                width: 40px;
+
+                img {
+                    height: 18px;
+                    width: 18px;
+                }
+            }
+        }
+    }
+}
+
+.product-img {
+    width: calc(25% - 1rem);
+    height: 450px;
+
+    img {
+        width: 100%;
+        height: calc(100% - 11.5rem);
         object-fit: cover;
     }
 }
