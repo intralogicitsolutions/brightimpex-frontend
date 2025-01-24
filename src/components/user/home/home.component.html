@@ -9,7 +9,7 @@
         <div class="flex justify-between items-center img-details">
             <div>
                 <div class="flex flex-col img-info">
-                    <div class="info-header">{{ currentSlide()?.name }}</div>
+                    <div class="info-header">{{ currentSlide()?.name?.toLowerCase() }}</div>
                     <div class="info-details">
                         Available Sizes:
                         @for (item of currentSlide()?.sizes; track $index; let isLast = $last;) {
@@ -39,8 +39,8 @@
 
     <div class="flex py-20 px-28 items-center bg-color">
         <div class="border-r-primary text-3xl min-w-fit pr-20 glamore">
-            QUALITY IS<br>
-            <span style="font-size: 32px;">OUR PRIDE</span>
+            quality is<br>
+            <span style="font-size: 32px;">our pride</span>
         </div>
         <p class="text-sm pl-20">
             It reflects the company’s unwavering commitment to excellence in every ceramic tile it produces.
@@ -57,7 +57,7 @@
         <div class="flex py-16 justify-between items-center">
             <div class="flex flex-col">
                 <span class="text-primary text-sm">BRIGHT IMPEX BRINGS TO YOU PREMIUM TILES</span>
-                <span class="text-3xl glamore pt-2">EXPLORE OUR WALL TILES</span>
+                <span class="text-3xl glamore pt-2">explore our wall tiles</span>
             </div>
             <div class="flex justify-end">
                 <button mat-flat-button color="primary" class="primary-btn">View Wall Tiles</button>
@@ -78,7 +78,7 @@
             [style.background-image]=" 'url(' + locationBgImg + ')'">
             <div class="flex flex-col">
                 <span class="text-sm explore-text">EXPLORE OUR WIDE RANGE OF DEALERSHIPS</span>
-                <span class="glamore text-3xl pt-2">EXPLORE LOCATIONS</span>
+                <span class="glamore text-3xl pt-2">explore locations</span>
             </div>
             <div class="w-52">
                 <div class="flex flex-col items-end">
@@ -95,7 +95,7 @@
         <div class="bg-container-1 py-16">
             <div class="flex flex-col justify-center pt-6 pb-12">
                 <span class="text-primary text-sm text-center">BRIGHT IMPEX INTRODUCTION</span>
-                <span class="text-center glamore text-3xl pt-2">LITTLE ABOUT BRIGHT IMPEX</span>
+                <span class="text-center glamore text-3xl pt-2">little about bright impex</span>
             </div>
             <div class="flex">
                 <div class="w-1/2">
@@ -128,7 +128,7 @@
             [style.background-image]=" 'url(' + catalogueBgImg + ')'">
             <div class="flex flex-col">
                 <span class="text-sm explore-text">EXPLORE OUR WIDE RANGE OF CATALOGUES</span>
-                <span class="glamore text-3xl pt-2">DOWNLOAD CATALOGUES</span>
+                <span class="glamore text-3xl pt-2">download catalogues</span>
             </div>
             <div class="w-52">
                 <div class="flex flex-col items-end">
@@ -145,7 +145,7 @@
         <div class="flex justify-between items-center pb-12">
             <div class="flex flex-col">
                 <span class="text-sm text-primary">BRIGHT IMPEX BRINGS TO YOU PREMIUM TILES</span>
-                <span class="glamore text-3xl pt-2">EXPLORE OUR FLOOR TILES</span>
+                <span class="glamore text-3xl pt-2">explore our floor tiles</span>
             </div>
             <button mat-flat-button color="primary" class="primary-btn">View Floor Tiles</button>
         </div>
@@ -160,7 +160,7 @@
                 <div class="flex justify-between items-center img-details">
                     <div>
                         <div class="flex flex-col img-info">
-                            <div class="info-header">{{ currentTrendingSlide()?.name }}</div>
+                            <div class="info-header">{{ currentTrendingSlide()?.name?.toLowerCase() }}</div>
                         </div>
                     </div>
                     <div>
@@ -184,7 +184,7 @@
                 OUR MESMERIZING RANGE OF DESIGNER TILES
             </span>
             <span class="text-center glamore text-3xl pt-2">
-                TRENDING PRODUCTS
+                trending products
             </span>
         </div>
         <div class="flex flex-wrap gap-5 pb-20">

@@ -1,7 +1,7 @@
 <div [@fadeAnimation]="'/catalogue'" class="flex flex-col">
     <div class="header-section">
         <div class="text">
-            Wall Collection
+            products
         </div>
         <div class="sub-text">
             <a routerLink="/home">Home</a>
@@ -12,7 +12,7 @@
     <div class="flex flex-col px-16">
         <div class="flex justify-between w-full h-16 items-center text-primary">
             @for (category of catalogueCatagories(); track $index) {
-            <a [routerLink]="'/catalogue/' + category?.id" routerLinkActive="active-catalogue"
+            <a [routerLink]="'/catalogue/' + category?._id" routerLinkActive="active-catalogue"
                 class="catalogue-menu">{{category?.name}}</a>
             }
         </div>
@@ -36,10 +36,10 @@
                 </div>
             </div>
             <div class="w-4/5 flex flex-wrap px-4">
-                @for (catalogue of filteredCatalogues(); track catalogue?.id) {
+                @for (catalogue of filteredCatalogues(); track catalogue?._id) {
                 <div class="catalogue">
                     <div class="group relative overflow-hidden">
-                        <img [ngSrc]="catalogue?.img" width="210" height="324" alt=""
+                        <img [ngSrc]="serverUrl + catalogue?.image" width="210" height="324" alt=""
                             class="catalogue-img w-full transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm" />
 
                         <div
@@ -56,7 +56,11 @@
                     </div>
                     <div class="flex flex-col w-full pt-2">
                         <span class="name">{{catalogue?.name}}</span>
-                        <span class="info">{{catalogue?.desc}}</span>
+                        <span class="info">
+                            {{catalogue?.sizeSeries}}
+                            <span class="bullet"></span>
+                            {{catalogue?.series_id?.name}}
+                        </span>
                     </div>
                 </div>
                 }

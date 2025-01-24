@@ -79,6 +79,8 @@
         font-size: 14px;
         line-height: 18.35px;
         padding-top: 2px;
+        display: flex;
+        align-items: center;
     }
 }
 
@@ -92,4 +94,14 @@
     .filter-checkbox {
         padding: 3px 0px;
     }
+}
+
+.bullet {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 80px;
+    opacity: 20%;
+    background: #404140;
+    margin: 0px 8px;
 }
