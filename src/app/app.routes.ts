@@ -18,23 +18,22 @@ export const routes: Routes = [
       },
       {
         path: 'catalogue',
-        loadComponent: () =>
-          import('../components/user/catalogue/catalogue.component').then(
-            (c) => c.CatalogueComponent
-          ),
         data: { animation: 'CataloguePage' },
         children: [
           {
             path: ':id',
-            component: CatalogueComponent,
-            data: { animattion: 'CatalogueCategoryPage' }
+            loadComponent: () =>
+              import('../components/user/catalogue/catalogue.component').then(
+                (c) => c.CatalogueComponent
+              ),
+            data: { animattion: 'CatalogueCategoryPage' },
           },
           {
             path: '',
             pathMatch: 'full',
             redirectTo: '/catalogue/all',
           },
-        ]
+        ],
       },
       {
         path: 'about-us',
