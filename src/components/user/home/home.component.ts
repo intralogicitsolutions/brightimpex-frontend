@@ -52,19 +52,19 @@ export class HomeComponent implements OnInit {
         img: '/assets/images/home/home-1.jpg',
         name: 'WALL COLLECTION',
         sizes: ['12X18 mm', '12X24 mm'],
-        category: 'wall-collection'
+        category: '679302f17665aeadd2a0a1a4'
       },
       {
         img: '/assets/images/home/home-2.jpg',
         name: 'FLOOR COLLECTION',
         sizes: ['12X24 mm', '12X18 mm'],
-        category: 'floor-collection'
+        category: '679303037665aeadd2a0a1a6'
       },
       {
         img: '/assets/images/home/home-1.jpg',
         name: 'PARKING COLLECTION',
         sizes: ['24X12 mm', '18X12 mm'],
-        category: 'parking-collection'
+        category: '6793031e7665aeadd2a0a1aa'
       },
     ]);
 

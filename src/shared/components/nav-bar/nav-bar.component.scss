@@ -48,3 +48,15 @@
     height: 1.5px;
     background-color: var(--primary-color);
 }
+
+@media screen and (max-width: 1023px) {
+    .navigation-menu {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .menu-icon {
+        display: none;
+    }
+}
