@@ -39,7 +39,7 @@
 }
 
 .active-link {
-    font-family: "GoogleSans-Medium";   
+    font-family: "GoogleSans-Medium";
 }
 
 .first-logo {
@@ -62,3 +62,33 @@
     z-index: -1;
 }
 
+.social-icon {
+    height: 56px;
+    width: 56px;
+}
+
+@media screen and (max-width: 1023px) {
+    .contact-header {
+        font-size: 15px;
+        line-height: 19.08px;
+    }
+
+    .contact-info {
+        font-size: 14px;
+        line-height: 17.81px;
+        padding-top: 10px;
+    }
+
+    .social-icon {
+        height: 40px;
+        width: 40px;
+    }
+
+    .bg-logo {
+        display: none;
+    }
+
+    .footer-section {
+        padding: 3rem 2rem;
+    }
+}

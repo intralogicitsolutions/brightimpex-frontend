@@ -1,8 +1,9 @@
-import { NgOptimizedImage } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import {
   Component,
   computed,
   effect,
+  HostListener,
   OnInit,
   Signal,
   signal,
@@ -21,23 +22,26 @@ import { environment } from '../../../environments/environment';
 import { fadeAnimation } from '../../../shared/animations/route-animations';
 import { IResponse } from '../../../shared/interfaces/response-i';
 import { CommonService } from '../../../shared/services/common.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-catalogue',
   imports: [
     MatIconModule,
     MatCheckboxModule,
+    MatButtonModule,
     RouterLink,
     RouterLinkActive,
     NgOptimizedImage,
     FormsModule,
+    CommonModule
   ],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
   animations: [fadeAnimation],
 })
 export class CatalogueComponent implements OnInit {
-  isMobileView: boolean = window.innerWidth < 1024;
+  isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1024);
 
   catalogueCatagoryId: WritableSignal<string> = signal('');
   catalogueCatagories: WritableSignal<any[]> = signal([]);
@@ -152,6 +156,11 @@ export class CatalogueComponent implements OnInit {
           ?.map((e: any) => e?.series_id?._id)
       );
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.isMobileView.set(window.innerWidth < 1024);
   }
 
   ngOnInit(): void {
