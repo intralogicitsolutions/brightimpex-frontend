@@ -5,38 +5,55 @@
         </div>
         <div class="sub-text">
             <a routerLink="/home">Home</a>
-            <img src="assets/icons/chevron-right.svg" alt="" class="mx-1 h-5">
+            <img src="assets/icons/chevron-right.svg" alt="" class="mx-1 h-5 icon">
             <span class="bold-font">Products</span>
         </div>
     </div>
-    <div class="flex flex-col px-16">
+    <div class="flex flex-col catalogue-container">
+        @if (isMobileView) {
+        <div class="w-full flex flex-col">
+            <div class="w-full"></div>
+            <div class="w-full flex justify-between pt-6 pb-4 border-b-primary">
+                <span class="sans-medium text-sm">{{filteredCatalogues().length}} PRODUCTS</span>
+                <span class="underline text-primary text-sm">Filter</span>
+            </div>
+        </div>
+        } @else {
         <div class="flex justify-between w-full h-16 items-center text-primary">
             @for (category of catalogueCatagories(); track $index) {
             <a [routerLink]="'/catalogue/' + category?._id" routerLinkActive="active-catalogue"
                 class="catalogue-menu">{{category?.name}}</a>
             }
         </div>
+        }
         <div class="flex w-full pt-8">
-            <div class="w-1/5 mb-2">
+            <div class="mb-2 sidebar-filter">
                 <div class="flex flex-col text-primary border-r-primary w-full">
                     <div class="mb-2">
-                        <div class="w-full border-b-primary pb-2">Search Size</div>
+                        <div class="w-full border-b-primary pb-2">SEARCH SIZE</div>
                         <div class="flex flex-col w-full pt-2">
-                            <mat-checkbox color="primary" class="filter-checkbox">12 x 18 mm</mat-checkbox>
-                            <mat-checkbox color="primary" class="filter-checkbox">12 x 24 mm</mat-checkbox>
+                            @for (size of filteredCatalogueSizes(); track size?._id) {
+                            <mat-checkbox color="primary" class="filter-checkbox" [(ngModel)]="size.checked"
+                                (change)="changeSize()" [disabled]="size?.disabled">{{size?.height}} X {{size?.width}}
+                                {{size?.unit}}</mat-checkbox>
+                            }
                         </div>
                     </div>
                     <div class="mt-4 mb-2">
-                        <div class="w-full border-b-primary pb-2">Category</div>
+                        <div class="w-full border-b-primary pb-2">SERIES</div>
                         <div class="flex flex-col w-full pt-2">
-                            <mat-checkbox color="primary" class="filter-checkbox">Nano</mat-checkbox>
-                            <mat-checkbox color="primary" class="filter-checkbox">Full Body</mat-checkbox>
+                            @for (series of filteredCatalogueSeries(); track series?._id) {
+                            <mat-checkbox color="primary" class="filter-checkbox" [(ngModel)]="series.checked"
+                                (change)="changeSeries()" [disabled]="series?.disabled">{{series?.name}}</mat-checkbox>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="w-4/5 flex flex-wrap px-4">
+
+            <div class="flex flex-wrap catalogues-list">
                 @for (catalogue of filteredCatalogues(); track catalogue?._id) {
+                @if (!catalogue?.isHiddenBySize && !catalogue?.isHiddenBySeries) {
                 <div class="catalogue">
                     <div class="group relative overflow-hidden">
                         <img [ngSrc]="serverUrl + catalogue?.image" width="210" height="324" alt=""
@@ -44,11 +61,11 @@
 
                         <div
                             class="absolute inset-0 flex items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button (click)="onPreview()"
+                            <button (click)="onPreview(catalogue?.catalogue_doc)"
                                 class="text-white py-2 mx-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
                                 <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
                             </button>
-                            <button (click)="onDownload()"
+                            <button (click)="onDownload(catalogue?.catalogue_doc, catalogue?.name)"
                                 class="text-white py-2 mx-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
                                 <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
                             </button>
@@ -57,12 +74,13 @@
                     <div class="flex flex-col w-full pt-2">
                         <span class="name">{{catalogue?.name}}</span>
                         <span class="info">
-                            {{catalogue?.sizeSeries}}
+                            <span>{{catalogue?.sizeSeries}}</span>
                             <span class="bullet"></span>
-                            {{catalogue?.series_id?.name}}
+                            <span>{{catalogue?.series_id?.name}}</span>
                         </span>
                     </div>
                 </div>
+                }
                 }
             </div>
         </div>

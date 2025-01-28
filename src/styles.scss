@@ -91,6 +91,14 @@ body {
   width: 20px !important;
 }
 
+.mdc-checkbox--disabled .mdc-checkbox__background {
+  border-color: var(--mdc-checkbox-disabled-unselected-icon-color, color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent)) !important;
+}
+
+.mdc-checkbox__native-control:disabled:checked~.mdc-checkbox__background {
+  border-color: rgba(0, 0, 0, 0) !important;
+}
+
 .mat-mdc-checkbox-touch-target {
   height: 20px !important;
   width: 20px !important;

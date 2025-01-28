@@ -24,12 +24,6 @@
         .bold-font {
             font-family: "GoogleSans-Medium";
         }
-
-        .icon {
-            font-size: 28px;
-            width: 28px;
-            height: 28px;
-        }
     }
 }
 
@@ -56,10 +50,13 @@
     border-right: 1px solid #136A9966;
 }
 
+.catalogue-container {
+    padding: 0px 4rem;
+}
+
 .catalogue {
-    width: 226px;
+    width: calc(25% - 12px);
     height: 387px;
-    padding: 0px 8px;
     margin-bottom: 15px;
 
     .catalogue-img {
@@ -84,6 +81,16 @@
     }
 }
 
+.sidebar-filter {
+    width: 20%;
+}
+
+.catalogues-list {
+    width: 80%;
+    padding: 0px 1rem;
+    gap: 16px;
+}
+
 :host ::ng-deep {
     .mdc-label {
         color: var(--primary-color);
@@ -104,4 +111,51 @@
     opacity: 20%;
     background: #404140;
     margin: 0px 8px;
+}
+
+@media screen and (max-width: 1023px) {
+    .catalogue-container {
+        padding: 0px 2rem;
+    }
+
+    .sidebar-filter {
+        display: none;
+    }
+
+    .catalogues-list {
+        width: 100%;
+        padding: 0px;
+    }
+
+    .catalogue {
+        width: calc(50% - 8px);
+    }
+
+    .header-section {
+        height: 200px;
+
+        .text {
+            font-size: 32px;
+            font-family: "Glamore";
+            line-height: 40px;
+        }
+
+
+        .sub-text {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            line-height: 17.81px;
+            margin-top: 8px;
+
+            .bold-font {
+                font-family: "GoogleSans-Medium";
+            }
+
+            .icon {
+                width: 18px;
+                height: 18px;
+            }
+        }
+    }
 }

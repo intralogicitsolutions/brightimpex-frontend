@@ -22,4 +22,8 @@ export class CommonService {
   getCatalogueSizes(): Observable<any> {
     return this.http.get(`${this.apiRoot}/size`);
   }
+
+  getCatalogueSeries(): Observable<any> {
+    return this.http.get(`${this.apiRoot}/series`);
+  }
 }
