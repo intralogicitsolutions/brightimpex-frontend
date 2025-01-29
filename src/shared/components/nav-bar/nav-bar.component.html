@@ -1,22 +1,66 @@
-<div class="h-16 bg-white flex justify-between nav-bar">
-    <div class="logo w-60">
-        <img src="assets/images/Bright-Impex-Logo-Full-1.png" alt="" class="h-full pl-6 pr-2 cursor-pointer" routerLink="/home">
-    </div>
-    <div class="navigation-menu">
-        <a class="mx-3 cursor-pointer link-underline" routerLink="/home" routerLinkActive="active-link">Home</a>
-        <a class="mx-3 cursor-pointer link-underline" routerLink="/catalogue"
-            routerLinkActive="active-link">Products</a>
-        <a class="mx-3 cursor-pointer link-underline" routerLink="/about-us" routerLinkActive="active-link">About Bright
-            Impex</a>
-        <a class="mx-3 cursor-pointer link-underline" routerLink="/contact-us" routerLinkActive="active-link">Contact
-            Us</a>
-    </div>
-    <div class="w-60 flex justify-end items-center">
-        <div class="pl-2 pr-8">
-            <img src="assets/icons/call.svg" alt="" class="cursor-pointer">
+<div class="relative">
+    <!-- Navigation Bar -->
+    <div class="h-16 bg-white flex justify-between nav-bar relative z-50">
+        <div class="pl-2 lg:w-60 lg:pl-6 pr-2">
+            <img src="assets/images/Bright-Impex-Logo-Full-1.png" alt="" class="h-full w-auto cursor-pointer"
+                routerLink="/home">
         </div>
-        <div class="menu-icon pr-2">
-            <img src="assets/icons/textalign-left.svg" alt="" class="cursor-pointer">
+        <div class="navigation-menu">
+            <a class="mx-3 cursor-pointer link-underline" routerLink="/home" routerLinkActive="active-link">Home</a>
+            <a class="mx-3 cursor-pointer link-underline" routerLink="/catalogue"
+                routerLinkActive="active-link">Products</a>
+            <a class="mx-3 cursor-pointer link-underline" routerLink="/about-us" routerLinkActive="active-link">
+                About Bright Impex
+            </a>
+            <a class="mx-3 cursor-pointer link-underline" routerLink="/contact-us" routerLinkActive="active-link">
+                Contact Us
+            </a>
         </div>
+        <div class="w-fit lg:w-60 flex justify-end items-center">
+            <div class="pl-2 lg:pr-8 pr-6">
+                <img src="assets/icons/call.svg" alt="" class="cursor-pointer">
+            </div>
+            @if (isMenuOpen) {
+            <div class="menu-icon pr-4 flex text-primary">
+                <mat-icon (click)="toggleMenu()">close</mat-icon>
+            </div>
+            } @else {
+            <div class="menu-icon pr-4">
+                <img src="assets/icons/textalign-left.svg" alt="" class="cursor-pointer" (click)="toggleMenu()">
+            </div>
+            }
+        </div>
+    </div>
+
+    <!-- Background Blur Overlay -->
+    <div class="fixed inset-0 transition-opacity duration-300 ease-in-out z-10"
+        [ngClass]="{'opacity-100 visible': isMenuOpen, 'opacity-0 invisible': !isMenuOpen}" (click)="toggleMenu()"
+        style="background: #0000005C;">
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu fixed left-0 top-16 w-full bg-white shadow-lg border-t-primary 
+    transition-all duration-300 ease-in-out transform origin-top z-50 overflow-hidden"
+        [ngClass]="{'scale-y-100 opacity-100 max-h-screen': isMenuOpen, 'scale-y-0 opacity-0 max-h-0': !isMenuOpen}">
+        <ul class="space-y-2 p-4 h-full flex flex-col justify-between">
+            <li>
+                <a class="mx-3 cursor-pointer link-underline" routerLink="/home" routerLinkActive="active-link">Home</a>
+            </li>
+            <li>
+                <a class="mx-3 cursor-pointer link-underline" routerLink="/catalogue" routerLinkActive="active-link">
+                    Products
+                </a>
+            </li>
+            <li>
+                <a class="mx-3 cursor-pointer link-underline" routerLink="/about-us" routerLinkActive="active-link">
+                    About Bright Impex
+                </a>
+            </li>
+            <li>
+                <a class="mx-3 cursor-pointer link-underline" routerLink="/contact-us" routerLinkActive="active-link">
+                    Contact Us
+                </a>
+            </li>
+        </ul>
     </div>
 </div>

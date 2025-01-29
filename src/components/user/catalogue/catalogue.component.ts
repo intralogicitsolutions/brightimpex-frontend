@@ -23,6 +23,7 @@ import { fadeAnimation } from '../../../shared/animations/route-animations';
 import { IResponse } from '../../../shared/interfaces/response-i';
 import { CommonService } from '../../../shared/services/common.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-catalogue',
@@ -30,31 +31,34 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatTabsModule,
     RouterLink,
     RouterLinkActive,
     NgOptimizedImage,
     FormsModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
   animations: [fadeAnimation],
 })
 export class CatalogueComponent implements OnInit {
-  isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1024);
+  isFilterOpened: boolean = false;
+  isCategorySelected: boolean = true;
+  selectedCategoryIndex: number = 0;
+  serverUrl: string = `${environment.apiRoot}/`;
 
+  isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1024);
   catalogueCatagoryId: WritableSignal<string> = signal('');
   catalogueCatagories: WritableSignal<any[]> = signal([]);
   catalogues: WritableSignal<any[]> = signal([]);
-  serverUrl: string = `${environment.apiRoot}/`;
   catalogueSizes: WritableSignal<any> = signal([]);
-
   catalogueSeries: WritableSignal<any> = signal([]);
-
   catalogueSizeIds: WritableSignal<string[]> = signal([]);
   catalogueSeriesIds: WritableSignal<string[]> = signal([]);
   selectedCatalogueSizes: WritableSignal<any[]> = signal([]);
   selectedCatalogueSeries: WritableSignal<any[]> = signal([]);
+  loadedCataloguesCount: WritableSignal<number> = signal(8);
 
   filteredCatalogueSizes: Signal<any> = computed(() => {
     const cataloguesSizeIds = this.catalogueSizeIds();
@@ -131,6 +135,14 @@ export class CatalogueComponent implements OnInit {
   ) {
     this.activatedRoute.paramMap.subscribe((params) => {
       this.catalogueCatagoryId.set(params?.get('id') || '');
+      if (this.isMobileView()) {
+        const categoryIndex = this.catalogueCatagories()?.findIndex(
+          (e: any) => e?._id == this.catalogueCatagoryId()
+        );
+        if (categoryIndex !== -1) {
+          this.selectedCategoryIndex = categoryIndex;
+        }
+      }
     });
 
     const navigation = this.router.getCurrentNavigation();
@@ -155,12 +167,27 @@ export class CatalogueComponent implements OnInit {
           ?.filter((e) => !e?.isHiddenBySize)
           ?.map((e: any) => e?.series_id?._id)
       );
+
+      if (!this.isMobileView()) {
+        this.loadedCataloguesCount.set(this.filteredCatalogues()?.length);
+      }
     });
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.isMobileView.set(window.innerWidth < 1024);
+    if (!this.isMobileView()) {
+      this.loadedCataloguesCount.set(this.filteredCatalogues()?.length);
+    } else {
+      this.loadedCataloguesCount.set(8);
+    }
+  }
+
+  get catalogueProductLength(): number {
+    return this.filteredCatalogues()?.filter(
+      (e) => !e?.isHiddenBySize && !e?.isHiddenBySeries
+    )?.length;
   }
 
   ngOnInit(): void {
@@ -178,7 +205,7 @@ export class CatalogueComponent implements OnInit {
             this.catalogues.set(
               response?.body?.map((e: any) => {
                 e[
-                  'sizeSeries'
+                  'size'
                 ] = `${e?.size_id?.height}X${e?.size_id?.width} ${e?.size_id?.unit}`;
                 return e;
               })
@@ -204,6 +231,15 @@ export class CatalogueComponent implements OnInit {
             ...(response?.body || []),
           ];
           this.catalogueCatagories.set(categories);
+          if (this.isMobileView()) {
+            const categoryIndex = this.catalogueCatagories()?.findIndex(
+              (e: any) => e?._id == this.catalogueCatagoryId()
+            );
+            if (categoryIndex !== -1) {
+              this.selectedCategoryIndex = categoryIndex;
+            }
+            this.isCategorySelected = false;
+          }
         } else {
           console.error(response?.msg);
         }
@@ -286,5 +322,20 @@ export class CatalogueComponent implements OnInit {
       .catch((error) => {
         console.error('Error downloading the file:', error);
       });
+  }
+
+  toggleFilter() {
+    this.isFilterOpened = !this.isFilterOpened;
+  }
+
+  onCategoryChange(index: number) {
+    if (!this.isCategorySelected) {
+      const currentTab = this.catalogueCatagories()?.[index];
+      this.router.navigate([`catalogue/${currentTab?._id}`]);
+    }
+  }
+
+  loadMoreCatalogues() {
+    this.loadedCataloguesCount.update((count) => count + 8);
   }
 }

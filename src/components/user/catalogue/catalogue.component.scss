@@ -58,6 +58,7 @@
     width: calc(25% - 12px);
     height: 387px;
     margin-bottom: 15px;
+    overflow: hidden;
 
     .catalogue-img {
         height: 324px;
@@ -108,6 +109,11 @@
     background-color: #136A99 !important;
 }
 
+.category-tabs {
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
+}
+
 :host ::ng-deep {
     .mdc-label {
         color: var(--primary-color);
@@ -118,6 +124,20 @@
     .filter-checkbox {
         padding: 3px 0px;
     }
+}
+
+.catalogue-filter {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 4rem);
+}
+
+.min-w-28 {
+    min-width: 7rem !important;
+}
+
+.filter-panel {
+    background: #FCFCFC;
 }
 
 @media screen and (max-width: 1023px) {
