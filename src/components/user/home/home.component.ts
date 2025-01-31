@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  HostListener,
   OnInit,
   Signal,
   signal,
@@ -24,6 +25,7 @@ export class HomeComponent implements OnInit {
   trendingImages: WritableSignal<Array<any>> = signal([]);
   catalogueImages: WritableSignal<Array<any>> = signal([]);
   productImages: WritableSignal<Array<any>> = signal([]);
+  isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1024);
 
   // Main Slider
   currentSlideIndex: WritableSignal<number> = signal(0);
@@ -46,25 +48,30 @@ export class HomeComponent implements OnInit {
   locationBgImg: string = '/assets/images/bg-2.jpg';
   catalogueBgImg: string = '/assets/images/bg.png';
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.isMobileView.set(window.innerWidth < 1024);
+  }
+
   ngOnInit(): void {
     this.images.set([
       {
         img: '/assets/images/home/home-1.jpg',
         name: 'WALL COLLECTION',
         sizes: ['12X18 mm', '12X24 mm'],
-        category: '679302f17665aeadd2a0a1a4'
+        category: '679302f17665aeadd2a0a1a4',
       },
       {
         img: '/assets/images/home/home-2.jpg',
         name: 'FLOOR COLLECTION',
         sizes: ['12X24 mm', '12X18 mm'],
-        category: '679303037665aeadd2a0a1a6'
+        category: '679303037665aeadd2a0a1a6',
       },
       {
         img: '/assets/images/home/home-1.jpg',
         name: 'PARKING COLLECTION',
         sizes: ['24X12 mm', '18X12 mm'],
-        category: '6793031e7665aeadd2a0a1aa'
+        category: '6793031e7665aeadd2a0a1aa',
       },
     ]);
 

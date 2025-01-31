@@ -110,6 +110,35 @@ body {
   flex: 0 0 20px !important;
 }
 
+.mat-mdc-tab-header-pagination-controls-enabled .mat-mdc-tab-header-pagination {
+  background: #136A99;
+  height: 46px;
+  min-width: 46px;
+}
+
+.mat-mdc-tab-header-pagination-chevron {
+  border-color: #fff !important;
+  height: 10px !important;
+  width: 10px !important;
+}
+
+.mat-mdc-tab-header-pagination-disabled .mat-mdc-tab-header-pagination-chevron {
+  border-color: #888888 !important;
+}
+
+.mat-mdc-tab-header-pagination-disabled {
+  background: #40414033 !important;
+}
+
+.mat-mdc-tab .mdc-tab__text-label {
+  color: var(--primary-color) !important;
+  font-family: 'GoogleSans-Medium';
+}
+
+.mat-mdc-tab-label-container {
+  border-bottom: none !important;
+}
+
 // ========= SCROLLBAR ========== //
 // .custom-scrollbar::-webkit-scrollbar {
 //   visibility: hidden;

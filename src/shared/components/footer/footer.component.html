@@ -1,28 +1,32 @@
 <div class="footer-section">
     <div class="w-full flex flex-col">
-        <div class="w-full flex">
-            <div class="w-1/4 px-12">
+        <div class="w-full flex flex-wrap">
+            <div class="lg:w-1/4 w-full px-12">
                 <img src="assets/images/Bright-Impex-Logo-Full.png" alt="" class="cursor-pointer" routerLink="/home">
             </div>
-            <div class="w-1/4 px-4 pt-4 flex flex-col">
-                <span class="contact-header">Contact Info</span>
-                <div class="contact-info">
-                    <span>{{phone}}</span>
-                    <span>{{email}}</span>
+            <div class="lg:w-1/4 w-full lg:px-4 pt-4 flex flex-wrap lg:flex-col lg:justify-between">
+                <div class="flex flex-col w-1/2 lg:w-full">
+                    <span class="contact-header">Contact Info</span>
+                    <div class="contact-info">
+                        <span>{{phone}}</span>
+                        <span>{{email}}</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap w-1/2 pl-4 lg:w-full lg:pl-0">
+                    <img src="assets/icons/facebook.svg" alt="" class="pr-1 social-icon">
+                    <img src="assets/icons/instagram.svg" alt="" class="px-1 social-icon">
+                    <img src="assets/icons/youtube.svg" alt="" class="pl-1 social-icon">
                 </div>
             </div>
-            <div class="w-1/4 px-4 pt-4 flex flex-col">
+            <div class="lg:w-1/4 w-1/2 lg:px-4 pt-4 flex flex-col">
                 <span class="contact-header">Product Categories</span>
                 <div class="contact-info">
-                    <span class="cursor-pointer">Wall Collection</span>
-                    <span class="cursor-pointer">Floor Collection</span>
-                    <span class="cursor-pointer">Slab Collection</span>
-                    <span class="cursor-pointer">Parking Collection</span>
-                    <span class="cursor-pointer">Wooden Plank</span>
-                    <span class="cursor-pointer">Step Raiser</span>
+                    @for (category of catalogueCatagories(); track $index) {
+                    <a [routerLink]="'catalogue/' + category?._id" routerLinkActive="active-link">{{category?.name}}</a>
+                    }
                 </div>
             </div>
-            <div class="w-1/4 px-4 pt-4 flex flex-col">
+            <div class="lg:w-1/4 w-1/2 lg:px-4 pl-4 pt-4 flex flex-col">
                 <span class="contact-header">Quick Links</span>
                 <div class="contact-info">
                     <a routerLink="/home" routerLinkActive="active-link">Home</a>
@@ -38,7 +42,7 @@
         <div class="copyright-text">
             {{ copyrightText }}
         </div>
-        <div class="flex relative -z-1">
+        <div class="flex relative -z-1 bg-logo">
             <div class="first-logo">
                 <img src="assets/images/logo-full.png" alt="" class="h-full w-full">
             </div>

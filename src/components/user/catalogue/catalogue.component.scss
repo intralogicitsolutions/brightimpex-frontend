@@ -58,12 +58,13 @@
     width: calc(25% - 12px);
     height: 387px;
     margin-bottom: 15px;
+    overflow: hidden;
 
     .catalogue-img {
         height: 324px;
         width: 100%;
         overflow: hidden;
-        object-fit: fill;
+        object-fit: cover;
     }
 
     .name {
@@ -75,7 +76,7 @@
     .info {
         font-size: 14px;
         line-height: 18.35px;
-        padding-top: 2px;
+        padding-top: 5px;
         display: flex;
         align-items: center;
     }
@@ -91,6 +92,28 @@
     gap: 16px;
 }
 
+.bullet {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 80px;
+    opacity: 20%;
+    background: #404140;
+    margin: 0px 8px;
+}
+
+.primary-btn {
+    font-size: 12px;
+    font-family: "GoogleSans";
+    box-shadow: 0px 4px 20px 0px #00000014;
+    background-color: #136A99 !important;
+}
+
+.category-tabs {
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
+}
+
 :host ::ng-deep {
     .mdc-label {
         color: var(--primary-color);
@@ -103,14 +126,18 @@
     }
 }
 
-.bullet {
-    display: block;
-    width: 4px;
-    height: 4px;
-    border-radius: 80px;
-    opacity: 20%;
-    background: #404140;
-    margin: 0px 8px;
+.catalogue-filter {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 4rem);
+}
+
+.min-w-28 {
+    min-width: 7rem !important;
+}
+
+.filter-panel {
+    background: #FCFCFC;
 }
 
 @media screen and (max-width: 1023px) {
@@ -129,6 +156,21 @@
 
     .catalogue {
         width: calc(50% - 8px);
+        height: 330px;
+
+        .catalogue-img {
+            height: 240px;
+        }
+
+        .name {
+            font-size: 15px;
+            line-height: 19.08px;
+        }
+
+        .info {
+            font-size: 14px;
+            line-height: 17.81px;
+        }
     }
 
     .header-section {

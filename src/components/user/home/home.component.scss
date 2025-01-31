@@ -40,7 +40,7 @@
     .action-btn {
         background: rgba(255, 255, 255, 0.8784313725);
         backdrop-filter: blur(12px);
-        padding: 10px;
+        padding: 13px;
         border-radius: 60px;
         height: 50px;
         width: 50px;
@@ -57,6 +57,10 @@
 
 .border-r-primary {
     border-right: 1px solid #136A99
+}
+
+.border-b-primary {
+    border-bottom: 1px solid #136A99
 }
 
 .home-image-container {
@@ -133,7 +137,7 @@
 }
 
 .catalogue-img {
-    width: calc(20% - 1rem);
+    width: calc(20% - 0.8rem);
     height: 361px;
 
     img {
@@ -193,7 +197,7 @@
         }
 
         .img-actions {
-            padding: 0px 40px;
+            padding: 16px 30px 0px;
             gap: 10px;
 
             .action-btn {
@@ -218,4 +222,70 @@
         height: calc(100% - 11.5rem);
         object-fit: cover;
     }
+}
+
+@media screen and (max-width: 1023px) {
+    .img-details {
+        top: -200px;
+    }
+
+    .img-info {
+        padding: 20px 40px 20px 20px;
+
+        .info-header {
+            font-size: 26px;
+            line-height: 32.53px;
+        }
+
+        .info-details {
+            font-size: 14px;
+        }
+    }
+
+    .img-actions {
+        padding: 0px 30px;
+        gap: 15px;
+
+        .action-btn {
+            height: 45px;
+            width: 45px;
+        }
+    }
+
+    .catalogue-img {
+        width: calc(50% - 0.5rem);
+        height: 300px;
+
+        img {
+            height: calc(100% - 3rem);
+        }
+    }
+
+    .location-section {
+        height: 450px;
+
+        .location-btn {
+            font-size: 0.875rem;
+        }
+    }
+
+    .trending-section {
+        .image-container {
+            height: 450px !important;
+
+            .img-details {
+                top: -150px;
+            }
+        }
+    }
+
+    .product-img {
+        width: 100%;
+        height: auto;
+
+        img {
+            height: 324px;
+        }
+    }
+
 }
