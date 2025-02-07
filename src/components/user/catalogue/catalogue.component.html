@@ -15,8 +15,25 @@
             <div class="category-tabs">
                 <mat-tab-group [(selectedIndex)]="selectedCategoryIndex"
                     (selectedIndexChange)="onCategoryChange($event)">
+
                     @for (category of catalogueCatagories(); track category?._id; let index = $index) {
-                    <mat-tab [label]="category?.name"></mat-tab>
+                    <mat-tab [label]="category?.name">
+                        <ng-template mat-tab-label>
+                            <div (click)="(isAdmin() && category?._id !== 'all') && addCategory()">
+                                {{category?.name}}
+                            </div>
+                        </ng-template>
+                    </mat-tab>
+                    }
+
+                    @if (isAdmin()) {
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <div (click)="addCategory()">
+                                <mat-icon>add</mat-icon>
+                            </div>
+                        </ng-template>
+                    </mat-tab>
                     }
                 </mat-tab-group>
             </div>
@@ -30,7 +47,13 @@
         <div class="flex justify-between w-full h-16 items-center text-primary">
             @for (category of catalogueCatagories(); track $index) {
             <a [routerLink]="'/catalogue/' + category?._id" routerLinkActive="active-catalogue"
-                class="catalogue-menu">{{category?.name}}</a>
+                class="catalogue-menu" (click)="isAdmin() && category?._id !== 'all' && addCategory()">{{category?.name}}</a>
+            }
+
+            @if (isAdmin()) {
+            <a class="catalogue-menu cursor-pointer" (click)="addCategory()">
+                <mat-icon>add</mat-icon>
+            </a>
             }
         </div>
         }
@@ -45,6 +68,12 @@
                                 (change)="changeSize()" [disabled]="size?.disabled">{{size?.height}} X {{size?.width}}
                                 {{size?.unit}}</mat-checkbox>
                             }
+
+                            @if (isAdmin()) {
+                            <button mat-button color="primary" class="outline-add-btn mt-3" (click)="addSize()">
+                                <mat-icon class="m-0">add</mat-icon>
+                            </button>
+                            }
                         </div>
                     </div>
                     <div class="mt-4 mb-2">
@@ -53,6 +82,12 @@
                             @for (series of filteredCatalogueSeries(); track series?._id) {
                             <mat-checkbox color="primary" class="filter-checkbox" [(ngModel)]="series.checked"
                                 (change)="changeSeries()" [disabled]="series?.disabled">{{series?.name}}</mat-checkbox>
+                            }
+
+                            @if (isAdmin()) {
+                            <button mat-button color="primary" class="outline-add-btn mt-3" (click)="addSeries()">
+                                <mat-icon class="m-0">add</mat-icon>
+                            </button>
                             }
                         </div>
                     </div>
@@ -102,19 +137,26 @@
                 </div>
                 }
                 }
+
+                @if (isAdmin()) {
+                <div class="catalogue flex justify-center items-center cursor-pointer add-catalogue-btn"
+                    (click)="addCatalogue()">
+                    <mat-icon class="add-catalogue-icon">add</mat-icon>
+                </div>
+                }
             </div>
         </div>
         @if (isMobileView()) {
         <div class="w-full flex justify-center flex-col items-center py-12">
-            @if (this.loadedCataloguesCount() < this.filteredCatalogues().length) {
-                <button mat-flat-button color="primary" class="primary-btn" (click)="loadMoreCatalogues()">
-                    Load More
+            @if (this.loadedCataloguesCount() < this.filteredCatalogues().length) { <button mat-flat-button
+                color="primary" class="primary-btn" (click)="loadMoreCatalogues()">
+                Load More
                 </button>
-            }
-            <span class="pt-2 text-sm">Couldn’t find what you’re looking for?</span>
-            <a routerLink="/contact-us" class="underline text-primary text-sm flex items-center pt-2 sans-medium">
-                Contact Us
-            </a>
+                }
+                <span class="pt-2 text-sm">Couldn’t find what you’re looking for?</span>
+                <a routerLink="/contact-us" class="underline text-primary text-sm flex items-center pt-2 sans-medium">
+                    Contact Us
+                </a>
         </div>
         }
     </div>
@@ -148,6 +190,14 @@
                         </mat-checkbox>
                     </div>
                     }
+
+                    @if (isAdmin()) {
+                    <div class="w-full">
+                        <button mat-button color="primary" class="outline-add-btn mt-3" (click)="addSize()">
+                            <mat-icon class="m-0">add</mat-icon>
+                        </button>
+                    </div>
+                    }
                 </div>
 
                 <span class="text-base sans-medium text-primary text-center border-b-primary pb-4 pt-6">SERIES</span>
@@ -157,6 +207,14 @@
                         <mat-checkbox color="primary" class="filter-checkbox" [(ngModel)]="series.checked"
                             (change)="changeSeries()" [disabled]="series?.disabled">{{series?.name}}
                         </mat-checkbox>
+                    </div>
+                    }
+
+                    @if (isAdmin()) {
+                    <div class="w-full">
+                        <button mat-button color="primary" class="outline-add-btn mt-3" (click)="addSeries()">
+                            <mat-icon class="m-0">add</mat-icon>
+                        </button>
                     </div>
                     }
                 </div>
@@ -170,3 +228,7 @@
     </div>
     }
 </div>
+
+<ng-template #AddCategory>
+
+</ng-template>

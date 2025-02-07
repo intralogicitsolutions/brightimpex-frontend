@@ -7,6 +7,8 @@ import {
   OnInit,
   Signal,
   signal,
+  TemplateRef,
+  ViewChild,
   WritableSignal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -24,6 +26,7 @@ import { IResponse } from '../../../shared/interfaces/response-i';
 import { CommonService } from '../../../shared/services/common.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-catalogue',
@@ -32,6 +35,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatCheckboxModule,
     MatButtonModule,
     MatTabsModule,
+    MatDialogModule,
     RouterLink,
     RouterLinkActive,
     NgOptimizedImage,
@@ -43,6 +47,7 @@ import { MatTabsModule } from '@angular/material/tabs';
   animations: [fadeAnimation],
 })
 export class CatalogueComponent implements OnInit {
+  @ViewChild('AddCategory') AddCategory!: TemplateRef<any>;
   isFilterOpened: boolean = false;
   isCategorySelected: boolean = true;
   selectedCategoryIndex: number = 0;
@@ -59,6 +64,8 @@ export class CatalogueComponent implements OnInit {
   selectedCatalogueSizes: WritableSignal<any[]> = signal([]);
   selectedCatalogueSeries: WritableSignal<any[]> = signal([]);
   loadedCataloguesCount: WritableSignal<number> = signal(8);
+
+  isAdmin: WritableSignal<boolean> = signal(true);
 
   filteredCatalogueSizes: Signal<any> = computed(() => {
     const cataloguesSizeIds = this.catalogueSizeIds();
@@ -131,7 +138,8 @@ export class CatalogueComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private matDialog: MatDialog
   ) {
     this.activatedRoute.paramMap.subscribe((params) => {
       this.catalogueCatagoryId.set(params?.get('id') || '');
@@ -141,7 +149,11 @@ export class CatalogueComponent implements OnInit {
         );
         if (categoryIndex !== -1) {
           this.selectedCategoryIndex = categoryIndex;
+        } else {
+          this.selectedCategoryIndex = 0;
         }
+
+        console.log(this.selectedCategoryIndex);
       }
     });
 
@@ -237,7 +249,10 @@ export class CatalogueComponent implements OnInit {
             );
             if (categoryIndex !== -1) {
               this.selectedCategoryIndex = categoryIndex;
+            } else {
+              this.selectedCategoryIndex = 0;
             }
+            console.log(this.selectedCategoryIndex);
             this.isCategorySelected = false;
           }
         } else {
@@ -331,11 +346,45 @@ export class CatalogueComponent implements OnInit {
   onCategoryChange(index: number) {
     if (!this.isCategorySelected) {
       const currentTab = this.catalogueCatagories()?.[index];
-      this.router.navigate([`catalogue/${currentTab?._id}`]);
+      if (currentTab) {
+        this.router.navigate([`catalogue/${currentTab?._id}`]);
+      }
     }
   }
 
   loadMoreCatalogues() {
     this.loadedCataloguesCount.update((count) => count + 8);
+  }
+
+  addCategory() {
+    const dialogRef = this.matDialog.open(this.AddCategory, {
+      height: '70vh',
+      width: '70vw',
+      maxWidth: '70vw',
+    });
+  }
+
+  addCatalogue() {
+    const dialogRef = this.matDialog.open(this.AddCategory, {
+      height: '70vh',
+      width: '70vw',
+      maxWidth: '70vw',
+    });
+  }
+
+  addSize() {
+    const dialogRef = this.matDialog.open(this.AddCategory, {
+      height: '70vh',
+      width: '70vw',
+      maxWidth: '70vw',
+    });
+  }
+
+  addSeries() {
+    const dialogRef = this.matDialog.open(this.AddCategory, {
+      height: '70vh',
+      width: '70vw',
+      maxWidth: '70vw',
+    });
   }
 }
