@@ -1,8 +1,8 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 
-@use '@angular/material' as mat;
-@use './theme-colors.scss' as my-theme;
+@use "@angular/material" as mat;
+@use "./theme-colors.scss" as my-theme;
 
 @tailwind base;
 @tailwind components;
@@ -19,29 +19,29 @@ html {
 }
 
 @font-face {
-  font-family: 'GoogleSans';
-  src: url('assets/fonts/GoogleSans/GoogleSans-Regular.ttf') format('truetype');
+  font-family: "GoogleSans";
+  src: url("assets/fonts/GoogleSans/GoogleSans-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'GoogleSans-Medium';
-  src: url('assets/fonts/GoogleSans/GoogleSans-Medium.ttf') format('truetype');
+  font-family: "GoogleSans-Medium";
+  src: url("assets/fonts/GoogleSans/GoogleSans-Medium.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'GoogleSans-Bold';
-  src: url('assets/fonts/GoogleSans/GoogleSans-Bold.ttf') format('truetype');
+  font-family: "GoogleSans-Bold";
+  src: url("assets/fonts/GoogleSans/GoogleSans-Bold.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Glamore';
-  src: url('assets/fonts/Glamore/Glamore.otf') format('opentype');
+  font-family: "Glamore";
+  src: url("assets/fonts/Glamore/Glamore.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
@@ -57,8 +57,8 @@ body {
 }
 
 :root {
-  --primary-color: #136A99;
-  --secondary-color: #2591B5;
+  --primary-color: #136a99;
+  --secondary-color: #2591b5;
 
   --mdc-checkbox-state-layer-size: 20px;
 }
@@ -83,6 +83,7 @@ body {
   color: var(--secondary-color);
 }
 
+// ========== MATERIAL STYLES ========== //
 .mdc-checkbox__background {
   border-color: var(--primary-color) !important;
   border-radius: 6px !important;
@@ -92,7 +93,8 @@ body {
 }
 
 .mdc-checkbox--disabled .mdc-checkbox__background {
-  border-color: var(--mdc-checkbox-disabled-unselected-icon-color, color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent)) !important;
+  border-color: var(--mdc-checkbox-disabled-unselected-icon-color,
+      color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent)) !important;
 }
 
 .mdc-checkbox__native-control:disabled:checked~.mdc-checkbox__background {
@@ -111,7 +113,7 @@ body {
 }
 
 .mat-mdc-tab-header-pagination-controls-enabled .mat-mdc-tab-header-pagination {
-  background: #136A99;
+  background: #136a99;
   height: 46px;
   min-width: 46px;
 }
@@ -132,11 +134,61 @@ body {
 
 .mat-mdc-tab .mdc-tab__text-label {
   color: var(--primary-color) !important;
-  font-family: 'GoogleSans-Medium';
+  font-family: "GoogleSans-Medium";
 }
 
 .mat-mdc-tab-label-container {
   border-bottom: none !important;
+}
+
+// MAT FORM FIELD //
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch {
+  border-right: none !important;
+}
+
+.mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.mdc-notched-outline__trailing {
+  border-top-right-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+}
+
+.mat-mdc-form-field-infix {
+  min-height: var(--mat-form-field-container-height, 46px) !important;
+  padding-top: var(--mat-form-field-container-vertical-padding,
+      11px) !important;
+  padding-bottom: var(--mat-form-field-container-vertical-padding,
+      11px) !important;
+}
+
+.mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+  top: calc(var(--mat-form-field-container-height, 46px) / 2) !important;
+}
+
+// MAT SNACKBAR //
+.success-snackbar .mat-mdc-snackbar-surface {
+  background-color: var(--mdc-snackbar-container-color, green) !important;
+}
+
+.warning-snackbar .mat-mdc-snackbar-surface {
+  background-color: var(--mdc-snackbar-container-color, yellow) !important;
+}
+
+.error-snackbar .mat-mdc-snackbar-surface {
+  background-color: var(--mdc-snackbar-container-color, red) !important;
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__label {
+  font-weight: var(--mdc-snackbar-supporting-text-weight, 500) !important;
+}
+
+// MAT DIALOG //
+.full-screen-dialog .mat-mdc-dialog-surface {
+  border-radius: 0px;
+  background-color: #fff;
 }
 
 // ========= SCROLLBAR ========== //

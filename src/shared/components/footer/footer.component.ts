@@ -2,6 +2,7 @@ import { Component, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonService } from '../../services/common.service';
 import { IResponse } from '../../interfaces/response-i';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-footer',
@@ -11,8 +12,8 @@ import { IResponse } from '../../interfaces/response-i';
 })
 export class FooterComponent {
   copyrightText: string = '@2024 All Rights Reserved. Bright Impex.';
-  phone: string = '1800 309 309';
-  email: string = 'connect@brightimpex.com';
+  phone: string = environment?.phone;
+  email: string = environment?.mail;
 
   selectedCategory: string = '';
 
