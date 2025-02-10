@@ -1,6 +1,31 @@
-<div class="h-full w-full flex justify-center items-center py-20" [@fadeAnimation]="'/contact-us'">
-    <div class="flex flex-col">
-        <span class="text-primary text-4xl">About Us Page</span>
-        <span class="text-secondary text-base text-end mt-2">Work in progress...</span>
+<div [@fadeAnimation]="'/catalogue'" class="flex flex-col">
+    <div class="header-section">
+        <div class="text">
+            about us
+        </div>
+        <div class="sub-text">
+            <a routerLink="/home">Home</a>
+            <img src="assets/icons/chevron-right.svg" alt="" class="mx-1 h-5 icon">
+            <span class="bold-font">About Us</span>
+        </div>
+    </div>
+    <div class="w-full flex flex-col">
+        <div class="w-full flex flex-wrap p-12">
+            <div class="w-1/2 flex flex-col">
+                <span class="text-primary text-sm">OUR STORY</span>
+                <span class="glamore text-3xl">little about bright impex</span>
+            </div>
+            <div class="w-1/2">
+                <p class="text-sm">Bright Impex, the largest manufacturer of ceramic and vitrified. Tiles in India, It has an annual
+                    aggregate capacity. Of 93.10 mn. sq. meters, distributed across nine plants - Sikandrabad in Uttar
+                    Pradesh, Gailpur & Malootana in Rajasthan, Srikalahasti in Andhra Pradesh, Balanagar.</p>
+            </div>
+        </div>
+        <div class="w-full flex flex-wrap">
+            <div class="w-1/2">
+                <img src="assets/images/home/home-3.jpg" alt="" class="w-full h-full object-cover">
+            </div>
+            <div class="w-1/2"></div>
+        </div>
     </div>
 </div>

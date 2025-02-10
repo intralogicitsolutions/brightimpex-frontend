@@ -1,6 +1,114 @@
-<div class="h-full w-full flex justify-center items-center py-20" [@fadeAnimation]="'/contact-us'">
-    <div class="flex flex-col">
-        <span class="text-primary text-4xl">Contact Us Page</span>
-        <span class="text-secondary text-base text-end mt-2">Work in progress...</span>
+<div [@fadeAnimation]="'/catalogue'" class="flex flex-col">
+    <div class="header-section">
+        <div class="text">
+            contact us
+        </div>
+        <div class="sub-text">
+            <a routerLink="/home">Home</a>
+            <img src="assets/icons/chevron-right.svg" alt="" class="mx-1 h-5 icon">
+            <span class="bold-font">Contact Us</span>
+        </div>
+    </div>
+    <div class="w-full p-20 flex">
+        <div class="w-1/2 flex flex-col px-16">
+            <span class="sans-medium text-primary text-base">GET IN TOUCH</span>
+            <span class="text-4xl glamore pt-4">contact us at</span>
+            <p class="text-lg pt-4">
+                Bright Impex, the largest manufacturer of ceramic and vitrified. Tiles in India, It has an annual
+                aggregate capacity. Of 93.10 mn. sq. meters, distributed across nine plants - Sikandrabad in Uttar
+                Pradesh, Gailpur & Malootana in Rajasthan, Srikalahasti in Andhra Pradesh, Balanagar.
+            </p>
+            <div class="flex flex-col py-6">
+                <div class="w-full flex py-1 items-center">
+                    <img src="assets/icons/call_outline.svg" alt="">
+                    <span class="text-primary text-base sans-medium pl-4">{{phone}}</span>
+                </div>
+                <div class="w-full flex py-1 items-center">
+                    <img src="assets/icons/mail.svg" alt="">
+                    <span class="text-primary text-base sans-medium pl-4">{{mail}}</span>
+                </div>
+                <div class="w-full flex py-1 items-center">
+                    <img src="assets/icons/location.svg" alt="">
+                    <span class="text-primary text-base sans-medium pl-4">{{location}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="w-1/2 px-16">
+            <form [formGroup]="contactUsForm">
+                <div class="w-full flex flex-col">
+                    <div class="w-full flex flex-wrap py-1">
+                        <div class="w-1/2 px-2">
+                            <mat-form-field appearance="outline" class="w-full">
+                                <mat-label>Name</mat-label>
+                                <input matInput placeholder="ex. Jitubhai Rajan" type="text" formControlName="name">
+                            </mat-form-field>
+                        </div>
+                        <div class="w-1/2 px-2">
+                            <mat-form-field appearance="outline" class="w-full">
+                                <mat-label>Email</mat-label>
+                                <input matInput placeholder="ex. jiturajan@gmail.com" type="email"
+                                    formControlName="email">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="w-full px-2 py-1">
+                        <mat-form-field appearance="outline" class="w-full">
+                            <mat-label>Message/Query</mat-label>
+                            <textarea matInput rows="5" formControlName="message"
+                                placeholder="ex. I have query about pricing.">
+                            </textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="w-full flex flex-wrap py-1">
+                        <div class="w-1/2 px-2">
+                            <mat-form-field appearance="outline" class="w-full">
+                                <mat-label>City</mat-label>
+                                <mat-select formControlName="city" placeholder="Select">
+                                    <mat-option value="1">City 1</mat-option>
+                                    <mat-option value="2">City 2</mat-option>
+                                </mat-select>
+
+                            </mat-form-field>
+                        </div>
+                        <div class="w-1/2 px-2">
+                            <mat-form-field appearance="outline" class="w-full">
+                                <mat-label>State</mat-label>
+                                <mat-select formControlName="state" placeholder="Select">
+                                    <mat-option value="1">State 1</mat-option>
+                                    <mat-option value="2">State 2</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="w-full flex flex-wrap py-1">
+                        <div class="w-1/2 px-2">
+                            <mat-form-field appearance="outline" class="w-full">
+                                <mat-label>Country</mat-label>
+                                <mat-select formControlName="country" placeholder="Select">
+                                    <mat-option value="1">Country 1</mat-option>
+                                    <mat-option value="2">Country 2</mat-option>
+                                </mat-select>
+
+                            </mat-form-field>
+                        </div>
+                        <div class="w-1/2 px-2">
+                            <mat-form-field appearance="outline" class="w-full">
+                                <mat-label>Phone Number</mat-label>
+                                <input matInput type="number" formControlName="text">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center px-2">
+                        <button mat-flat-button color="primary" class="primary-btn w-32">Send</button>
+                        <span class="px-4 text-sm">or</span>
+                        <a class="underline text-primary text-sm flex items-center sans-medium">
+                            Reset
+                            <mat-icon>restart_alt</mat-icon>
+                            <!-- <img src="assets/icons/arrow-right.svg" alt="" class="h-4 w-4 ml-1"> -->
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
