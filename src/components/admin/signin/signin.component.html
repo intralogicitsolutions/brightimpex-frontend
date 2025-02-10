@@ -1,6 +1,36 @@
-<div class="h-full w-full flex justify-center items-center">
-    <div class="flex flex-col">
-        <span class="text-primary text-4xl">Admin Sign In Page</span>
-        <span class="text-secondary text-base text-end mt-2">Work in progress...</span>
+<div [@fadeAnimation]="'/admin/signin'" class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-xl">
+        <h2 class="text-3xl font-semibold text-primary text-center mb-6">Sign In</h2>
+        <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+            <div class="mb-4">
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="email">
+                    @if (signinForm.get('email')?.hasError('email')) {
+                    <mat-error>Please enter valid email</mat-error>
+                    } @else if (signinForm.get('email')?.hasError('required')) {
+                    <mat-error>Email is required</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="mb-4">
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password">
+                    <button mat-icon-button matSuffix type="button" (click)="showPasswordToggle($event)"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide()">
+                        <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    @if (signinForm.get('password')?.hasError('required')) {
+                    <mat-error>Password is required</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <button mat-flat-button type="submit" color="primary" class="primary-btn w-full"
+                [disabled]="signinForm.invalid">Sign In</button>
+        </form>
+        <p class="text-center text-gray-600 mt-4">Don't have an account?
+            <a routerLink="/admin/signup" class="text-primary hover:underline">Sign Up</a>
+        </p>
     </div>
 </div>

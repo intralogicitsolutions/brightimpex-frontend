@@ -19,7 +19,7 @@
                     @for (category of catalogueCatagories(); track category?._id; let index = $index) {
                     <mat-tab [label]="category?.name">
                         <ng-template mat-tab-label>
-                            <div (click)="(isAdmin() && category?._id !== 'all') && addCategory()">
+                            <div (click)="(isAdmin() && category?._id !== 'all') && openCategoryDialog(category)">
                                 {{category?.name}}
                             </div>
                         </ng-template>
@@ -29,7 +29,7 @@
                     @if (isAdmin()) {
                     <mat-tab>
                         <ng-template mat-tab-label>
-                            <div (click)="addCategory()">
+                            <div (click)="openCategoryDialog()">
                                 <mat-icon>add</mat-icon>
                             </div>
                         </ng-template>
@@ -46,12 +46,12 @@
         } @else {
         <div class="flex justify-between w-full h-16 items-center text-primary">
             @for (category of catalogueCatagories(); track $index) {
-            <a [routerLink]="'/catalogue/' + category?._id" routerLinkActive="active-catalogue"
-                class="catalogue-menu" (click)="isAdmin() && category?._id !== 'all' && addCategory()">{{category?.name}}</a>
+            <a [routerLink]="'/catalogue/' + category?._id" routerLinkActive="active-catalogue" class="catalogue-menu"
+                (click)="isAdmin() && category?._id !== 'all' && openCategoryDialog(category)">{{category?.name}}</a>
             }
 
             @if (isAdmin()) {
-            <a class="catalogue-menu cursor-pointer" (click)="addCategory()">
+            <a class="catalogue-menu cursor-pointer" (click)="openCategoryDialog()">
                 <mat-icon>add</mat-icon>
             </a>
             }
@@ -64,13 +64,16 @@
                         <div class="w-full border-b-primary pb-2">SEARCH SIZE</div>
                         <div class="flex flex-col w-full pt-2">
                             @for (size of filteredCatalogueSizes(); track size?._id) {
-                            <mat-checkbox color="primary" class="filter-checkbox" [(ngModel)]="size.checked"
-                                (change)="changeSize()" [disabled]="size?.disabled">{{size?.height}} X {{size?.width}}
-                                {{size?.unit}}</mat-checkbox>
+                            <div (click)="isAdmin() && openSizeDialog(size)" [ngClass]="{'cursor-pointer': isAdmin()}">
+                                <mat-checkbox color="primary" class="filter-checkbox" [(ngModel)]="size.checked"
+                                    (change)="changeSize()" [disabled]="size?.disabled">
+                                    {{size?.height}} X {{size?.width}} {{size?.unit}}
+                                </mat-checkbox>
+                            </div>
                             }
 
                             @if (isAdmin()) {
-                            <button mat-button color="primary" class="outline-add-btn mt-3" (click)="addSize()">
+                            <button mat-button color="primary" class="outline-add-btn mt-3" (click)="openSizeDialog()">
                                 <mat-icon class="m-0">add</mat-icon>
                             </button>
                             }
@@ -85,7 +88,8 @@
                             }
 
                             @if (isAdmin()) {
-                            <button mat-button color="primary" class="outline-add-btn mt-3" (click)="addSeries()">
+                            <button mat-button color="primary" class="outline-add-btn mt-3"
+                                (click)="openSeriesDialog()">
                                 <mat-icon class="m-0">add</mat-icon>
                             </button>
                             }
@@ -183,7 +187,8 @@
                 <span class="text-base sans-medium text-primary text-center border-b-primary pb-4">SEARCH SIZE</span>
                 <div class="flex flex-wrap w-full pt-4">
                     @for (size of filteredCatalogueSizes(); track size?._id) {
-                    <div class="w-1/2">
+                    <div class="w-1/2" (click)="isAdmin() && openSizeDialog(size)"
+                        [ngClass]="{'cursor-pointer': isAdmin()}">
                         <mat-checkbox color="primary" class="filter-checkbox" [(ngModel)]="size.checked"
                             (change)="changeSize()" [disabled]="size?.disabled">{{size?.height}} X {{size?.width}}
                             {{size?.unit}}
@@ -193,7 +198,7 @@
 
                     @if (isAdmin()) {
                     <div class="w-full">
-                        <button mat-button color="primary" class="outline-add-btn mt-3" (click)="addSize()">
+                        <button mat-button color="primary" class="outline-add-btn mt-3" (click)="openSizeDialog()">
                             <mat-icon class="m-0">add</mat-icon>
                         </button>
                     </div>
@@ -212,7 +217,7 @@
 
                     @if (isAdmin()) {
                     <div class="w-full">
-                        <button mat-button color="primary" class="outline-add-btn mt-3" (click)="addSeries()">
+                        <button mat-button color="primary" class="outline-add-btn mt-3" (click)="openSeriesDialog()">
                             <mat-icon class="m-0">add</mat-icon>
                         </button>
                     </div>
@@ -229,6 +234,148 @@
     }
 </div>
 
-<ng-template #AddCategory>
+<ng-template #CategoryTemplate>
+    <div class="w-full h-full flex flex-col">
+        <div class="py-3 mb-4 pl-6 pr-4 dialog-header">
+            <span class="text-white text-xl sm-medium">
+                {{selectedCategory() ? 'Modify Category' : 'Add Category'}}
+            </span>
+            <button mat-icon-button mat-dialog-close type="button" style="color: white;">
+                <mat-icon style="height: 26px;">close</mat-icon>
+            </button>
+        </div>
+        <form [formGroup]="categoryForm" class="px-6" (ngSubmit)="onSubmitCategory()">
+            <div class="w-full flex flex-col pt-4">
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Category Name</mat-label>
+                    <input matInput type="text" formControlName="name">
+                    @if (categoryForm.get('name')?.hasError('required')) {
+                    <mat-error>Category name is required</mat-error>
+                    }
+                </mat-form-field>
 
+                <mat-form-field appearance="outline" class="w-full pt-4">
+                    <mat-label>Category Description</mat-label>
+                    <textarea matInput formControlName="description" rows="5"></textarea>
+                </mat-form-field>
+
+                <div class="w-full flex justify-between pb-4">
+                    <span>
+                        @if (selectedCategory()) {
+                        <button mat-flat-button type="button" class="delete-btn"
+                            (click)="deleteCategory()">Delete</button>
+                        }
+                    </span>
+                    <span>
+                        <button mat-dialog-close mat-flat-button type="button" class="cancel-btn ml-2">Cancel</button>
+                        <button mat-flat-button type="submit" class="submit-btn ml-2">Submit</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #SizeTemplate>
+    <div class="w-full h-full flex flex-col">
+        <div class="py-3 mb-4 pl-6 pr-4 dialog-header">
+            <span class="text-white text-xl sm-medium">
+                {{selectedSize() ? 'Modify Size' : 'Add Size'}}
+            </span>
+            <button mat-icon-button mat-dialog-close type="button" style="color: white;">
+                <mat-icon style="height: 26px;">close</mat-icon>
+            </button>
+        </div>
+        <form [formGroup]="sizeForm" class="px-6" (ngSubmit)="onSubmitSize()">
+            <div class="w-full flex flex-col pt-4">
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Height</mat-label>
+                    <input matInput type="number" formControlName="height">
+                    @if (sizeForm.get('height')?.hasError('required')) {
+                    <mat-error>Height is required</mat-error>
+                    }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-full pt-4">
+                    <mat-label>Width</mat-label>
+                    <input matInput type="number" formControlName="width">
+                    @if (sizeForm.get('width')?.hasError('required')) {
+                    <mat-error>Width is required</mat-error>
+                    }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-full pt-4">
+                    <mat-label>Unit</mat-label>
+                    <input matInput type="text" formControlName="unit">
+                    @if (sizeForm.get('unit')?.hasError('required')) {
+                    <mat-error>Unit is required</mat-error>
+                    }
+                </mat-form-field>
+
+                <div class="w-full flex justify-between pb-4">
+                    <span>
+                        @if (selectedSize()) {
+                        <button mat-flat-button type="button" class="delete-btn" (click)="deleteSize()">Delete</button>
+                        }
+                    </span>
+                    <span>
+                        <button mat-dialog-close mat-flat-button type="button" class="cancel-btn ml-2">Cancel</button>
+                        <button mat-flat-button type="submit" class="submit-btn ml-2">Submit</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #SeriesTemplate>
+    <div class="w-full h-full flex flex-col">
+        <div class="py-3 mb-4 pl-6 pr-4 dialog-header">
+            <span class="text-white text-xl sm-medium">
+                {{selectedSize() ? 'Modify Size' : 'Add Size'}}
+            </span>
+            <button mat-icon-button mat-dialog-close type="button" style="color: white;">
+                <mat-icon style="height: 26px;">close</mat-icon>
+            </button>
+        </div>
+        <form [formGroup]="sizeForm" class="px-6" (ngSubmit)="onSubmitSize()">
+            <div class="w-full flex flex-col pt-4">
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Height</mat-label>
+                    <input matInput type="number" formControlName="height">
+                    @if (sizeForm.get('height')?.hasError('required')) {
+                    <mat-error>Height is required</mat-error>
+                    }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-full pt-4">
+                    <mat-label>Width</mat-label>
+                    <input matInput type="number" formControlName="width">
+                    @if (sizeForm.get('width')?.hasError('required')) {
+                    <mat-error>Width is required</mat-error>
+                    }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-full pt-4">
+                    <mat-label>Unit</mat-label>
+                    <input matInput type="text" formControlName="unit">
+                    @if (sizeForm.get('unit')?.hasError('required')) {
+                    <mat-error>Unit is required</mat-error>
+                    }
+                </mat-form-field>
+
+                <div class="w-full flex justify-between pb-4">
+                    <span>
+                        @if (selectedSize()) {
+                        <button mat-flat-button type="button" class="delete-btn" (click)="deleteSize()">Delete</button>
+                        }
+                    </span>
+                    <span>
+                        <button mat-dialog-close mat-flat-button type="button" class="cancel-btn ml-2">Cancel</button>
+                        <button mat-flat-button type="submit" class="submit-btn ml-2">Submit</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
 </ng-template>

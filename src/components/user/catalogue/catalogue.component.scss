@@ -106,7 +106,7 @@
   font-size: 12px;
   font-family: "GoogleSans";
   box-shadow: 0px 4px 20px 0px #00000014;
-  background-color: #136a99 !important;
+  background-color: var(--primary-color) !important;
 }
 
 .category-tabs {
@@ -161,6 +161,23 @@
   mat-icon {
     margin: 0px !important;
   }
+}
+
+.cancel-btn {
+  background: #fff !important;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color) !important;
+}
+
+.delete-btn {
+  background: red !important;
+}
+
+.dialog-header {
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 @media screen and (max-width: 1023px) {

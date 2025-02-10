@@ -17,14 +17,18 @@ export class AppComponent {
     if (event.ctrlKey && event.shiftKey && event.altKey) {
       if (this.router.url.includes('/admin')) {
         this.router.navigate(['/home']);
+        localStorage.removeItem('user_details');
+        localStorage.removeItem('token');
       } else {
         this.router.navigate(['/admin/signin']);
       }
     }
 
     if (event.key == 'Escape') {
-      if (this.router.url.includes('/admin')) {
+      if (this.router.url.includes('/admin/signin')) {
         this.router.navigate(['/home']);
+        localStorage.removeItem('user_details');
+        localStorage.removeItem('token');
       }
     }
   }

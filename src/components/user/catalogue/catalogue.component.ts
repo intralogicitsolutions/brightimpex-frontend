@@ -11,7 +11,13 @@ import {
   ViewChild,
   WritableSignal,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import {
@@ -26,7 +32,15 @@ import { IResponse } from '../../../shared/interfaces/response-i';
 import { CommonService } from '../../../shared/services/common.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { SnackbarService } from '../../../shared/services/snackbar.service';
+import { DeleteConfirmationComponent } from '../../../shared/components/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-catalogue',
@@ -36,10 +50,13 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     MatButtonModule,
     MatTabsModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
     RouterLink,
     RouterLinkActive,
     NgOptimizedImage,
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
   ],
   templateUrl: './catalogue.component.html',
@@ -47,11 +64,21 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
   animations: [fadeAnimation],
 })
 export class CatalogueComponent implements OnInit {
-  @ViewChild('AddCategory') AddCategory!: TemplateRef<any>;
+  @ViewChild('CategoryTemplate') CategoryTemplate!: TemplateRef<any>;
+  @ViewChild('SizeTemplate') SizeTemplate!: TemplateRef<any>;
+  @ViewChild('SeriesTemplate') SeriesTemplate!: TemplateRef<any>;
   isFilterOpened: boolean = false;
   isCategorySelected: boolean = true;
   selectedCategoryIndex: number = 0;
   serverUrl: string = `${environment.apiRoot}/`;
+
+  categoryForm!: FormGroup;
+  sizeForm!: FormGroup;
+  seriesForm!: FormGroup;
+
+  categoryDialogRef!: MatDialogRef<any>;
+  sizeDialogRef!: MatDialogRef<any>;
+  seriesDialogRef!: MatDialogRef<any>;
 
   isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1024);
   catalogueCatagoryId: WritableSignal<string> = signal('');
@@ -64,6 +91,10 @@ export class CatalogueComponent implements OnInit {
   selectedCatalogueSizes: WritableSignal<any[]> = signal([]);
   selectedCatalogueSeries: WritableSignal<any[]> = signal([]);
   loadedCataloguesCount: WritableSignal<number> = signal(8);
+
+  selectedCategory: WritableSignal<any> = signal(null);
+  selectedSize: WritableSignal<any> = signal(null);
+  selectedSeries: WritableSignal<any> = signal(null);
 
   isAdmin: WritableSignal<boolean> = signal(true);
 
@@ -139,7 +170,9 @@ export class CatalogueComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private commonService: CommonService,
-    private matDialog: MatDialog
+    private dialog: MatDialog,
+    private fb: FormBuilder,
+    private _snackbar: SnackbarService
   ) {
     this.activatedRoute.paramMap.subscribe((params) => {
       this.catalogueCatagoryId.set(params?.get('id') || '');
@@ -152,8 +185,6 @@ export class CatalogueComponent implements OnInit {
         } else {
           this.selectedCategoryIndex = 0;
         }
-
-        console.log(this.selectedCategoryIndex);
       }
     });
 
@@ -207,6 +238,22 @@ export class CatalogueComponent implements OnInit {
     this.loadCatalogueSizes();
     this.loadCatalogueSeries();
     this.loadCatalogues();
+
+    this.categoryForm = this.fb.group({
+      name: ['', [Validators.required]],
+      description: [''],
+    });
+
+    this.sizeForm = this.fb.group({
+      height: ['', [Validators.required]],
+      width: ['', [Validators.required]],
+      unit: ['', [Validators.required]],
+    });
+
+    this.seriesForm = this.fb.group({
+      name: ['', [Validators.required]],
+      description: [''],
+    });
   }
 
   loadCatalogues() {
@@ -252,7 +299,6 @@ export class CatalogueComponent implements OnInit {
             } else {
               this.selectedCategoryIndex = 0;
             }
-            console.log(this.selectedCategoryIndex);
             this.isCategorySelected = false;
           }
         } else {
@@ -356,35 +402,205 @@ export class CatalogueComponent implements OnInit {
     this.loadedCataloguesCount.update((count) => count + 8);
   }
 
-  addCategory() {
-    const dialogRef = this.matDialog.open(this.AddCategory, {
-      height: '70vh',
-      width: '70vw',
-      maxWidth: '70vw',
+  openCategoryDialog(category = null) {
+    this.selectedCategory.set(category);
+    this.categoryForm.reset();
+    this.categoryForm.patchValue(category || {});
+
+    this.categoryDialogRef = this.dialog.open(this.CategoryTemplate, {
+      height: '400px',
+      width: '700px',
+      maxWidth: '100vw',
+      autoFocus: false,
+    });
+
+    this.categoryDialogRef.afterClosed().subscribe((result) => {
+      if (result == 'refresh') {
+        this.loadCatalogueCatagories();
+      }
+    });
+  }
+
+  openSizeDialog(size = null) {
+    this.selectedSize.set(size);
+    this.sizeForm.reset();
+    this.sizeForm.patchValue(size || {});
+
+    this.sizeDialogRef = this.dialog.open(this.SizeTemplate, {
+      height: '385px',
+      width: '700px',
+      maxWidth: '100vw',
+      autoFocus: false,
+    });
+
+    this.sizeDialogRef.afterClosed().subscribe((result) => {
+      if (result == 'refresh') {
+        this.loadCatalogueSizes();
+      }
+    });
+  }
+
+  openSeriesDialog(series = null) {
+    this.selectedSeries.set(series);
+    this.seriesForm.reset();
+    this.seriesForm.patchValue(series || {});
+
+    this.seriesDialogRef = this.dialog.open(this.SeriesTemplate, {
+      height: '385px',
+      width: '700px',
+      maxWidth: '100vw',
+      autoFocus: false,
+    });
+
+    this.seriesDialogRef.afterClosed().subscribe((result) => {
+      if (result == 'refresh') {
+        this.loadCatalogueSeries();
+      }
     });
   }
 
   addCatalogue() {
-    const dialogRef = this.matDialog.open(this.AddCategory, {
+    const dialogRef = this.dialog.open(this.CategoryTemplate, {
       height: '70vh',
       width: '70vw',
       maxWidth: '70vw',
     });
   }
 
-  addSize() {
-    const dialogRef = this.matDialog.open(this.AddCategory, {
-      height: '70vh',
-      width: '70vw',
-      maxWidth: '70vw',
+  onSubmitCategory() {
+    const categoryData = this.categoryForm.value;
+    if (this.selectedCategory()) {
+      categoryData['_id'] = this.selectedCategory()?._id;
+    }
+
+    let addUpdateCategoryMehod: 'createCategory' | 'updateCategory' =
+      categoryData?._id ? 'updateCategory' : 'createCategory';
+
+    this.commonService[addUpdateCategoryMehod](categoryData).subscribe({
+      next: (response: IResponse<any>) => {
+        if (response?.success == 1) {
+          if (categoryData?._id) {
+            this._snackbar.success(
+              `Category '${categoryData?.name}' updated successfully`
+            );
+          } else {
+            this._snackbar.success(
+              `Category '${categoryData?.name}' created successfully`
+            );
+          }
+        } else {
+          this._snackbar.error(response?.msg);
+        }
+
+        this.categoryDialogRef.close('refresh');
+      },
+      error: (err) => {
+        this._snackbar.error(
+          err?.msg || 'Something went wrong, please try again later'
+        );
+        this.categoryDialogRef.close('refresh');
+      },
     });
   }
 
-  addSeries() {
-    const dialogRef = this.matDialog.open(this.AddCategory, {
-      height: '70vh',
-      width: '70vw',
-      maxWidth: '70vw',
+  onSubmitSize() {
+    const sizeData = this.sizeForm.value;
+    if (this.selectedSize()) {
+      sizeData['_id'] = this.selectedSize()?._id;
+    }
+
+    let addUpdateSizeMehod: 'createSize' | 'updateSize' = sizeData?._id
+      ? 'updateSize'
+      : 'createSize';
+
+    this.commonService[addUpdateSizeMehod](sizeData).subscribe({
+      next: (response: IResponse<any>) => {
+        if (response?.success == 1) {
+          if (sizeData?._id) {
+            this._snackbar.success(`Size updated successfully`);
+          } else {
+            this._snackbar.success(`Size created successfully`);
+          }
+        } else {
+          this._snackbar.error(response?.msg);
+        }
+
+        this.sizeDialogRef.close('refresh');
+      },
+      error: (err) => {
+        this._snackbar.error(
+          err?.msg || 'Something went wrong, please try again later'
+        );
+        this.sizeDialogRef.close('refresh');
+      },
+    });
+  }
+
+  deleteCategory() {
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      height: '200px',
+      width: '350px',
+      maxWidth: '100vw',
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'confirm') {
+        this.commonService
+          .deleteCategory(this.selectedCategory()?._id)
+          .subscribe({
+            next: (response: IResponse<any>) => {
+              if (response?.success == 1) {
+                this._snackbar.success(
+                  `Category '${
+                    this.selectedCategory()?.name
+                  }' deleted successfully`
+                );
+              } else {
+                this._snackbar.error(response?.msg);
+              }
+
+              this.categoryDialogRef.close('refresh');
+            },
+            error: (err) => {
+              this._snackbar.error(
+                err?.msg || 'Something went wrong, please try again later'
+              );
+              this.categoryDialogRef.close('refresh');
+            },
+          });
+      }
+    });
+  }
+
+  deleteSize() {
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      height: '200px',
+      width: '350px',
+      maxWidth: '100vw',
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'confirm') {
+        this.commonService.deleteSize(this.selectedSize()?._id).subscribe({
+          next: (response: IResponse<any>) => {
+            if (response?.success == 1) {
+              this._snackbar.success(`Size deleted successfully`);
+            } else {
+              this._snackbar.error(response?.msg);
+            }
+
+            this.sizeDialogRef.close('refresh');
+          },
+          error: (err: any) => {
+            this._snackbar.error(
+              err?.msg || 'Something went wrong, please try again later'
+            );
+            this.sizeDialogRef.close('refresh');
+          },
+        });
+      }
     });
   }
 }

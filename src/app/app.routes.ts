@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { UserLandingComponent } from '../components/landing/user-landing/user-landing.component';
-import { AdminLandingComponent } from '../components/landing/admin-landing/admin-landing.component';
-import { CatalogueComponent } from '../components/user/catalogue/catalogue.component';
 
 export const routes: Routes = [
   {
@@ -60,7 +58,6 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    component: AdminLandingComponent,
     children: [
       {
         path: 'signin',
@@ -79,9 +76,12 @@ export const routes: Routes = [
         data: { animation: 'SignUpPage' },
       },
       {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: '/admin/signin',
+        path: 'activate-account/:userId/:token',
+        loadComponent: () =>
+          import(
+            '../components/admin/activate-account/activate-account.component'
+          ).then((c) => c.ActivateAccountComponent),
+        data: { animation: 'ActivateAccountPage' },
       },
     ],
   },
