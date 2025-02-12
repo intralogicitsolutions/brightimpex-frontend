@@ -41,6 +41,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SnackbarService } from '../../../shared/services/snackbar.service';
 import { DeleteConfirmationComponent } from '../../../shared/components/delete-confirmation/delete-confirmation.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-catalogue',
@@ -52,6 +53,7 @@ import { DeleteConfirmationComponent } from '../../../shared/components/delete-c
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     RouterLink,
     RouterLinkActive,
     NgOptimizedImage,
@@ -67,6 +69,7 @@ export class CatalogueComponent implements OnInit {
   @ViewChild('CategoryTemplate') CategoryTemplate!: TemplateRef<any>;
   @ViewChild('SizeTemplate') SizeTemplate!: TemplateRef<any>;
   @ViewChild('SeriesTemplate') SeriesTemplate!: TemplateRef<any>;
+  @ViewChild('CatalogueTemplate') CatalogueTemplate!: TemplateRef<any>;
   isFilterOpened: boolean = false;
   isCategorySelected: boolean = true;
   selectedCategoryIndex: number = 0;
@@ -75,10 +78,12 @@ export class CatalogueComponent implements OnInit {
   categoryForm!: FormGroup;
   sizeForm!: FormGroup;
   seriesForm!: FormGroup;
+  catalogueForm!: FormGroup;
 
   categoryDialogRef!: MatDialogRef<any>;
   sizeDialogRef!: MatDialogRef<any>;
   seriesDialogRef!: MatDialogRef<any>;
+  catalogueDialogRef!: MatDialogRef<any>;
 
   isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1024);
   catalogueCatagoryId: WritableSignal<string> = signal('');
@@ -95,6 +100,7 @@ export class CatalogueComponent implements OnInit {
   selectedCategory: WritableSignal<any> = signal(null);
   selectedSize: WritableSignal<any> = signal(null);
   selectedSeries: WritableSignal<any> = signal(null);
+  selectedCatalogue: WritableSignal<any> = signal(null);
 
   isAdmin: WritableSignal<boolean> = signal(true);
 
@@ -253,6 +259,16 @@ export class CatalogueComponent implements OnInit {
     this.seriesForm = this.fb.group({
       name: ['', [Validators.required]],
       description: [''],
+    });
+
+    this.catalogueForm = this.fb.group({
+      name: ['', [Validators.required]],
+      description: [''],
+      image: [{ value: '', disabled: true }, [Validators.required]],
+      catalogue_doc: [{ value: '', disabled: true }, [Validators.required]],
+      size_id: ['', [Validators.required]],
+      series_id: ['', [Validators.required]],
+      category_id: ['', [Validators.required]],
     });
   }
 
@@ -446,7 +462,7 @@ export class CatalogueComponent implements OnInit {
     this.seriesForm.patchValue(series || {});
 
     this.seriesDialogRef = this.dialog.open(this.SeriesTemplate, {
-      height: '385px',
+      height: '400px',
       width: '700px',
       maxWidth: '100vw',
       autoFocus: false,
@@ -459,11 +475,27 @@ export class CatalogueComponent implements OnInit {
     });
   }
 
-  addCatalogue() {
-    const dialogRef = this.dialog.open(this.CategoryTemplate, {
-      height: '70vh',
-      width: '70vw',
-      maxWidth: '70vw',
+  openCatalogueDialog(catalogue = null) {
+    if (catalogue) {
+      catalogue['category_id'] = catalogue['category_id']['_id'];
+      catalogue['size_id'] = catalogue['size_id']['_id'];
+      catalogue['series_id'] = catalogue['series_id']['_id'];
+    }
+    this.selectedCatalogue.set(catalogue);
+    this.catalogueForm.reset();
+    this.catalogueForm.patchValue(catalogue || {});
+
+    this.catalogueDialogRef = this.dialog.open(this.CatalogueTemplate, {
+      height: '515px',
+      width: '700px',
+      maxWidth: '100vw',
+      autoFocus: false,
+    });
+
+    this.catalogueDialogRef.afterClosed().subscribe((result) => {
+      if (result == 'refresh') {
+        this.loadCatalogues();
+      }
     });
   }
 
@@ -473,10 +505,10 @@ export class CatalogueComponent implements OnInit {
       categoryData['_id'] = this.selectedCategory()?._id;
     }
 
-    let addUpdateCategoryMehod: 'createCategory' | 'updateCategory' =
+    let addUpdateCategoryMethod: 'createCategory' | 'updateCategory' =
       categoryData?._id ? 'updateCategory' : 'createCategory';
 
-    this.commonService[addUpdateCategoryMehod](categoryData).subscribe({
+    this.commonService[addUpdateCategoryMethod](categoryData).subscribe({
       next: (response: IResponse<any>) => {
         if (response?.success == 1) {
           if (categoryData?._id) {
@@ -496,7 +528,9 @@ export class CatalogueComponent implements OnInit {
       },
       error: (err) => {
         this._snackbar.error(
-          err?.msg || 'Something went wrong, please try again later'
+          err?.msg ||
+            err?.message ||
+            'Something went wrong, please try again later'
         );
         this.categoryDialogRef.close('refresh');
       },
@@ -509,11 +543,11 @@ export class CatalogueComponent implements OnInit {
       sizeData['_id'] = this.selectedSize()?._id;
     }
 
-    let addUpdateSizeMehod: 'createSize' | 'updateSize' = sizeData?._id
+    let addUpdateSizeMethod: 'createSize' | 'updateSize' = sizeData?._id
       ? 'updateSize'
       : 'createSize';
 
-    this.commonService[addUpdateSizeMehod](sizeData).subscribe({
+    this.commonService[addUpdateSizeMethod](sizeData).subscribe({
       next: (response: IResponse<any>) => {
         if (response?.success == 1) {
           if (sizeData?._id) {
@@ -529,9 +563,81 @@ export class CatalogueComponent implements OnInit {
       },
       error: (err) => {
         this._snackbar.error(
-          err?.msg || 'Something went wrong, please try again later'
+          err?.msg ||
+            err?.message ||
+            'Something went wrong, please try again later'
         );
         this.sizeDialogRef.close('refresh');
+      },
+    });
+  }
+
+  onSubmitSeries() {
+    const seriesData = this.seriesForm.value;
+    if (this.selectedSeries()) {
+      seriesData['_id'] = this.selectedSeries()?._id;
+    }
+
+    let addUpdateSeriesMethod: 'createSeries' | 'updateSeries' = seriesData?._id
+      ? 'updateSeries'
+      : 'createSeries';
+
+    this.commonService[addUpdateSeriesMethod](seriesData).subscribe({
+      next: (response: IResponse<any>) => {
+        if (response?.success == 1) {
+          if (seriesData?._id) {
+            this._snackbar.success(`Series updated successfully`);
+          } else {
+            this._snackbar.success(`Series created successfully`);
+          }
+        } else {
+          this._snackbar.error(response?.msg);
+        }
+
+        this.seriesDialogRef.close('refresh');
+      },
+      error: (err: any) => {
+        this._snackbar.error(
+          err?.msg ||
+            err?.message ||
+            'Something went wrong, please try again later'
+        );
+        this.seriesDialogRef.close('refresh');
+      },
+    });
+  }
+
+  onSubmitCatalogue() {
+    const catalogueData = this.catalogueForm.value;
+    if (this.selectedCatalogue()) {
+      catalogueData['_id'] = this.selectedCatalogue()?._id;
+    }
+
+    let addUpdateCatalogueMethod: 'createCatalogue' | 'updateCatalogue' =
+      catalogueData?._id ? 'updateCatalogue' : 'createCatalogue';
+
+    this.commonService[addUpdateCatalogueMethod](catalogueData).subscribe({
+      next: (response: IResponse<any>) => {
+        if (response?.success == 1) {
+          if (catalogueData?._id) {
+            this._snackbar.success(`Catalogue updated successfully`);
+          } else {
+            this._snackbar.success(`Catalogue created successfully`);
+          }
+        } else {
+          this._snackbar.error(response?.msg);
+        }
+
+        this.catalogueDialogRef.close('refresh');
+      },
+      error: (err: any) => {
+        this._snackbar.error(
+          err?.msg ||
+            err?.message ||
+            err?.message ||
+            'Something went wrong, please try again later'
+        );
+        this.catalogueDialogRef.close('refresh');
       },
     });
   }
@@ -564,7 +670,9 @@ export class CatalogueComponent implements OnInit {
             },
             error: (err) => {
               this._snackbar.error(
-                err?.msg || 'Something went wrong, please try again later'
+                err?.msg ||
+                  err?.message ||
+                  'Something went wrong, please try again later'
               );
               this.categoryDialogRef.close('refresh');
             },
@@ -595,11 +703,81 @@ export class CatalogueComponent implements OnInit {
           },
           error: (err: any) => {
             this._snackbar.error(
-              err?.msg || 'Something went wrong, please try again later'
+              err?.msg ||
+                err?.message ||
+                'Something went wrong, please try again later'
             );
             this.sizeDialogRef.close('refresh');
           },
         });
+      }
+    });
+  }
+
+  deleteSeries() {
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      height: '200px',
+      width: '350px',
+      maxWidth: '100vw',
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'confirm') {
+        this.commonService.deleteSeries(this.selectedSeries()?._id).subscribe({
+          next: (response: IResponse<any>) => {
+            if (response?.success == 1) {
+              this._snackbar.success(`Series deleted successfully`);
+            } else {
+              this._snackbar.error(response?.msg);
+            }
+
+            this.seriesDialogRef.close('refresh');
+          },
+          error: (err: any) => {
+            this._snackbar.error(
+              err?.msg ||
+                err?.message ||
+                'Something went wrong, please try again later'
+            );
+            this.seriesDialogRef.close('refresh');
+          },
+        });
+      }
+    });
+  }
+
+  deleteCatalogue() {
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      height: '200px',
+      width: '350px',
+      maxWidth: '100vw',
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'confirm') {
+        this.commonService
+          .deleteCatalogue(this.selectedCatalogue()?._id)
+          .subscribe({
+            next: (response: IResponse<any>) => {
+              if (response?.success == 1) {
+                this._snackbar.success(`Catalogue deleted successfully`);
+              } else {
+                this._snackbar.error(response?.msg);
+              }
+
+              this.catalogueDialogRef.close('refresh');
+            },
+            error: (err: any) => {
+              this._snackbar.error(
+                err?.msg ||
+                  err?.message ||
+                  'Something went wrong, please try again later'
+              );
+              this.catalogueDialogRef.close('refresh');
+            },
+          });
       }
     });
   }

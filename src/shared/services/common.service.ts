@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { IResponse } from '../interfaces/response-i';
 
 @Injectable({
@@ -21,26 +21,16 @@ export class CommonService {
     });
   }
 
-  getCatalogues(): Observable<any> {
-    return this.http.get(`${this.apiRoot}/catalogue`);
-  }
-
-  getCatalogueCatagories(): Observable<any> {
-    return this.http.get(`${this.apiRoot}/category`);
-  }
-
-  getCatalogueSizes(): Observable<any> {
-    return this.http.get(`${this.apiRoot}/size`);
-  }
-
-  getCatalogueSeries(): Observable<any> {
-    return this.http.get(`${this.apiRoot}/series`);
-  }
-
+  // ========== AUTH APIS ========== //
   signIn(body: any): Observable<any> {
-    return this.http
-      .post(`${this.apiRoot}/auth/signin`, body)
-      .pipe(this.handleError());
+    return this.http.post(`${this.apiRoot}/auth/signin`, body).pipe(
+      this.handleError(),
+      tap((response: any) => {
+        if (response?.body?.token) {
+          this.token = response?.body?.token as string;
+        }
+      })
+    );
   }
 
   signUp(body: any): Observable<any> {
@@ -55,6 +45,51 @@ export class CommonService {
         headers: { Authorization: token },
       })
       .pipe(this.handleError());
+  }
+
+  // ========== CATALOGUE APIS ========== //
+
+  getCatalogues(): Observable<any> {
+    return this.http.get(`${this.apiRoot}/catalogue`);
+  }
+
+  createCatalogue(catalogue: any): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: this.token,
+    });
+
+    return this.http
+      .post(`${this.apiRoot}/catalogue`, catalogue, { headers })
+      .pipe(this.handleError());
+  }
+
+  updateCatalogue(catalogue: any): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: this.token,
+    });
+
+    return this.http
+      .put(`${this.apiRoot}/catalogue`, catalogue, { headers })
+      .pipe(this.handleError());
+  }
+
+  deleteCatalogue(catalogueId: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: this.token,
+    });
+
+    return this.http
+      .delete(`${this.apiRoot}/catalogue`, {
+        headers,
+        params: { _id: catalogueId },
+      })
+      .pipe(this.handleError());
+  }
+
+  // ========== CATEGORY APIS ========== //
+
+  getCatalogueCatagories(): Observable<any> {
+    return this.http.get(`${this.apiRoot}/category`);
   }
 
   createCategory(category: any): Observable<any> {
@@ -90,6 +125,12 @@ export class CommonService {
       .pipe(this.handleError());
   }
 
+  // ========== SIZE APIS ========== //
+
+  getCatalogueSizes(): Observable<any> {
+    return this.http.get(`${this.apiRoot}/size`);
+  }
+
   createSize(size: any): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: this.token,
@@ -119,6 +160,45 @@ export class CommonService {
       .delete(`${this.apiRoot}/size`, {
         headers,
         params: { _id: sizeId },
+      })
+      .pipe(this.handleError());
+  }
+
+  // ========== SERIES APIS ========== //
+
+  getCatalogueSeries(): Observable<any> {
+    return this.http.get(`${this.apiRoot}/series`);
+  }
+
+  createSeries(series: any): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: this.token,
+    });
+
+    return this.http
+      .post(`${this.apiRoot}/series`, series, { headers })
+      .pipe(this.handleError());
+  }
+
+  updateSeries(series: any): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: this.token,
+    });
+
+    return this.http
+      .put(`${this.apiRoot}/series`, series, { headers })
+      .pipe(this.handleError());
+  }
+
+  deleteSeries(seriesId: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: this.token,
+    });
+
+    return this.http
+      .delete(`${this.apiRoot}/series`, {
+        headers,
+        params: { _id: seriesId },
       })
       .pipe(this.handleError());
   }

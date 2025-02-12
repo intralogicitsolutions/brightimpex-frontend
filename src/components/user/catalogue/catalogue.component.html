@@ -83,8 +83,12 @@
                         <div class="w-full border-b-primary pb-2">SERIES</div>
                         <div class="flex flex-col w-full pt-2">
                             @for (series of filteredCatalogueSeries(); track series?._id) {
-                            <mat-checkbox color="primary" class="filter-checkbox" [(ngModel)]="series.checked"
-                                (change)="changeSeries()" [disabled]="series?.disabled">{{series?.name}}</mat-checkbox>
+                            <div (click)="isAdmin() && openSeriesDialog(series)"
+                                [ngClass]="{'cursor-pointer': isAdmin()}">
+                                <mat-checkbox color="primary" class="filter-checkbox" [(ngModel)]="series.checked"
+                                    (change)="changeSeries()"
+                                    [disabled]="series?.disabled">{{series?.name}}</mat-checkbox>
+                            </div>
                             }
 
                             @if (isAdmin()) {
@@ -101,7 +105,8 @@
             <div class="flex flex-wrap catalogues-list">
                 @for (catalogue of filteredCatalogues().slice(0, this.loadedCataloguesCount()); track catalogue?._id) {
                 @if (!catalogue?.isHiddenBySize && !catalogue?.isHiddenBySeries) {
-                <div class="catalogue">
+                <div class="catalogue" (click)="isAdmin() && openCatalogueDialog(catalogue)"
+                    [ngClass]="{'cursor-pointer': isAdmin()}">
                     <div class="group relative overflow-hidden">
                         <img [ngSrc]="serverUrl + catalogue?.image" width="210" height="324" alt=""
                             class="catalogue-img w-full"
@@ -110,11 +115,13 @@
                         @if (!isMobileView()) {
                         <div
                             class="absolute inset-0 flex items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button (click)="onPreview(catalogue?.catalogue_doc)"
+                            <button
+                                (click)="onPreview(catalogue?.catalogue_doc); (isAdmin() && $event.stopPropagation())"
                                 class="text-white py-2 mx-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
                                 <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
                             </button>
-                            <button (click)="onDownload(catalogue?.catalogue_doc, catalogue?.name)"
+                            <button
+                                (click)="onDownload(catalogue?.catalogue_doc, catalogue?.name); (isAdmin() && $event.stopPropagation())"
                                 class="text-white py-2 mx-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
                                 <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
                             </button>
@@ -144,7 +151,7 @@
 
                 @if (isAdmin()) {
                 <div class="catalogue flex justify-center items-center cursor-pointer add-catalogue-btn"
-                    (click)="addCatalogue()">
+                    (click)="openCatalogueDialog()">
                     <mat-icon class="add-catalogue-icon">add</mat-icon>
                 </div>
                 }
@@ -208,7 +215,8 @@
                 <span class="text-base sans-medium text-primary text-center border-b-primary pb-4 pt-6">SERIES</span>
                 <div class="flex flex-wrap w-full pt-4">
                     @for (series of filteredCatalogueSeries(); track series?._id) {
-                    <div class="w-1/2">
+                    <div class="w-1/2" (click)="isAdmin() && openSeriesDialog(series)"
+                        [ngClass]="{'cursor-pointer': isAdmin()}">
                         <mat-checkbox color="primary" class="filter-checkbox" [(ngModel)]="series.checked"
                             (change)="changeSeries()" [disabled]="series?.disabled">{{series?.name}}
                         </mat-checkbox>
@@ -332,42 +340,161 @@
     <div class="w-full h-full flex flex-col">
         <div class="py-3 mb-4 pl-6 pr-4 dialog-header">
             <span class="text-white text-xl sm-medium">
-                {{selectedSize() ? 'Modify Size' : 'Add Size'}}
+                {{selectedSeries() ? 'Modify Series' : 'Add Series'}}
             </span>
             <button mat-icon-button mat-dialog-close type="button" style="color: white;">
                 <mat-icon style="height: 26px;">close</mat-icon>
             </button>
         </div>
-        <form [formGroup]="sizeForm" class="px-6" (ngSubmit)="onSubmitSize()">
+        <form [formGroup]="seriesForm" class="px-6" (ngSubmit)="onSubmitSeries()">
             <div class="w-full flex flex-col pt-4">
                 <mat-form-field appearance="outline" class="w-full">
-                    <mat-label>Height</mat-label>
-                    <input matInput type="number" formControlName="height">
-                    @if (sizeForm.get('height')?.hasError('required')) {
-                    <mat-error>Height is required</mat-error>
+                    <mat-label>Series Name</mat-label>
+                    <input matInput type="text" formControlName="name">
+                    @if (categoryForm.get('name')?.hasError('required')) {
+                    <mat-error>Series name is required</mat-error>
                     }
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="w-full pt-4">
-                    <mat-label>Width</mat-label>
-                    <input matInput type="number" formControlName="width">
-                    @if (sizeForm.get('width')?.hasError('required')) {
-                    <mat-error>Width is required</mat-error>
-                    }
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="w-full pt-4">
-                    <mat-label>Unit</mat-label>
-                    <input matInput type="text" formControlName="unit">
-                    @if (sizeForm.get('unit')?.hasError('required')) {
-                    <mat-error>Unit is required</mat-error>
-                    }
+                    <mat-label>Series Description</mat-label>
+                    <textarea matInput formControlName="description" rows="5"></textarea>
                 </mat-form-field>
 
                 <div class="w-full flex justify-between pb-4">
                     <span>
-                        @if (selectedSize()) {
-                        <button mat-flat-button type="button" class="delete-btn" (click)="deleteSize()">Delete</button>
+                        @if (selectedSeries()) {
+                        <button mat-flat-button type="button" class="delete-btn"
+                            (click)="deleteSeries()">Delete</button>
+                        }
+                    </span>
+                    <span>
+                        <button mat-dialog-close mat-flat-button type="button" class="cancel-btn ml-2">Cancel</button>
+                        <button mat-flat-button type="submit" class="submit-btn ml-2">Submit</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #CatalogueTemplate>
+    <div class="w-full h-full flex flex-col">
+        <div class="py-3 mb-4 pl-6 pr-4 dialog-header">
+            <span class="text-white text-xl sm-medium">
+                {{selectedCatalogue() ? 'Modify Catalogue' : 'Add Catalogue'}}
+            </span>
+            <button mat-icon-button mat-dialog-close type="button" style="color: white;">
+                <mat-icon style="height: 26px;">close</mat-icon>
+            </button>
+        </div>
+        <form [formGroup]="catalogueForm" class="px-6" (ngSubmit)="onSubmitCatalogue()">
+            <div class="w-full flex flex-col">
+                <div class="flex flex-wrap pt-4">
+                    <div class="w-1/2 px-2">
+                        <mat-form-field appearance="outline" class="w-full">
+                            <mat-label>Catalogue Name</mat-label>
+                            <input matInput type="text" formControlName="name">
+                            @if (catalogueForm.get('name')?.hasError('required')) {
+                            <mat-error>Catalogue name is required</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                    <div class="w-1/2 px-2">
+                        <mat-form-field appearance="outline" class="w-full">
+                            <mat-label>Catalogue Category</mat-label>
+                            <mat-select formControlName="category_id">
+                                @for (catalogue of catalogueCatagories(); track catalogue?._id) {
+                                @if (catalogue?._id !== 'all') {
+                                <mat-option [value]="catalogue?._id">{{catalogue?.name}}</mat-option>
+                                }
+                                }
+                            </mat-select>
+                            @if (catalogueForm.get('category_id')?.hasError('required')) {
+                            <mat-error>Catalogue category is required</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap px-2 pt-4">
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Series Description</mat-label>
+                        <textarea matInput formControlName="description" rows="3"></textarea>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex flex-wrap pt-4">
+                    <div class="w-1/2 px-2">
+                        <mat-form-field appearance="outline" class="w-full">
+                            <mat-label>Catalogue Size</mat-label>
+
+                            <mat-select formControlName="size_id">
+                                @for (size of catalogueSizes(); track size?._id) {
+                                <mat-option [value]="size?._id">
+                                    {{size?.height}} X {{size?.width}} {{size?.unit}}
+                                </mat-option>
+                                }
+                            </mat-select>
+
+                            @if (catalogueForm.get('size_id')?.hasError('required')) {
+                            <mat-error>Catalogue size is required</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                    <div class="w-1/2 px-2">
+                        <mat-form-field appearance="outline" class="w-full">
+                            <mat-label>Catalogue Series</mat-label>
+
+                            <mat-select formControlName="series_id">
+                                @for (series of catalogueSeries(); track series?._id) {
+                                <mat-option [value]="series?._id">{{series?.name}}</mat-option>
+                                }
+                            </mat-select>
+
+                            @if (catalogueForm.get('series_id')?.hasError('required')) {
+                            <mat-error>Catalogue series is required</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap pt-4">
+                    <div class="w-1/2 px-2">
+                        <input #catalogueImage type="file" class="hidden">
+                        <mat-form-field appearance="outline" class="w-full">
+                            <mat-label>Catalogue Image</mat-label>
+                            <input matInput type="text" formControlName="image">
+                            <button matSuffix mat-icon-button aria-label="Upload" type="button" class="mr-2"
+                                (click)="catalogueImage.click()">
+                                <mat-icon>upload</mat-icon>
+                            </button>
+                            @if (catalogueForm.get('image')?.hasError('required')) {
+                            <mat-error>Catalogue image is required</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                    <div class="w-1/2 px-2">
+                        <input #catalogueDoc type="file" class="hidden">
+                        <mat-form-field appearance="outline" class="w-full">
+                            <mat-label>Catalogue Document</mat-label>
+                            <input matInput type="text" formControlName="catalogue_doc">
+                            <button matSuffix mat-icon-button aria-label="Upload" type="button"
+                                (click)="catalogueDoc.click()" class="mr-2">
+                                <mat-icon>upload</mat-icon>
+                            </button>
+                            @if (catalogueForm.get('catalogue_doc')?.hasError('required')) {
+                            <mat-error>Catalogue Document is required</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="w-full flex justify-between pb-4">
+                    <span>
+                        @if (selectedCatalogue()) {
+                        <button mat-flat-button type="button" class="delete-btn"
+                            (click)="deleteCatalogue()">Delete</button>
                         }
                     </span>
                     <span>
