@@ -1,24 +1,38 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { IResponse } from '../interfaces/response-i';
+import { environment } from '../../environments/environment';
+import { SnackbarService } from './snackbar.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CommonService {
   apiRoot: string = environment.apiRoot;
-  token!: string;
+  private _token: string = '';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private _snackbar: SnackbarService) {
     this.token = localStorage.getItem('token') as string;
   }
 
   handleError() {
     return catchError((err) => {
+      console.error(err);
       return throwError(() => err?.error);
     });
+  }
+
+  get token(): string {
+    if (this._token) {
+      return this._token;
+    } else {
+      this._snackbar.error('Token expired. Please login again.');
+      throw new Error('Token expired. Please login again.');
+    }
+  }
+
+  set token(token: string) {
+    this._token = token;
   }
 
   // ========== AUTH APIS ========== //
@@ -200,6 +214,33 @@ export class CommonService {
         headers,
         params: { _id: seriesId },
       })
+      .pipe(this.handleError());
+  }
+
+  // ========== UPLOAD APIS ========== //
+  uploadImage(image: File): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: this.token,
+    });
+
+    const formData = new FormData();
+    formData.append('file', image);
+
+    return this.http
+      .post(`${this.apiRoot}/upload/uploadImage`, formData, { headers })
+      .pipe(this.handleError());
+  }
+
+  uploadDocument(document: File): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: this.token,
+    });
+
+    const formData = new FormData();
+    formData.append('file', document);
+
+    return this.http
+      .post(`${this.apiRoot}/upload/uploadDocument`, formData, { headers })
       .pipe(this.handleError());
   }
 }

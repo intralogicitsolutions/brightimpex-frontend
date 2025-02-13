@@ -264,8 +264,10 @@ export class CatalogueComponent implements OnInit {
     this.catalogueForm = this.fb.group({
       name: ['', [Validators.required]],
       description: [''],
-      image: [{ value: '', disabled: true }, [Validators.required]],
-      catalogue_doc: [{ value: '', disabled: true }, [Validators.required]],
+      image_name: ['', [Validators.required]],
+      image_path: ['', [Validators.required]],
+      catalogue_doc_name: ['', [Validators.required]],
+      catalogue_doc_path: ['', [Validators.required]],
       size_id: ['', [Validators.required]],
       series_id: ['', [Validators.required]],
       category_id: ['', [Validators.required]],
@@ -443,7 +445,7 @@ export class CatalogueComponent implements OnInit {
     this.sizeForm.patchValue(size || {});
 
     this.sizeDialogRef = this.dialog.open(this.SizeTemplate, {
-      height: '385px',
+      height: '390px',
       width: '700px',
       maxWidth: '100vw',
       autoFocus: false,
@@ -476,17 +478,18 @@ export class CatalogueComponent implements OnInit {
   }
 
   openCatalogueDialog(catalogue = null) {
-    if (catalogue) {
-      catalogue['category_id'] = catalogue['category_id']['_id'];
-      catalogue['size_id'] = catalogue['size_id']['_id'];
-      catalogue['series_id'] = catalogue['series_id']['_id'];
+    const catalogueData = JSON.parse(JSON.stringify(catalogue));
+    if (catalogueData) {
+      catalogueData['category_id'] = catalogueData['category_id']['_id'];
+      catalogueData['size_id'] = catalogueData['size_id']['_id'];
+      catalogueData['series_id'] = catalogueData['series_id']['_id'];
     }
-    this.selectedCatalogue.set(catalogue);
+    this.selectedCatalogue.set(catalogueData);
     this.catalogueForm.reset();
-    this.catalogueForm.patchValue(catalogue || {});
+    this.catalogueForm.patchValue(catalogueData || {});
 
     this.catalogueDialogRef = this.dialog.open(this.CatalogueTemplate, {
-      height: '515px',
+      height: '520px',
       width: '700px',
       maxWidth: '100vw',
       autoFocus: false,
@@ -608,7 +611,8 @@ export class CatalogueComponent implements OnInit {
   }
 
   onSubmitCatalogue() {
-    const catalogueData = this.catalogueForm.value;
+    const catalogueData = this.catalogueForm.getRawValue();
+ 
     if (this.selectedCatalogue()) {
       catalogueData['_id'] = this.selectedCatalogue()?._id;
     }
@@ -780,5 +784,55 @@ export class CatalogueComponent implements OnInit {
           });
       }
     });
+  }
+
+  onCatalogueImageUpload(event: any) {
+    const image = event?.target?.files[0];
+
+    if (image) {
+      this.commonService.uploadImage(image).subscribe({
+        next: (response: IResponse<any>) => {
+          if (response?.success == 1) {
+            const { fileName, filePath } = response?.body;
+            this.catalogueForm.get('image_name')?.setValue(fileName);
+            this.catalogueForm.get('image_path')?.setValue(filePath);
+          } else {
+            this._snackbar.error(response?.msg);
+          }
+        },
+        error: (err) => {
+          this._snackbar.error(
+            err?.msg ||
+              err?.message ||
+              'Something went wrong, please try again later'
+          );
+        },
+      });
+    }
+  }
+
+  onCatalogueDocumentUpload(event: any) {
+    const document = event?.target?.files[0];
+
+    if (document) {
+      this.commonService.uploadDocument(document).subscribe({
+        next: (response: IResponse<any>) => {
+          if (response?.success == 1) {
+            const { fileName, filePath } = response?.body;
+            this.catalogueForm.get('catalogue_doc_name')?.setValue(fileName);
+            this.catalogueForm.get('catalogue_doc_path')?.setValue(filePath);
+          } else {
+            this._snackbar.error(response?.msg);
+          }
+        },
+        error: (err) => {
+          this._snackbar.error(
+            err?.msg ||
+              err?.message ||
+              'Something went wrong, please try again later'
+          );
+        },
+      });
+    }
   }
 }
