@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="flex flex-col catalogue-container">
-        @if (isMobileView()) {
+        <!-- @if (isMobileView()) { -->
         <div class="w-full flex flex-col">
             <div class="category-tabs">
                 <mat-tab-group [(selectedIndex)]="selectedCategoryIndex"
@@ -19,38 +19,50 @@
                     @for (category of catalogueCatagories(); track category?._id; let index = $index) {
                     <mat-tab [label]="category?.name">
                         <ng-template mat-tab-label>
-                            <div class="relative group">
+                            <div class="relative group" [ngClass]="{'catalogue-menu': !isMobileView()}">
                                 {{category?.name}}
                                 @if (isAdmin() && category?._id !== 'all') {
+                                @if(isMobileView()) {
                                 <span class="tab-category-edit-btn cursor-pointer"
-                                    (click)="openCategoryDialog(category); $event.stopPropagation()">
+                                    (click)="openCategoryDialog(category)">
                                     <mat-icon>edit</mat-icon>
                                 </span>
+                                } @else {
+                                <span
+                                    class="category-edit-btn transform translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500 cursor-pointer"
+                                    (click)="openCategoryDialog(category)">
+                                    <mat-icon>edit</mat-icon>
+                                </span>
+                                }
                                 }
                             </div>
                         </ng-template>
                     </mat-tab>
                     }
 
-                    @if (isAdmin()) {
+                    @if (isAdmin() && isCategoryLoaded()) {
                     <mat-tab>
                         <ng-template mat-tab-label>
-                            <div (click)="openCategoryDialog()">
-                                <mat-icon>add</mat-icon>
+                            <div class="relative flex justify-center items-center w-full">
+                                <div class="add-category-btn" (click)="openCategoryDialog()">
+                                    <mat-icon>add</mat-icon>
+                                </div>
                             </div>
                         </ng-template>
                     </mat-tab>
                     }
                 </mat-tab-group>
             </div>
+            @if (isMobileView()) {
             <div class="w-full flex justify-between pt-6 pb-4 border-b-primary">
                 <span class="sans-medium text-sm">{{catalogueProductLength}} {{catalogueProductLength > 1 ? 'PRODUCTS' :
                     'PRODUCT'}}</span>
                 <span class="underline text-primary text-sm sans-medium cursor-pointer"
                     (click)="toggleFilter()">Filter</span>
             </div>
+            }
         </div>
-        } @else {
+        <!-- } @else {
         <div class="flex justify-between w-full h-16 items-center text-primary">
             @for (category of catalogueCatagories(); track $index) {
             <div class="catalogue-menu relative group">
@@ -74,7 +86,7 @@
             </a>
             }
         </div>
-        }
+        } -->
         <div class="flex w-full pt-8">
             <div class="mb-2 sidebar-filter">
                 <div class="flex flex-col text-primary border-r-primary w-full">

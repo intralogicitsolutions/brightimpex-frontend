@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { SnackbarService } from './snackbar.service';
@@ -11,8 +11,16 @@ export class CommonService {
   apiRoot: string = environment.apiRoot;
   private _token: string = '';
 
+  isAdmin: WritableSignal<boolean> = signal(false);
+
   constructor(private http: HttpClient, private _snackbar: SnackbarService) {
     this.token = localStorage.getItem('token') as string;
+
+    if (this._token) {
+      this.isAdmin.set(true);
+    } else {
+      this.isAdmin.set(false);
+    }
   }
 
   handleError() {
@@ -27,6 +35,7 @@ export class CommonService {
       return this._token;
     } else {
       this._snackbar.error('Token expired. Please login again.');
+      this.isAdmin.set(false);
       throw new Error('Token expired. Please login again.');
     }
   }
@@ -42,6 +51,7 @@ export class CommonService {
       tap((response: any) => {
         if (response?.body?.token) {
           this.token = response?.body?.token as string;
+          this.isAdmin.set(true);
         }
       })
     );

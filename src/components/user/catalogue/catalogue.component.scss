@@ -110,8 +110,8 @@
 }
 
 .category-tabs {
-  width: calc(100% + 4rem);
-  margin-left: -2rem;
+  width: calc(100% + 8rem);
+  margin-left: -4rem;
 }
 
 :host ::ng-deep {
@@ -196,18 +196,17 @@
 .category-edit-btn {
   position: absolute;
   top: 50%;
-  right: 0px;
-  transform: translateY(-50%) translateX(8px); /* Initially off-screen */
+  right: -24px;
+  transform: translateY(-50%) translateX(8px);
   opacity: 0;
   visibility: hidden;
-  // transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
   background: var(--primary-color);
   display: flex;
   justify-content: center;
   align-items: center;
   width: 30px;
   height: 100%;
-  box-shadow: -4px 0px 6px rgba(0, 0, 0, 0.2); /* Manually define shadow */
+  box-shadow: -4px 0px 6px rgba(0, 0, 0, 0.2);
   will-change: transform, opacity;
 
   mat-icon {
@@ -222,18 +221,13 @@
   position: absolute;
   top: -16px;
   right: -24px;
-  // transform: translateY(-50%) translateX(8px); /* Initially off-screen */
-  // opacity: 0;
-  // visibility: hidden;
-  // transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
   background: var(--primary-color);
   display: flex;
   justify-content: center;
   align-items: center;
   width: 20px;
   height: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Manually define shadow */
-  // will-change: transform, opacity;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
   border-radius: 100%;
 
   mat-icon {
@@ -245,16 +239,19 @@
 }
 
 .catalogue-menu:hover .category-edit-btn {
-  transform: translateX(0) translateY(-50%); /* Moves into position */
+  transform: translateX(0) translateY(-50%);
   opacity: 1;
   visibility: visible;
 }
 
-// .catalogue-menu:hover .tab-category-edit-btn {
-//   transform: translateX(0) translateY(-50%); /* Moves into position */
-//   opacity: 1;
-//   visibility: visible;
-// }
+.add-category-btn {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% + 3rem);
+  width: calc(100% + 3rem);
+}
 
 @media screen and (max-width: 1023px) {
   .catalogue-container {
@@ -318,5 +315,10 @@
         height: 18px;
       }
     }
+  }
+
+  .category-tabs {
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
   }
 }

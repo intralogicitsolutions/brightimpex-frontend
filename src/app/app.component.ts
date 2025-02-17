@@ -24,8 +24,8 @@ export class AppComponent {
       }
     }
 
-    if (event.key == 'Escape') {
-      if (this.router.url.includes('/admin/signin')) {
+    if (this.router.url.includes('/admin/signin')) {
+      if (event.key == 'Escape') {
         this.router.navigate(['/home']);
         localStorage.removeItem('user_details');
         localStorage.removeItem('token');

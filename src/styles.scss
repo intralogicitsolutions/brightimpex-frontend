@@ -141,6 +141,16 @@ body {
   border-bottom: none !important;
 }
 
+.mdc-tab__content {
+  width: 100%;
+}
+
+.mdc-tab__text-label {
+  width: 100%;
+  justify-content: center;
+  height: 100%;
+}
+
 // MAT FORM FIELD //
 .mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch {
   border-right: none !important;

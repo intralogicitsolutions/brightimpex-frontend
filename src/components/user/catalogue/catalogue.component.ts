@@ -18,30 +18,25 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatIconModule } from '@angular/material/icon';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink,
-  RouterLinkActive,
-} from '@angular/router';
-import { environment } from '../../../environments/environment';
-import { fadeAnimation } from '../../../shared/animations/route-animations';
-import { IResponse } from '../../../shared/interfaces/response-i';
-import { CommonService } from '../../../shared/services/common.service';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
   MatDialog,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { SnackbarService } from '../../../shared/services/snackbar.service';
-import { DeleteConfirmationComponent } from '../../../shared/components/delete-confirmation/delete-confirmation.component';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { environment } from '../../../environments/environment';
+import { fadeAnimation } from '../../../shared/animations/route-animations';
+import { DeleteConfirmationComponent } from '../../../shared/components/delete-confirmation/delete-confirmation.component';
+import { IResponse } from '../../../shared/interfaces/response-i';
+import { CommonService } from '../../../shared/services/common.service';
+import { SnackbarService } from '../../../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-catalogue',
@@ -55,7 +50,6 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatSelectModule,
     RouterLink,
-    RouterLinkActive,
     NgOptimizedImage,
     FormsModule,
     ReactiveFormsModule,
@@ -86,6 +80,7 @@ export class CatalogueComponent implements OnInit {
   catalogueDialogRef!: MatDialogRef<any>;
 
   isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1024);
+  isCategoryLoaded: WritableSignal<boolean> = signal(false);
   catalogueCatagoryId: WritableSignal<string> = signal('');
   catalogueCatagories: WritableSignal<any[]> = signal([]);
   catalogues: WritableSignal<any[]> = signal([]);
@@ -102,7 +97,7 @@ export class CatalogueComponent implements OnInit {
   selectedSeries: WritableSignal<any> = signal(null);
   selectedCatalogue: WritableSignal<any> = signal(null);
 
-  isAdmin: WritableSignal<boolean> = signal(true);
+  isAdmin: WritableSignal<boolean> = signal(false);
 
   filteredCatalogueSizes: Signal<any> = computed(() => {
     const cataloguesSizeIds = this.catalogueSizeIds();
@@ -182,15 +177,13 @@ export class CatalogueComponent implements OnInit {
   ) {
     this.activatedRoute.paramMap.subscribe((params) => {
       this.catalogueCatagoryId.set(params?.get('id') || '');
-      if (this.isMobileView()) {
-        const categoryIndex = this.catalogueCatagories()?.findIndex(
-          (e: any) => e?._id == this.catalogueCatagoryId()
-        );
-        if (categoryIndex !== -1) {
-          this.selectedCategoryIndex = categoryIndex;
-        } else {
-          this.selectedCategoryIndex = 0;
-        }
+      const categoryIndex = this.catalogueCatagories()?.findIndex(
+        (e: any) => e?._id == this.catalogueCatagoryId()
+      );
+      if (categoryIndex !== -1) {
+        this.selectedCategoryIndex = categoryIndex;
+      } else {
+        this.selectedCategoryIndex = 0;
       }
     });
 
@@ -240,6 +233,8 @@ export class CatalogueComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isAdmin = this.commonService.isAdmin;
+
     this.loadCatalogueCatagories();
     this.loadCatalogueSizes();
     this.loadCatalogueSeries();
@@ -308,17 +303,16 @@ export class CatalogueComponent implements OnInit {
             ...(response?.body || []),
           ];
           this.catalogueCatagories.set(categories);
-          if (this.isMobileView()) {
-            const categoryIndex = this.catalogueCatagories()?.findIndex(
-              (e: any) => e?._id == this.catalogueCatagoryId()
-            );
-            if (categoryIndex !== -1) {
-              this.selectedCategoryIndex = categoryIndex;
-            } else {
-              this.selectedCategoryIndex = 0;
-            }
-            this.isCategorySelected = false;
+          const categoryIndex = this.catalogueCatagories()?.findIndex(
+            (e: any) => e?._id == this.catalogueCatagoryId()
+          );
+          if (categoryIndex !== -1) {
+            this.selectedCategoryIndex = categoryIndex;
+          } else {
+            this.selectedCategoryIndex = 0;
           }
+          this.isCategorySelected = false;
+          this.isCategoryLoaded.set(true);
         } else {
           console.error(response?.msg);
         }
@@ -407,11 +401,25 @@ export class CatalogueComponent implements OnInit {
     this.isFilterOpened = !this.isFilterOpened;
   }
 
-  onCategoryChange(index: number) {
+  onCategoryChange(index: any) {
     if (!this.isCategorySelected) {
       const currentTab = this.catalogueCatagories()?.[index];
       if (currentTab) {
         this.router.navigate([`catalogue/${currentTab?._id}`]);
+        this.selectedCatalogueSizes.set([]);
+        this.selectedCatalogueSeries.set([]);
+        this.catalogueSizes.update((sizes) => {
+          return sizes.map((e: any) => {
+            e['checked'] = false;
+            return e;
+          });
+        });
+        this.catalogueSeries.update((series) => {
+          return series.map((e: any) => {
+            e['checked'] = false;
+            return e;
+          });
+        });
       }
     }
   }
@@ -612,7 +620,7 @@ export class CatalogueComponent implements OnInit {
 
   onSubmitCatalogue() {
     const catalogueData = this.catalogueForm.getRawValue();
- 
+
     if (this.selectedCatalogue()) {
       catalogueData['_id'] = this.selectedCatalogue()?._id;
     }
