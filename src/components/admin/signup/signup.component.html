@@ -1,1 +1,54 @@
-<p>signup works!</p>
+<div [@fadeAnimation]="'/admin/signin'" class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-xl">
+        <h2 class="text-3xl font-semibold text-primary text-center mb-6">Sign Up</h2>
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+            <div class="mb-4">
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>First name</mat-label>
+                    <input matInput type="text" formControlName="firstname">
+                    @if (signupForm.get('firstname')?.hasError('required')) {
+                    <mat-error>First name is required</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="mb-4">
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Last name</mat-label>
+                    <input matInput type="text" formControlName="lastname">
+                    @if (signupForm.get('lastname')?.hasError('required')) {
+                    <mat-error>Last name is required</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="mb-4">
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="email">
+                    @if (signupForm.get('email')?.hasError('email')) {
+                    <mat-error>Please enter valid email</mat-error>
+                    } @else if (signupForm.get('email')?.hasError('required')) {
+                    <mat-error>Email is required</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="mb-4">
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password">
+                    <button mat-icon-button matSuffix type="button" (click)="showPasswordToggle($event)"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide()">
+                        <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    @if (signupForm.get('password')?.hasError('required')) {
+                    <mat-error>Password is required</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <button mat-flat-button type="submit" color="primary" class="primary-btn w-full"
+                [disabled]="signupForm.invalid">Sign Up</button>
+        </form>
+        <p class="text-center text-gray-600 mt-4">Already have an account?
+            <a routerLink="/admin/signin" class="text-[#136a99] hover:underline">Sign In</a>
+        </p>
+    </div>
+</div>
