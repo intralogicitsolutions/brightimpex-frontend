@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, HostListener, OnInit, signal, WritableSignal } from '@angular/core';
 import { fadeAnimation } from '../../../shared/animations/route-animations';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -13,6 +13,13 @@ export class AboutUsComponent implements OnInit {
   tileBgImg: string = '/assets/images/tile.jpg';
   certificateImages: WritableSignal<Array<any>> = signal([]);
   downloadCatalogueBgImg: string = '/assets/images/bg-4-1.jpg';
+  isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1024);
+
+   @HostListener('window:resize', ['$event'])
+    onResize(event: Event) {
+      this.isMobileView.set(window.innerWidth < 1024);
+    }
+
 
   ngOnInit(): void {
     this.certificateImages.set([
