@@ -436,7 +436,7 @@ export class CatalogueComponent implements OnInit {
     this.categoryDialogRef = this.dialog.open(this.CategoryTemplate, {
       height: '400px',
       width: '700px',
-      maxWidth: '100vw',
+      maxWidth: '95vw',
       autoFocus: false,
     });
 
@@ -455,7 +455,7 @@ export class CatalogueComponent implements OnInit {
     this.sizeDialogRef = this.dialog.open(this.SizeTemplate, {
       height: '390px',
       width: '700px',
-      maxWidth: '100vw',
+      maxWidth: '95vw',
       autoFocus: false,
     });
 
@@ -474,7 +474,7 @@ export class CatalogueComponent implements OnInit {
     this.seriesDialogRef = this.dialog.open(this.SeriesTemplate, {
       height: '400px',
       width: '700px',
-      maxWidth: '100vw',
+      maxWidth: '95vw',
       autoFocus: false,
     });
 
@@ -499,7 +499,7 @@ export class CatalogueComponent implements OnInit {
     this.catalogueDialogRef = this.dialog.open(this.CatalogueTemplate, {
       height: '520px',
       width: '700px',
-      maxWidth: '100vw',
+      maxWidth: '95vw',
       autoFocus: false,
     });
 
@@ -658,7 +658,7 @@ export class CatalogueComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       height: '200px',
       width: '350px',
-      maxWidth: '100vw',
+      maxWidth: '95vw',
       autoFocus: false,
     });
 
@@ -697,7 +697,7 @@ export class CatalogueComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       height: '200px',
       width: '350px',
-      maxWidth: '100vw',
+      maxWidth: '95vw',
       autoFocus: false,
     });
 
@@ -730,7 +730,7 @@ export class CatalogueComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       height: '200px',
       width: '350px',
-      maxWidth: '100vw',
+      maxWidth: '95vw',
       autoFocus: false,
     });
 
@@ -763,7 +763,7 @@ export class CatalogueComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       height: '200px',
       width: '350px',
-      maxWidth: '100vw',
+      maxWidth: '95vw',
       autoFocus: false,
     });
 
