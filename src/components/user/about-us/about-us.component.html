@@ -26,18 +26,12 @@
       </div>
       <div class="w-full flex flex-wrap">
         <div class="w-1/2">
-          <img
-            src="assets/images/home/home-3.jpg"
-            alt=""
-            class="w-full h-full object-cover"
-          />
+          <img src="assets/images/home/home-3.jpg" alt="" class="w-full h-full object-cover" />
         </div>
         <div class="w-1/2">
           <div class="flex flex-col">
             <div>
-              <span class="w-151 fs-24 fw-500 ml-5 h-30 glamore"
-                >OUR MISSION</span
-              >
+              <span class="w-151 fs-24 fw-500 ml-5 h-30 glamore">OUR MISSION</span>
               <p class="text-18 mt-2 ml-5">
                 In Telangana, three plants in Gujarat and one plant in Nepal.
                 Equipped with cutting-edge technology, we strive to deliver
@@ -47,10 +41,7 @@
               </p>
             </div>
             <div>
-              <span
-                class="w-151 fs-24 mt-2 display-block fw-500 ml-5 h-30 glamore"
-                >OUR VISION</span
-              >
+              <span class="w-151 fs-24 mt-2 display-block fw-500 ml-5 h-30 glamore">OUR VISION</span>
               <p class="text-18 mt-2 ml-5">
                 Bright Impex, the largest manufacturer of ceramic and vitrified.
                 Tiles in India, It has an annual aggregate capacity. Of 93.10
@@ -61,11 +52,7 @@
             </div>
             <div>
               <div>
-                <button
-                  mat-flat-button
-                  color="primary"
-                  class="primary-btn w-180 h-56 br-60 ml-5 mt-2"
-                >
+                <button mat-flat-button color="primary" class="primary-btn w-180 h-56 br-60 ml-5 mt-2">
                   Contact Us
                 </button>
               </div>
@@ -77,26 +64,18 @@
     <div class="flex h-390 w-full mt-92">
       <div
         class="bg-img flex flex-col  items-center justify-center text-white px-5 lg:px-28 lg:flex-row lg:justify-between"
-        [style.background-image]="'url(' + tileBgImg + ')'"
-      >
+        [style.background-image]="'url(' + tileBgImg + ')'">
         <div class="flex flex-col">
-          <span class="text-sm explore-text"
-            >EXPLORE OUR WIDE RANGE OF DEALERSHIPS</span
-          >
-          <span
-            class="glamore text-2xl pt-2 text-center lg:text-3xl lg:text-left"
-            >explore locations</span
-          >
+          <span class="text-sm explore-text">EXPLORE OUR WIDE RANGE OF DEALERSHIPS</span>
+          <span class="glamore text-2xl pt-2 text-center lg:text-3xl lg:text-left">explore locations</span>
         </div>
         <div class="w-52">
           <div class="flex flex-col items-center lg:items-end">
-            <div
-              class="flex justify-end text-end text-sm explore-text pt-6 lg:text-xs lg:pt-0"
-            >
+            <div class="flex justify-end text-end text-sm explore-text pt-6 lg:text-xs lg:pt-0">
               If you’d like to view our products live you can visit our stores
               here.
             </div>
-            <button  mat-flat-button class="tile-btn">See Locations</button>
+            <button mat-flat-button class="tile-btn">See Locations</button>
           </div>
         </div>
       </div>
@@ -104,23 +83,74 @@
     <!-- <div>
           <img src="assets/images/tile.jpg" alt="" class="w-full h-full object-cover mt-2 h-390 w-1600">
         </div> -->
-        <div class="w-full px-5 lg:px-14 flex flex-col py-10 lg:py-20">
-          <div class="flex flex-col pb-10 lg:pb-20">
-              <span class="text-center text-primary text-sm">
-                OUR ASSURENCE OF QUALITY MEET INTERNATIONAL STANDARDS
-              </span>
-              <span class="text-2xl text-center glamore lg:text-3xl pt-2">
-                Certified craftmanship
-              </span>
-          </div>
-          <div class="flex flex-wrap justify-center">
-            @for (item of certificateImages(); track $index) {
-            <div class="flex flex-col" class="certificate-img">
-                <img [src]="item?.img" alt="">
-                <span class="block text-sm sans-medium lg:text-base pl-4">{{item?.name}}</span>
+    <div class="w-full px-5 lg:px-14 flex flex-col py-10 lg:py-20">
+      <div class="flex flex-col pb-10 lg:pb-20">
+        <span class="text-center text-primary text-sm">
+          OUR ASSURENCE OF QUALITY MEET INTERNATIONAL STANDARDS
+        </span>
+        <span class="text-2xl text-center glamore lg:text-3xl pt-2">
+          Certified craftmanship
+        </span>
+      </div>
+      <div class="flex flex-wrap justify-center">
+        @for (item of certificateImages(); track $index) {
+        <div class="flex flex-col" class="certificate-img">
+          <img [src]="item?.img" alt="">
+          <span class="block text-sm sans-medium lg:text-base pl-4">{{item?.name}}</span>
+        </div>
+        }
+      </div>
+    </div>
+    <div class="flex w-full download-catalogue-section">
+      <div
+        class="bg-img flex flex-col justify-center items-center text-white px-5 lg:flex-row lg:px-28 lg:justify-between"
+        [style.background-image]=" 'url(' + downloadCatalogueBgImg + ')'">
+        <div class="flex flex-col">
+          <span class="text-sm explore-text text-center lg:text-left">EXPLORE OUR WIDE RANGE OF CATALOGUES</span>
+          <span class="text-2xl glamore pt-2 text-center lg:text-left lg:text-3xl">download catalogues</span>
+        </div>
+        <div class="w-52 pt-6 lg:pt-0">
+          <div class="flex flex-col items-center lg:items-end">
+            <div class="flex text-sm text-center explore-text lg:text-xs lg:text-end">
+              If you’d like to view our latest product catalogue you can download it here.
             </div>
-            }
+            <button mat-flat-button class="location-btn">Download Catalogue</button>
+          </div>
         </div>
       </div>
+    </div>
+    <div class="flex flex-col w-full py-20 lg:px-28">
+      <div class="w-full flex flex-col">
+        <span class="text-sm text-primary text-center lg:text-left">OUR VALUES ARE KEY OF OUR DRIVING FORCE</span>
+        <span class="text-2xl glamore pt-2 text-center lg:text-left lg:text-3xl">core values</span>
+      </div>
+      <div class="flex flex-wrap py-10">
+        <div class="flex flex-col core-values">
+          <img src="assets/icons/creativity.svg" alt="Creativity Icon">
+          <span class="glamore text-lg pt-2">creativity</span>
+          <span class="text-sm pt-1">Pollens Granito thrives on innovative ceramic solutions.</span>
+        </div>
+        <div class="flex flex-col core-values">
+          <img src="assets/icons/creativity.svg" alt="Creativity Icon">
+          <span class="glamore text-lg pt-2">creativity</span>
+          <span class="text-sm pt-1">Pollens Granito thrives on innovative ceramic solutions.</span>
+        </div>
+        <div class="flex flex-col core-values">
+          <img src="assets/icons/creativity.svg" alt="Creativity Icon">
+          <span class="glamore text-lg pt-2">creativity</span>
+          <span class="text-sm pt-1">Pollens Granito thrives on innovative ceramic solutions.</span>
+        </div>
+        <div class="flex flex-col core-values">
+          <img src="assets/icons/creativity.svg" alt="Creativity Icon">
+          <span class="glamore text-lg pt-2">creativity</span>
+          <span class="text-sm pt-1">Pollens Granito thrives on innovative ceramic solutions.</span>
+        </div>
+        <div class="flex flex-col core-values">
+          <img src="assets/icons/creativity.svg" alt="Creativity Icon">
+          <span class="glamore text-lg pt-2">creativity</span>
+          <span class="text-sm pt-1">Pollens Granito thrives on innovative ceramic solutions.</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

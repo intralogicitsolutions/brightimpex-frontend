@@ -1,85 +1,85 @@
 .header-section {
-    background-image: url('/assets/images/bg.png');
-    width: 100%;
-    height: 300px;
+  background-image: url('/assets/images/bg.png');
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+
+  .text {
+    font-size: 50px;
+    font-family: "Glamore";
+    line-height: 62.55px;
+  }
+
+  .sub-text {
+    font-size: 18px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    color: #fff;
+    line-height: 25.44px;
+    margin-top: 10px;
 
-    .text {
-        font-size: 50px;
-        font-family: "Glamore";
-        line-height: 62.55px;
+    .bold-font {
+      font-family: "GoogleSans-Medium";
     }
-
-    .sub-text {
-        font-size: 18px;
-        display: flex;
-        align-items: center;
-        line-height: 25.44px;
-        margin-top: 10px;
-
-        .bold-font {
-            font-family: "GoogleSans-Medium";
-        }
-    }
+  }
 }
 
-.text-18{
+.text-18 {
   font-size: 18px;
 }
 
-.ml-5{
+.ml-5 {
   margin-left: 5rem;
 }
 
-.w-151{
+.w-151 {
   width: 151px;
 }
 
-.w-180{
+.w-180 {
   width: 180px;
 }
 
-.h-30{
+.h-30 {
   height: 30px;
 }
 
-.fs-24{
+.fs-24 {
   font-size: 24px;
 }
 
-.fw-500{
+.fw-500 {
   font-weight: 500;
 }
 
-.mt-2{
+.mt-2 {
   margin-top: 2rem;
 }
 
-.display-block{
+.display-block {
   display: block;
 }
 
-.h-56{
+.h-56 {
   height: 56px;
 }
 
-.br-60{
+.br-60 {
   border-radius: 60px;
 }
 
-.h-390{
+.h-390 {
   height: 390px;
 }
 
-.w-1600{
+.w-1600 {
   width: 1600px;
 }
 
-.mt-92{
+.mt-92 {
   margin-top: 92px;
 }
 
@@ -91,7 +91,7 @@
   background-repeat: no-repeat;
 }
 
-.h-390{
+.h-390 {
   height: 390px;
 }
 
@@ -105,11 +105,54 @@
 }
 
 .certificate-img {
-    width: calc(20% - 5rem);
-    height: 300px;
+  width: calc(20% - 5rem);
+  height: 300px;
 
-    img {
-        height: calc(100% - 3rem);
-    }
+  img {
+    height: calc(100% - 3rem);
+  }
 }
 
+.download-catalogue-section {
+  height: 300px;
+
+  .bg-img {
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .location-btn {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    background-color: #FFFFFF;
+    width: fit-content;
+    color: #000000;
+    margin-top: 1rem;
+  }
+
+  .explore-text {
+    box-shadow: 0px 4px 20px 0px #00000014;
+  }
+}
+
+.core-values {
+  width: 20%;
+  padding: 0px 55px;
+
+  img {
+    width: calc(100% - 40px);
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .download-catalogue-section {
+    height: 450px;
+
+    .location-btn {
+      font-size: 0.875rem;
+    }
+  }
+}
