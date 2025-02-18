@@ -98,9 +98,18 @@
 .tile-btn {
   font-size: 0.75rem;
   line-height: 1rem;
-  background-color: #FFFFFF;
+  background-color: #FFFFFF !important;
   width: fit-content;
-  color: #000000;
+  color: #000000 !important;
   margin-top: 1rem;
+}
+
+.certificate-img {
+    width: calc(20% - 5rem);
+    height: 300px;
+
+    img {
+        height: calc(100% - 3rem);
+    }
 }
 

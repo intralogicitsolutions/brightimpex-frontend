@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { fadeAnimation } from '../../../shared/animations/route-animations';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -9,6 +9,32 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './about-us.component.scss',
   animations: [fadeAnimation],
 })
-export class AboutUsComponent {
+export class AboutUsComponent implements OnInit{
   tileBgImg: string = '/assets/images/tile.jpg';
+  certificateImages: WritableSignal<Array<any>> = signal([]);
+
+  ngOnInit(): void {
+    this.certificateImages.set([
+      {
+        name: 'GST',
+        img: '/assets/images/certificates/gst.png'
+      },
+      {
+        name: 'ISO Certificate',
+        img: '/assets/images/certificates/iso.png'
+      },
+      {
+        name: 'UDYAM',
+        img: '/assets/images/certificates/udyam.png'
+      },
+      {
+        name: 'Award',
+        img: '/assets/images/certificates/award.png'
+      },
+      {
+        name: 'Catalogue',
+        img: '/assets/images/certificates/catalogue.png'
+      },
+    ]);
+  }
 }
