@@ -134,6 +134,41 @@
   }
 }
 
+.bg-container {
+  display: flex;
+  flex-direction: column;
+  background-image: url('/assets/images/tile-2.jpg');
+  height: auto;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.bg-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.74);
+  z-index: 1;
+
+}
+
+.bg-container>* {
+  position: relative;
+  z-index: 2;
+}
+
+.primary-btn {
+  font-size: 12px;
+  font-family: "GoogleSans";
+  box-shadow: 0px 4px 20px 0px #00000014;
+  background-color: var(--primary-color) !important;
+}
+
 @media screen and (max-width: 1023px) {
   .download-catalogue-section {
     height: 450px;
@@ -154,11 +189,15 @@
 
   .core-values {
     // width: 20%;
-    padding: 0px 55px;
+    padding: 0px 25px;
 
     img {
       width: calc(100% - 6px);
     }
+  }
+
+  .p-0-15 {
+    padding: 0px 15px;
   }
 }
 

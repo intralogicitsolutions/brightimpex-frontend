@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit, signal, WritableSignal } from '@angular/core';
 import { fadeAnimation } from '../../../shared/animations/route-animations';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-about-us',
@@ -12,6 +12,7 @@ import { RouterLink } from '@angular/router';
 })
 export class AboutUsComponent implements OnInit {
   tileBgImg: string = '/assets/images/tile.jpg';
+  tile2BgImg: string = '/assets/images/tile-2.jpg'
   certificateImages: WritableSignal<Array<any>> = signal([]);
   downloadCatalogueBgImg: string = '/assets/images/bg-4-1.jpg';
   isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1024);
@@ -21,6 +22,9 @@ export class AboutUsComponent implements OnInit {
       this.isMobileView.set(window.innerWidth < 1024);
     }
 
+    constructor(private router: Router){
+
+    }
 
   ngOnInit(): void {
     this.certificateImages.set([
@@ -45,5 +49,9 @@ export class AboutUsComponent implements OnInit {
         img: '/assets/images/certificates/catalogue.png',
       },
     ]);
+  }
+
+  navigateToContactus = () => {
+    this.router.navigate(['/contact-us']);
   }
 }
