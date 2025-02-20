@@ -27,49 +27,33 @@
   }
 }
 
-.text-18 {
-  font-size: 18px;
+.text-gray {
+  color: #404140;
 }
 
-.ml-5 {
-  margin-left: 5rem;
-}
+.location-section {
+  height: 300px;
 
-.w-151 {
-  width: 151px;
-}
+  .bg-img {
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 
-.w-180 {
-  width: 180px;
-}
+  .location-btn {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    background-color: #FFFFFF;
+    width: fit-content;
+    color: #000000;
+    margin-top: 1rem;
+  }
 
-.h-30 {
-  height: 30px;
-}
-
-.fs-24 {
-  font-size: 24px;
-}
-
-.fw-500 {
-  font-weight: 500;
-}
-
-// .mt-2 {
-//   margin-top: 2rem;
-// }
-
-.display-block {
-  display: block;
-}
-
-.h-56 {
-  height: 56px;
-}
-
-
-.h-390 {
-  height: 390px;
+  .explore-text {
+    box-shadow: 0px 4px 20px 0px #00000014;
+  }
 }
 
 .bg-img {
@@ -90,15 +74,12 @@
 }
 
 .certificate-img {
-  width: calc(20% - 5rem);
-  height: 300px;
+  width: calc(20% - 1.20rem);
 
   img {
-    height: calc(100% - 3rem);
+    max-width: 15rem;
   }
 }
-
-
 
 .download-catalogue-section {
   height: 300px;
@@ -126,18 +107,17 @@
 }
 
 .core-values {
-  // width: 20%;
-  padding: 0px 55px;
+  width: calc(20% - 2.4rem);
 
   img {
-    width: calc(100% - 40px);
+    width: 60%;
   }
 }
 
 .bg-container {
   display: flex;
   flex-direction: column;
-  background-image: url('/assets/images/tile-2.jpg');
+  background-image: url('/assets/images/bg-1.jpg');
   height: auto;
   width: 100%;
   background-size: cover;
@@ -167,38 +147,51 @@
   font-family: "GoogleSans";
   box-shadow: 0px 4px 20px 0px #00000014;
   background-color: var(--primary-color) !important;
+  padding: 0px 30px;
 }
 
 @media screen and (max-width: 1023px) {
-  .download-catalogue-section {
-    height: 450px;
+  .header-section {
+    height: 200px;
 
-    .location-btn {
-      font-size: 0.875rem;
+    .text {
+      font-size: 32px;
+      line-height: 40px;
+    }
+
+    .sub-text {
+      font-size: 14px;
+      line-height: 17.81px;
+      margin-top: 8px;
+
+      .icon {
+        width: 18px;
+        height: 18px;
+      }
     }
   }
 
-   .certificate-img {
-    width: calc(20% - (-6rem));
-    height: 300px;
+  .download-catalogue-section {
+    height: 450px;
+  }
+
+  .certificate-img {
+    width: calc(50% - 0.75rem);
 
     img {
-      height: calc(100% - 3rem);
+      max-width: 20rem;
     }
+  }
+
+  .location-section {
+    height: 450px;
   }
 
   .core-values {
-    // width: 20%;
-    padding: 0px 25px;
+    width: calc(50% - 2.4rem);
 
     img {
-      width: calc(100% - 6px);
+      width: 60%;
     }
   }
-
-  .p-0-15 {
-    padding: 0px 15px;
-  }
 }
-
-

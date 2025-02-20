@@ -4,7 +4,7 @@
             <div class="lg:w-1/4 w-full px-12">
                 <img src="assets/images/Bright-Impex-Logo-Full.png" alt="" class="cursor-pointer" routerLink="/home">
             </div>
-            <div class="lg:w-1/4 w-full lg:px-4 pt-4 flex flex-wrap lg:flex-col lg:justify-between">
+            <div class="lg:w-1/4 w-full lg:px-4 pt-6 flex flex-wrap lg:flex-col lg:justify-between lg:pt-4">
                 <div class="flex flex-col w-1/2 lg:w-full">
                     <span class="contact-header">Contact Info</span>
                     <div class="contact-info">
@@ -13,12 +13,12 @@
                     </div>
                 </div>
                 <div class="flex flex-wrap w-1/2 pl-4 lg:w-full lg:pl-0">
-                    <img src="assets/icons/facebook.svg" alt="" class="pr-1 social-icon">
-                    <img src="assets/icons/instagram.svg" alt="" class="px-1 social-icon">
-                    <img src="assets/icons/youtube.svg" alt="" class="pl-1 social-icon">
+                    <img src="assets/icons/facebook.svg" alt="" class="pr-1 social-icon" (click)="moveToSocial('fb')">
+                    <img src="assets/icons/instagram.svg" alt="" class="px-1 social-icon" (click)="moveToSocial('in')">
+                    <img src="assets/icons/youtube.svg" alt="" class="pl-1 social-icon" (click)="moveToSocial('yt')">
                 </div>
             </div>
-            <div class="lg:w-1/4 w-1/2 lg:px-4 pt-4 flex flex-col">
+            <div class="lg:w-1/4 w-1/2 lg:px-4 pt-6 flex flex-col lg:pt-4">
                 <span class="contact-header">Product Categories</span>
                 <div class="contact-info">
                     @for (category of catalogueCatagories(); track $index) {
@@ -26,7 +26,7 @@
                     }
                 </div>
             </div>
-            <div class="lg:w-1/4 w-1/2 lg:px-4 pl-4 pt-4 flex flex-col">
+            <div class="lg:w-1/4 w-1/2 lg:px-4 pl-4 pt-6 flex flex-col lg:pt-4">
                 <span class="contact-header">Quick Links</span>
                 <div class="contact-info">
                     <a routerLink="/home" routerLinkActive="active-link">Home</a>
