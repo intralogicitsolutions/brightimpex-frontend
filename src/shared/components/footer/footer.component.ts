@@ -51,4 +51,14 @@ export class FooterComponent {
       error: (err) => {},
     });
   }
+
+  moveToSocial(name: string) {
+    if (name == 'fb') {
+      window.open('https://www.facebook.com/', '_blank');
+    } else if (name == 'in') {
+      window.open('https://www.instagram.com/', '_blank');
+    } else if (name == 'yt') {
+      window.open('https://www.youtube.com/', '_blank');
+    }
+  }
 }

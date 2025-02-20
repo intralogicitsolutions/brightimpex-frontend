@@ -1,31 +1,191 @@
 <div [@fadeAnimation]="'/catalogue'" class="flex flex-col">
-    <div class="header-section">
-        <div class="text">
-            about us
-        </div>
-        <div class="sub-text">
-            <a routerLink="/home">Home</a>
-            <img src="assets/icons/chevron-right.svg" alt="" class="mx-1 h-5 icon">
-            <span class="bold-font">About Us</span>
-        </div>
+  <div class="header-section">
+    <div class="text">about us</div>
+    <div class="sub-text">
+      <a routerLink="/home" class="cursor-pointer">Home</a>
+      <img src="assets/icons/chevron-right.svg" alt="" class="mx-1 h-5 icon" />
+      <span class="bold-font">About Us</span>
     </div>
-    <div class="w-full flex flex-col">
-        <div class="w-full flex flex-wrap p-12">
-            <div class="w-1/2 flex flex-col">
-                <span class="text-primary text-sm">OUR STORY</span>
-                <span class="glamore text-3xl">little about bright impex</span>
-            </div>
-            <div class="w-1/2">
-                <p class="text-sm">Bright Impex, the largest manufacturer of ceramic and vitrified. Tiles in India, It has an annual
-                    aggregate capacity. Of 93.10 mn. sq. meters, distributed across nine plants - Sikandrabad in Uttar
-                    Pradesh, Gailpur & Malootana in Rajasthan, Srikalahasti in Andhra Pradesh, Balanagar.</p>
-            </div>
+  </div>
+  <div class="w-full flex flex-col">
+    <div class="flex flex-col w-full pb-12 lg:pb-20">
+      <div class="w-full flex flex-wrap pt-12 pb-8 lg:px-28 lg:pt-20">
+        <div class="w-full flex flex-col text-center pb-6 px-5 lg:mb-0 lg:w-1/2 lg:text-left">
+          <span class="text-primary sans-medium text-sm">OUR STORY</span>
+          <span class="glamore text-2xl lg:text-3xl">little about bright impex</span>
         </div>
-        <div class="w-full flex flex-wrap">
-            <div class="w-1/2">
-                <img src="assets/images/home/home-3.jpg" alt="" class="w-full h-full object-cover">
-            </div>
-            <div class="w-1/2"></div>
+        @if (!isMobileView()) {
+        <div class="w-full lg:w-1/2">
+          <p class="text-base ml-20 text-gray">
+            Bright Impex, the largest manufacturer of ceramic and vitrified.
+            Tiles in India, It has an annual aggregate capacity. Of 93.10 mn.
+            sq. meters, distributed across nine plants - Sikandrabad in Uttar
+            Pradesh, Gailpur & Malootana in Rajasthan, Srikalahasti in Andhra
+            Pradesh, Balanagar.
+          </p>
         </div>
+        }@else {
+        <div class="w-full lg:w-1/2">
+          <img src="assets/images/home/home-3.jpg" alt="" class="w-full h-full object-cover" />
+        </div>
+        }
+      </div>
+      <div class="w-full flex flex-wrap">
+        @if (!isMobileView()) {
+        <div class="w-1/2">
+          <img src="assets/images/home/home-3.jpg" alt="" class="w-full h-full object-cover" />
+        </div>
+        }@else {
+        <div class="w-full lg:w-1/2">
+          <p class="text-base text-gray text-center px-6">
+            Bright Impex, the largest manufacturer of ceramic and vitrified.
+            Tiles in India, It has an annual aggregate capacity. Of 93.10 mn.
+            sq. meters, distributed across nine plants - Sikandrabad in Uttar
+            Pradesh, Gailpur & Malootana in Rajasthan, Srikalahasti in Andhra
+            Pradesh, Balanagar.
+          </p>
+        </div>
+        }
+        <div class="w-full lg:w-1/2">
+          <div class="flex flex-col pt-6 lg:pl-20 lg:pr-28">
+            <div class="text-center pt-6 lg:text-left lg:pt-0">
+              <span class="text-2xl h-7 block glamore w-100">our mission</span>
+              <p class="text-base text-gray px-6 pt-6 lg:pt-3 lg:px-0">
+                In Telangana, three plants in Gujarat and one plant in Nepal.
+                Equipped with cutting-edge technology, we strive to deliver
+                quality products and services to our customers. Our team of
+                experts work around the clock to ensure that the quality of our
+                product is never compromised.
+              </p>
+            </div>
+            <div class="text-center pt-12 lg:text-left">
+              <span class="text-2xl h-7 block glamore w-full">our vision</span>
+              <p class="text-base text-gray pt-6 px-6 lg:px-0 lg:pt-3">
+                Bright Impex, the largest manufacturer of ceramic and vitrified.
+                Tiles in India, It has an annual aggregate capacity. Of 93.10
+                mn. sq. meters, distributed across nine plants - Sikandrabad in
+                Uttar Pradesh, Gailpur & Malootana in Rajasthan, Srikalahasti in
+                Andhra Pradesh, Balanagar.
+              </p>
+            </div>
+            <div class="text-center pt-8 pb-6 lg:text-left">
+              <button mat-flat-button color="primary" (click)="navigateToContactus()" class="primary-btn rounded-lg">
+                Contact Us
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="flex w-full location-section">
+      <div
+        class="bg-img flex flex-col  items-center justify-center text-white px-5 lg:px-28 lg:flex-row lg:justify-between"
+        [style.background-image]="'url(' + tileBgImg + ')'">
+        <div class="flex flex-col">
+          <span class="text-sm explore-text">EXPLORE OUR WIDE RANGE OF DEALERSHIPS</span>
+          <span class="glamore text-2xl pt-2 text-center lg:text-3xl lg:text-left">explore locations</span>
+        </div>
+        <div class="w-52">
+          <div class="flex flex-col items-center lg:items-end">
+            <div class="flex justify-end text-end text-sm explore-text pt-6 lg:text-xs lg:pt-0">
+              If you’d like to view our products live you can visit our stores
+              here.
+            </div>
+            <button mat-flat-button class="tile-btn">See Locations</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full px-5 lg:px-14 flex flex-col py-14 lg:py-20 bg-container">
+      <div class="flex flex-col px-6 pb-8 lg:px-0">
+        <span class="text-center text-primary sans-medium text-sm">
+          OUR ASSURENCE OF QUALITY MEET INTERNATIONAL STANDARDS
+        </span>
+        <span class="text-2xl text-center glamore lg:text-3xl pt-2">
+          certified craftmanship
+        </span>
+      </div>
+      <div class="flex flex-wrap justify-center lg:px-16 gap-6">
+        @for (item of certificateImages(); track $index) {
+        <div class="flex flex-col" class="certificate-img">
+          <img [src]="item?.img" class="w-full">
+          <span class="block text-sm sans-medium lg:text-base pt-1">{{item?.name}}</span>
+        </div>
+        }
+      </div>
+    </div>
+    <div class="flex w-full download-catalogue-section">
+      <div
+        class="bg-img flex flex-col justify-center items-center text-white px-5 lg:flex-row lg:px-28 lg:justify-between"
+        [style.background-image]=" 'url(' + downloadCatalogueBgImg() + ')'">
+        <div class="flex flex-col">
+          <span class="text-sm explore-text text-center lg:text-left">EXPLORE OUR WIDE RANGE OF CATALOGUES</span>
+          <span class="text-2xl glamore pt-2 text-center lg:text-left lg:text-3xl">download catalogues</span>
+        </div>
+        <div class="w-52 pt-6 lg:pt-0">
+          <div class="flex flex-col items-center lg:items-end">
+            <div class="flex text-sm text-center explore-text lg:text-xs lg:text-end">
+              If you’d like to view our latest product catalogue you can download it here.
+            </div>
+            <button mat-flat-button class="location-btn">Download Catalogue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col w-full py-16 lg:px-28 lg:py-20">
+      <div class="w-full flex flex-col">
+        <span class="text-sm text-primary text-center sans-medium lg:text-left">OUR VALUES ARE KEY OF OUR DRIVING
+          FORCE</span>
+        <span class="text-2xl glamore pt-2 text-center lg:text-left lg:text-3xl">core values</span>
+      </div>
+      <div class="flex flex-wrap py-16 justify-center gap-6 lg:gap-12">
+        <div class="flex flex-col core-values text-center items-center lg:text-left lg:items-start">
+          <img src="assets/icons/creativity.svg" class="pb-2 pt-0" alt="Creativity Icon">
+          <span class="glamore text-lg pt-2">creativity</span>
+          <span class="text-sm text-gray pt-2">Pollens Granito thrives on innovative ceramic solutions.</span>
+        </div>
+        <div class="flex flex-col core-values mt-0 lg:pt-12 text-center items-center lg:text-left lg:items-start">
+          @if (isMobileView()) {
+          <img src="assets/icons/innovation.svg" class="pt-0 pb-2 lg:pt-3 pt-0" alt="innovation Icon">
+          }
+          <span class="glamore text-lg pt-2 pb-1">innovation</span>
+          <span class="text-sm pt-2 text-gray">Pollens Granito thrives on innovative ceramic solutions.</span>
+          @if (!isMobileView()) {
+          <img src="assets/icons/innovation.svg" class="pt-3 pt-0" alt="innovation Icon">
+          }
+        </div>
+        <div class="flex flex-col core-values  text-center items-center pt-12 lg:text-left lg:items-start lg:pt-0">
+          <img src="assets/icons/quality.svg" class="pb-2 pt-0"
+            alt="quality Icon">
+          <span class="glamore text-lg pt-2">quality</span>
+          <span class="text-sm pt-2 text-gray">Pollens Granito thrives on innovative ceramic solutions.</span>
+        </div>
+        <div class="flex flex-col core-values mt-0 lg:pt-12  text-center items-center pt-12 lg:text-left lg:items-start">
+          @if (isMobileView()) {
+          <img src="assets/icons/passion.svg" class="pb-2" alt="Passion Icon">
+          }
+          <span class="glamore text-lg pt-2">passion</span>
+          <span class="text-sm pt-2 text-gray">Pollens Granito thrives on innovative ceramic solutions.</span>
+          @if (!isMobileView()) {
+          <img src="assets/icons/passion.svg" class="pt-3 pt-0" alt="Passion Icon">
+          }
+        </div>
+        <div class="flex flex-col core-values  text-center items-center pt-12 lg:text-left lg:items-start lg:pt-0">
+          <img src="assets/icons/integrity.svg" class="pb-2 pt-0"
+            alt="Integrity Icon">
+          <span class="glamore text-lg pt-2">integrity</span>
+          <span class="text-sm pt-1 text-gray">Pollens Granito thrives on innovative ceramic solutions.</span>
+        </div>
+      </div>
+      <div class="flex flex-col w-full">
+        <span class="text-sm text-center lg:text-right text-gray">If you’d like to view our latest product catalogue </span>
+        <span class="text-sm text-center lg:text-right text-gray">you can download it here</span>
+        <span class="text-sm text-center lg:text-right py-6">
+          <button mat-flat-button color="primary" (click)="navigateToContactus()" class="primary-btn rounded-lg">
+            Contact Us
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
 </div>

@@ -4,36 +4,38 @@
             contact us
         </div>
         <div class="sub-text">
-            <a routerLink="/home">Home</a>
+            <a routerLink="/home" class="cursor-pointer">Home</a>
             <img src="assets/icons/chevron-right.svg" alt="" class="mx-1 h-5 icon">
             <span class="bold-font">Contact Us</span>
         </div>
     </div>
-    <div class="w-full p-20 flex">
-        <div class="w-1/2 flex flex-col px-16">
-            <span class="sans-medium text-primary text-base">GET IN TOUCH</span>
-            <span class="text-4xl glamore pt-4">contact us at</span>
-            <p class="text-lg pt-4">
+    <div class="w-full py-12 px-4 flex flex-wrap lg:p-20">
+        <div class="w-full flex flex-col text-center lg:w-1/2 lg:px-16 lg:text-left">
+            <span class="sans-medium text-primary text-sm lg:text-base">GET IN TOUCH</span>
+            <span class="text-3xl glamore pt-4 lg:text-4xl">contact us at</span>
+            <p class="text-sm pt-4 lg:text-base">
                 Bright Impex, the largest manufacturer of ceramic and vitrified. Tiles in India, It has an annual
                 aggregate capacity. Of 93.10 mn. sq. meters, distributed across nine plants - Sikandrabad in Uttar
                 Pradesh, Gailpur & Malootana in Rajasthan, Srikalahasti in Andhra Pradesh, Balanagar.
             </p>
-            <div class="flex flex-col py-6">
-                <div class="w-full flex py-1 items-center">
-                    <img src="assets/icons/call_outline.svg" alt="">
-                    <span class="text-primary text-base sans-medium pl-4">{{phone}}</span>
-                </div>
-                <div class="w-full flex py-1 items-center">
-                    <img src="assets/icons/mail.svg" alt="">
-                    <span class="text-primary text-base sans-medium pl-4">{{mail}}</span>
-                </div>
-                <div class="w-full flex py-1 items-center">
-                    <img src="assets/icons/location.svg" alt="">
-                    <span class="text-primary text-base sans-medium pl-4">{{location}}</span>
+            <div class="flex py-6 justify-center lg:justify-start">
+                <div class="flex flex-col w-fit">
+                    <div class="w-full flex py-1 items-center">
+                        <img src="assets/icons/call_outline.svg" alt="" class="w-11 h-11 lg:w-14 lg:h-14">
+                        <span class="text-primary text-sm sans-medium pl-4 lg:text-base">{{phone}}</span>
+                    </div>
+                    <div class="w-full flex py-1 items-center">
+                        <img src="assets/icons/mail.svg" alt="" class="w-11 h-11 lg:w-14 lg:h-14">
+                        <span class="text-primary text-sm sans-medium pl-4 lg:text-base">{{mail}}</span>
+                    </div>
+                    <div class="w-full flex py-1 items-center">
+                        <img src="assets/icons/location.svg" alt="" class="w-11 h-11 lg:w-14 lg:h-14">
+                        <span class="text-primary text-sm sans-medium pl-4 lg:text-base">{{location}}</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="w-1/2 px-16">
+        <div class="w-full lg:w-1/2 lg:px-16">
             <form [formGroup]="contactUsForm">
                 <div class="w-full flex flex-col">
                     <div class="w-full flex flex-wrap py-1">
@@ -41,6 +43,9 @@
                             <mat-form-field appearance="outline" class="w-full">
                                 <mat-label>Name</mat-label>
                                 <input matInput placeholder="ex. Jitubhai Rajan" type="text" formControlName="name">
+                                @if (contactUsForm.get('name')?.hasError('required')) {
+                                  <mat-error>Name is required</mat-error>
+                                  }
                             </mat-form-field>
                         </div>
                         <div class="w-1/2 px-2">
@@ -48,6 +53,11 @@
                                 <mat-label>Email</mat-label>
                                 <input matInput placeholder="ex. jiturajan@gmail.com" type="email"
                                     formControlName="email">
+                                    @if (contactUsForm.get('email')?.hasError('email')) {
+                                      <mat-error>Please enter valid email</mat-error>
+                                      } @else if (contactUsForm.get('email')?.hasError('required')) {
+                                      <mat-error>Email is required</mat-error>
+                                      }
                             </mat-form-field>
                         </div>
                     </div>
@@ -57,6 +67,9 @@
                             <textarea matInput rows="5" formControlName="message"
                                 placeholder="ex. I have query about pricing.">
                             </textarea>
+                            @if (contactUsForm.get('message')?.hasError('required')) {
+                              <mat-error>Message/Query is required</mat-error>
+                              }
                         </mat-form-field>
                     </div>
                     <div class="w-full flex flex-wrap py-1">
@@ -67,7 +80,9 @@
                                     <mat-option value="1">City 1</mat-option>
                                     <mat-option value="2">City 2</mat-option>
                                 </mat-select>
-
+                                @if (contactUsForm.get('city')?.hasError('required')) {
+                                  <mat-error>City is required</mat-error>
+                                  }
                             </mat-form-field>
                         </div>
                         <div class="w-1/2 px-2">
@@ -77,31 +92,39 @@
                                     <mat-option value="1">State 1</mat-option>
                                     <mat-option value="2">State 2</mat-option>
                                 </mat-select>
+                                @if (contactUsForm.get('state')?.hasError('required')) {
+                                  <mat-error>State is required</mat-error>
+                                  }
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="w-full flex flex-wrap py-1">
-                        <div class="w-1/2 px-2">
+                        <div class="w-full px-2 py-1 lg:w-1/2 lg:py-0">
                             <mat-form-field appearance="outline" class="w-full">
                                 <mat-label>Country</mat-label>
                                 <mat-select formControlName="country" placeholder="Select">
                                     <mat-option value="1">Country 1</mat-option>
                                     <mat-option value="2">Country 2</mat-option>
                                 </mat-select>
-
+                                @if (contactUsForm.get('country')?.hasError('required')) {
+                                  <mat-error>Country is required</mat-error>
+                                  }
                             </mat-form-field>
                         </div>
-                        <div class="w-1/2 px-2">
+                        <div class="w-full px-2 py-1 lg:w-1/2 lg:py-0">
                             <mat-form-field appearance="outline" class="w-full">
                                 <mat-label>Phone Number</mat-label>
                                 <input matInput type="number" formControlName="phone">
+                                @if (contactUsForm.get('phone')?.hasError('required')) {
+                                  <mat-error>Phone number is required</mat-error>
+                                  }
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="w-full flex items-center px-2">
-                        <button mat-flat-button color="primary" class="primary-btn w-32">Send</button>
+                        <button mat-flat-button color="primary" [disabled]="contactUsForm.invalid" class="submit-btn w-32" (click)="submitContactusDetails()">Send</button>
                         <span class="px-4 text-sm">or</span>
-                        <a class="underline text-primary text-sm flex items-center sans-medium">
+                        <a class="underline text-primary text-sm cursor-pointer flex items-center sans-medium" (click)="contactUsForm.reset()">
                             Reset
                             <mat-icon>restart_alt</mat-icon>
                             <!-- <img src="assets/icons/arrow-right.svg" alt="" class="h-4 w-4 ml-1"> -->

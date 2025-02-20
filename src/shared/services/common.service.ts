@@ -253,4 +253,15 @@ export class CommonService {
       .post(`${this.apiRoot}/upload/uploadDocument`, formData, { headers })
       .pipe(this.handleError());
   }
+
+    // ========== CONTACT-US APIS ========== //
+    contactus(contactDetails: any): Observable<any> {
+      const headers = new HttpHeaders({
+        Authorization: this.token,
+      });
+
+      return this.http
+        .post(`${this.apiRoot}/contactus`, contactDetails, { headers })
+        .pipe(this.handleError());
+    }
 }
