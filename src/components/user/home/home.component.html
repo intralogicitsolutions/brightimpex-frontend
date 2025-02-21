@@ -13,9 +13,9 @@
                     <div class="info-details">
                         Available Sizes:
                         @for (item of currentSlide()?.sizes; track $index; let isLast = $last;) {
-                        <a [routerLink]="'/catalogue/' + currentSlide()?.category" [state]="{filters:{size: item}}"
+                        <a [routerLink]="'/catalogue/' + currentSlide()?.category" [state]="{filters:{size: item.size_id}}"
                             class="underline text-primary">{{
-                            item }}@if(!isLast){,}
+                            item.name }}@if(!isLast){,}
                         </a>
                         @if (!isLast) {
                         <span class="space"></span>
@@ -64,7 +64,7 @@
                 <span class="text-2xl glamore pt-4 text-center lg:text-left lg:text-3xl lg:pt-2">explore our wall tiles</span>
             </div>
             <div class="flex justify-end pt-4 lg:pt-0">
-                <button mat-flat-button color="primary" class="primary-btn">View Wall Tiles</button>
+                <button mat-flat-button color="primary" (click)="goToWallTiles()" class="primary-btn">View Wall Tiles</button>
             </div>
         </div>
         <div class="flex flex-wrap justify-center gap-4 pb-14 lg:pb-20">
@@ -118,7 +118,7 @@
                         experts work around the clock to ensure that the quality of our product is never compromised.
                     </p>
                     <div class="flex pt-4 flex-wrap items-center">
-                        <button mat-flat-button color="primary" class="primary-btn">More About Us</button>
+                        <button mat-flat-button color="primary" (click)="goToAboutUs()" class="primary-btn">More About Us</button>
                         <span class="px-4 text-sm">Or</span>
                         <a routerLink="/contact-us" class="underline text-primary text-sm flex items-center">
                             Contact Us
@@ -142,7 +142,7 @@
                     <div class="flex text-sm text-center explore-text lg:text-xs lg:text-end">
                         If you’d like to view our latest product catalogue you can download it here.
                     </div>
-                    <button mat-flat-button class="location-btn">Download Catalogue</button>
+                    <button (click)="goToCatalogue()" mat-flat-button class="location-btn">Download Catalogue</button>
                 </div>
             </div>
         </div>
@@ -154,7 +154,7 @@
                 <span class="text-sm text-primary text-center lg:text-left">BRIGHT IMPEX BRINGS TO YOU PREMIUM TILES</span>
                 <span class="glamore text-3xl pt-2 text-center px-8 lg:text-left lg:px-0">explore our floor tiles</span>
             </div>
-            <button mat-flat-button color="primary" class="primary-btn">View Floor Tiles</button>
+            <button mat-flat-button color="primary" (click)="goToFloorTiles()" class="primary-btn">View Floor Tiles</button>
         </div>
         <div class="image-container">
             <div class="relative overflow-hidden slider h-full">
@@ -204,7 +204,7 @@
             }
         </div>
         <div class="w-full flex flex-col lg:flex-row pt-4 flex-wrap items-center justify-center">
-            <button mat-flat-button color="primary" class="primary-btn">Explore All</button>
+            <button mat-flat-button color="primary" (click)="goToAllTiles()" class="primary-btn">Explore All</button>
             <span class="pl-4 pr-1 py-2 lg:py-0 text-sm">Couldn’t find what you’re looking for?</span>
             <a routerLink="/contact-us" class="underline text-primary text-sm flex items-center">
                 Contact Us
