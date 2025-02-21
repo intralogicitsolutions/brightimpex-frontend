@@ -60,7 +60,7 @@
         </div>
         <div class="flex flex-col py-16 items-center lg:justify-between lg:flex-row">
             <div class="flex flex-col">
-                <span class="text-primary px-14 text-center text-sm lg:text-left lg:px-0">BRIGHT IMPEX BRINGS TO YOU PREMIUM TILES</span>
+                <span class="text-primary px-14 text-center text-sm sans-medium lg:text-left lg:px-0">BRIGHT IMPEX BRINGS TO YOU PREMIUM TILES</span>
                 <span class="text-2xl glamore pt-4 text-center lg:text-left lg:text-3xl lg:pt-2">explore our wall tiles</span>
             </div>
             <div class="flex justify-end pt-4 lg:pt-0">
@@ -101,7 +101,7 @@
     <div class="w-full">
         <div class="bg-container-1 py-10 px-5 lg:px-0 lg:py-16">
             <div class="flex flex-col justify-center pt-6 pb-12">
-                <span class="text-primary text-sm text-center">BRIGHT IMPEX INTRODUCTION</span>
+                <span class="text-primary text-sm text-center sans-medium">BRIGHT IMPEX INTRODUCTION</span>
                 <span class="text-2xl text-center glamore pt-2 px-10 lg:text-3xl lg:px-0">little about bright impex</span>
             </div>
             <div class="flex flex-col lg:flex-row">
@@ -151,7 +151,7 @@
     <div class="flex flex-col px-5 bg-container trending-section py-10 lg:py-20 lg:px-28">
         <div class="flex flex-col items-center pb-12 lg:flex-row lg:justify-between">
             <div class="flex flex-col pb-2 lg:pb-0">
-                <span class="text-sm text-primary text-center lg:text-left">BRIGHT IMPEX BRINGS TO YOU PREMIUM TILES</span>
+                <span class="text-sm text-primary text-center sans-medium lg:text-left">BRIGHT IMPEX BRINGS TO YOU PREMIUM TILES</span>
                 <span class="glamore text-3xl pt-2 text-center px-8 lg:text-left lg:px-0">explore our floor tiles</span>
             </div>
             <button mat-flat-button color="primary" class="primary-btn">View Floor Tiles</button>
@@ -160,7 +160,7 @@
             <div class="relative overflow-hidden slider h-full">
                 <div class="flex transition-transform duration-500 h-full w-full"
                     [ngStyle]="{ transform: 'translateX(' + currentTrendingSlideTranslate() + '%)' }">
-                    <img *ngFor="let image of trendingImages()" [src]="image?.img" alt="Image"
+                    <img *ngFor="let image of floorImages()" [src]="image?.img" alt="Image"
                         class="w-full flex-shrink-0 object-cover">
                 </div>
 
@@ -187,7 +187,7 @@
 
     <div class="w-full px-5 lg:px-14 flex flex-col py-10 lg:py-20">
         <div class="flex flex-col pb-10 lg:pb-20">
-            <span class="text-center text-primary text-sm">
+            <span class="text-center text-primary text-sm sans-medium">
                 OUR MESMERIZING RANGE OF DESIGNER TILES
             </span>
             <span class="text-2xl text-center glamore lg:text-3xl pt-2">

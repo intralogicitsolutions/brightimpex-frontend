@@ -254,14 +254,27 @@ export class CommonService {
       .pipe(this.handleError());
   }
 
-    // ========== CONTACT-US APIS ========== //
-    contactus(contactDetails: any): Observable<any> {
-      const headers = new HttpHeaders({
-        Authorization: this.token,
-      });
+  // ========== CONTACT US APIS ========== //
+  contactus(contactDetails: any): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: this.token,
+    });
 
-      return this.http
-        .post(`${this.apiRoot}/contactus`, contactDetails, { headers })
-        .pipe(this.handleError());
-    }
+    return this.http
+      .post(`${this.apiRoot}/contact-us/query`, contactDetails, { headers })
+      .pipe(this.handleError());
+  }
+
+  // ========== COMMON APIS ========== //
+  getCountries(): Observable<any> {
+    return this.http
+      .get(`${this.apiRoot}/common/get-country-list`)
+      .pipe(this.handleError());
+  }
+
+  getCities(countryCode: string): Observable<any> {
+    return this.http
+      .get(`${this.apiRoot}/common/get-city-list`, { params: { countryCode } })
+      .pipe(this.handleError());
+  }
 }

@@ -8,8 +8,14 @@
                 <div class="flex flex-col w-1/2 lg:w-full">
                     <span class="contact-header">Contact Info</span>
                     <div class="contact-info">
-                        <span>{{phone}}</span>
-                        <span>{{email}}</span>
+                        <span>
+                            <a href="tel:{{phone}}" class="no-underline hover:underline">{{phone}}</a>
+                            <!-- {{phone}} -->
+                        </span>
+                        <span>
+                            <a href="mailto:{{email}}" class="no-underline hover:underline">{{email}}</a>
+                            <!-- {{email}} -->
+                        </span>
                     </div>
                 </div>
                 <div class="flex flex-wrap w-1/2 pl-4 lg:w-full lg:pl-0">

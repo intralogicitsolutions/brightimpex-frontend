@@ -22,7 +22,7 @@ import { RouterLink } from '@angular/router';
 export class HomeComponent implements OnInit {
   title = 'Bright Impex';
   images: WritableSignal<Array<any>> = signal([]);
-  trendingImages: WritableSignal<Array<any>> = signal([]);
+  floorImages: WritableSignal<Array<any>> = signal([]);
   catalogueImages: WritableSignal<Array<any>> = signal([]);
   productImages: WritableSignal<Array<any>> = signal([]);
   isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1024);
@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
   // Trending Slider
   currentTrendingSlideIndex: WritableSignal<number> = signal(0);
   currentTrendingSlide: Signal<any> = computed(
-    () => this.trendingImages()?.[this.currentTrendingSlideIndex()]
+    () => this.floorImages()?.[this.currentTrendingSlideIndex()]
   );
   currentTrendingSlideTranslate: Signal<number> = computed(
     () => -this.currentTrendingSlideIndex() * 100
@@ -68,14 +68,14 @@ export class HomeComponent implements OnInit {
         category: '679303037665aeadd2a0a1a6',
       },
       {
-        img: '/assets/images/home/home-1.jpg',
+        img: '/assets/images/home/home-4.jpg',
         name: 'PARKING COLLECTION',
         sizes: ['24X12 mm', '18X12 mm'],
         category: '6793031e7665aeadd2a0a1aa',
       },
     ]);
 
-    this.trendingImages.set([
+    this.floorImages.set([
       {
         img: '/assets/images/home/home-4.jpg',
         name: 'BATHROOM FLOOR',
@@ -83,10 +83,6 @@ export class HomeComponent implements OnInit {
       {
         img: '/assets/images/home/home-1.jpg',
         name: 'KITCHEN FLOOR',
-      },
-      {
-        img: '/assets/images/home/home-2.jpg',
-        name: 'BATHROOM FLOOR',
       },
     ]);
 
@@ -154,7 +150,7 @@ export class HomeComponent implements OnInit {
   }
 
   nextTrendingSlide() {
-    if (this.currentTrendingSlideIndex() < this.trendingImages().length - 1) {
+    if (this.currentTrendingSlideIndex() < this.floorImages().length - 1) {
       this.currentTrendingSlideIndex.update((index) => index + 1);
     } else {
       this.currentTrendingSlideIndex.set(0); // Loop back to the first image
@@ -165,7 +161,7 @@ export class HomeComponent implements OnInit {
     if (this.currentTrendingSlideIndex() > 0) {
       this.currentTrendingSlideIndex.update((index) => index - 1);
     } else {
-      this.currentTrendingSlideIndex.set(this.trendingImages().length - 1); // Loop to the last image
+      this.currentTrendingSlideIndex.set(this.floorImages().length - 1); // Loop to the last image
     }
   }
 }

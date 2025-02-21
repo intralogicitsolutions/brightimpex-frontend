@@ -68,6 +68,7 @@ export class CatalogueComponent implements OnInit {
   isCategorySelected: boolean = true;
   selectedCategoryIndex: number = 0;
   serverUrl: string = `${environment.apiRoot}/`;
+  stateData: any;
 
   categoryForm!: FormGroup;
   sizeForm!: FormGroup;
@@ -189,9 +190,9 @@ export class CatalogueComponent implements OnInit {
 
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
-      const stateData: any = navigation.extras.state;
-      if (stateData?.filters) {
-        console.log({ filters: stateData?.filters });
+      this.stateData = navigation.extras.state;
+      if (this.stateData?.filters) {
+        console.log({ filters: this.stateData?.filters });
       }
     }
 
@@ -236,9 +237,9 @@ export class CatalogueComponent implements OnInit {
     this.isAdmin = this.commonService.isAdmin;
 
     this.loadCatalogueCatagories();
-    this.loadCatalogueSizes();
     this.loadCatalogueSeries();
     this.loadCatalogues();
+    this.loadCatalogueSizes();
 
     this.categoryForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -326,6 +327,18 @@ export class CatalogueComponent implements OnInit {
       next: (response: IResponse<any>) => {
         if (response?.success == 1) {
           this.catalogueSizes.set(response?.body || []);
+          if (this.stateData?.filters?.size) {
+            const sizeId = this.stateData?.filters?.size;
+            this.catalogueSizes.update((sizes) => {
+              const index = sizes.findIndex((e: any) => e?._id === sizeId);
+
+              if (index !== -1) {
+                sizes[index]['checked'] = true;
+                this.selectedCatalogueSizes.set([sizes[index]]);
+              }
+              return sizes;
+            });
+          }
         } else {
           console.error(response?.msg);
         }
