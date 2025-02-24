@@ -63,4 +63,8 @@ export class AboutUsComponent implements OnInit {
   navigateToContactus = () => {
     this.router.navigate(['/contact-us']);
   };
+
+  goToCatalogue = () => {
+    this.router.navigate(['/catalogue']);
+  }
 }
