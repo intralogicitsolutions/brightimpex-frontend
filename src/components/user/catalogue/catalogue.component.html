@@ -81,7 +81,7 @@
             }
 
             @if (isAdmin()) {
-            <a class="catalogue-menu cursor-pointer" (click)="openCategoryDialog()">
+            <a class="catalogue-menu cursor-pointer" (click)="cate()">
                 <mat-icon>add</mat-icon>
             </a>
             }
@@ -242,7 +242,7 @@
                 <div class="flex flex-wrap w-full pt-4">
                     @for (size of filteredCatalogueSizes(); track size?._id) {
                     <div class="w-1/2 flex">
-                        <mat-checkbox color="primary" class="filter-checkbox" [(ngModel)]="size.checked"
+                        <mat-checkbox color="primary" class="filter-checkbox" [(ngModel)]="size.checked" [checked]="size.checked"
                             (change)="changeSize()" [disabled]="size?.disabled">{{size?.height}} X {{size?.width}}
                             {{size?.unit}}
                         </mat-checkbox>
