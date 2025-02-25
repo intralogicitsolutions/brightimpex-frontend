@@ -103,12 +103,12 @@ export class ContactUsComponent implements OnInit {
         if (response?.success == 1) {
           this.countries.set(response?.body || []);
 
-          this.filteredCountries = this.contactUsForm
-            ?.get('country')
-            ?.valueChanges.pipe(
-              startWith(''),
-              map((value) => this._filterCountry(value || ''))
-            );
+          // this.filteredCountries = this.contactUsForm
+          //   ?.get('country')
+          //   ?.valueChanges.pipe(
+          //     startWith(''),
+          //     map((value) => this._filterCountry(value || ''))
+          //   );
         } else {
           console.error(response?.msg);
         }
@@ -117,18 +117,17 @@ export class ContactUsComponent implements OnInit {
     });
   }
 
-  loadCities(countryCode: string) {
-    this.commonService.getCities(countryCode).subscribe({
+  loadCities(countryId: string) {
+    this.commonService.getCities(countryId).subscribe({
       next: (response: IResponse<any>) => {
         if (response?.success == 1) {
-          this.cities.set(response?.body || []);
-
-          this.filteredCities = this.contactUsForm
-            ?.get('city')
-            ?.valueChanges.pipe(
-              startWith(''),
-              map((value) => this._filterCity(value || ''))
-            );
+          this.cities.set(response?.body[0] || []);
+          // this.filteredCities = this.contactUsForm
+          //   ?.get('city')
+          //   ?.valueChanges.pipe(
+          //     startWith(''),
+          //     map((value) => this._filterCity(value || ''))
+          //   );
         } else {
           console.error(response?.msg);
         }
@@ -139,11 +138,11 @@ export class ContactUsComponent implements OnInit {
 
   onCountryChange(event: MatAutocompleteSelectedEvent) {
     const selectedCountry = event?.option?.value;
-    const countryCode = this.countries().find(
+    const countryId = this.countries().find(
       (country: any) => country?.name == selectedCountry
-    )?.code;
+    )?._id;
 
-    this.loadCities(countryCode);
+    this.loadCities(countryId);
   }
 
   submitContactusDetails = () => {

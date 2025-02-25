@@ -272,9 +272,11 @@ export class CommonService {
       .pipe(this.handleError());
   }
 
-  getCities(countryCode: string): Observable<any> {
+  getCities(countryId: string): Observable<any> {
+
     return this.http
-      .get(`${this.apiRoot}/common/get-city-list`, { params: { countryCode } })
+      .get(`${this.apiRoot}/common/get-cities-list/${countryId}`)
       .pipe(this.handleError());
+
   }
 }
