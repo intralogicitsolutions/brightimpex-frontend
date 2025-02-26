@@ -68,6 +68,7 @@ export class CatalogueComponent implements OnInit {
   isCategorySelected: boolean = true;
   selectedCategoryIndex: number = 0;
   serverUrl: string = `${environment.apiRoot}/`;
+  stateData: any;
 
   categoryForm!: FormGroup;
   sizeForm!: FormGroup;
@@ -78,8 +79,6 @@ export class CatalogueComponent implements OnInit {
   sizeDialogRef!: MatDialogRef<any>;
   seriesDialogRef!: MatDialogRef<any>;
   catalogueDialogRef!: MatDialogRef<any>;
-
-  stateData:any;
 
   isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1024);
   isCategoryLoaded: WritableSignal<boolean> = signal(false);
@@ -193,8 +192,7 @@ export class CatalogueComponent implements OnInit {
     if (navigation?.extras.state) {
       this.stateData = navigation.extras.state;
       // if (this.stateData?.filters) {
-
-       // console.log({ filters: this.stateData });
+      //   console.log({ filters: this.stateData?.filters });
       // }
     }
 
@@ -239,9 +237,9 @@ export class CatalogueComponent implements OnInit {
     this.isAdmin = this.commonService.isAdmin;
 
     this.loadCatalogueCatagories();
-    this.loadCatalogueSizes();
     this.loadCatalogueSeries();
     this.loadCatalogues();
+    this.loadCatalogueSizes();
 
     this.categoryForm = this.fb.group({
       name: ['', [Validators.required]],
