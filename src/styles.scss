@@ -201,6 +201,11 @@ body {
   background-color: #fff;
 }
 
+// MAT SPINNER //
+.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: var(--primary-color) !important;
+}
+
 // ========= SCROLLBAR ========== //
 // .custom-scrollbar::-webkit-scrollbar {
 //   visibility: hidden;

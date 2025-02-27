@@ -25,6 +25,7 @@ import { CommonService } from '../../../shared/services/common.service';
 import { SnackbarService } from '../../../shared/services/snackbar.service';
 import { map, Observable, startWith } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-contact-us',
@@ -59,7 +60,8 @@ export class ContactUsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
-    private _snackbar: SnackbarService
+    private _snackbar: SnackbarService,
+    private loaderService: LoaderService
   ) {}
 
   ngOnInit(): void {
@@ -67,7 +69,7 @@ export class ContactUsComponent implements OnInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       message: ['', Validators.required],
-      city: ['', Validators.required],
+      city: [{ value: '', disabled: true }, Validators.required],
       country: ['', Validators.required],
       phone: ['', Validators.required],
     });
@@ -90,7 +92,7 @@ export class ContactUsComponent implements OnInit {
     const filterValue = value.toLowerCase();
     if (filterValue) {
       return this.cities().filter((city: any) =>
-        city?.name?.toLowerCase().includes(filterValue)
+        city?.toLowerCase().includes(filterValue)
       );
     } else {
       return this.cities();
@@ -98,22 +100,26 @@ export class ContactUsComponent implements OnInit {
   }
 
   loadCountries() {
+    this.loaderService.showLoader();
     this.commonService.getCountries().subscribe({
       next: (response: IResponse<any>) => {
         if (response?.success == 1) {
           this.countries.set(response?.body || []);
 
-          // this.filteredCountries = this.contactUsForm
-          //   ?.get('country')
-          //   ?.valueChanges.pipe(
-          //     startWith(''),
-          //     map((value) => this._filterCountry(value || ''))
-          //   );
+          this.filteredCountries = this.contactUsForm
+            ?.get('country')
+            ?.valueChanges.pipe(
+              startWith(''),
+              map((value) => this._filterCountry(value || ''))
+            );
         } else {
           console.error(response?.msg);
         }
+        this.loaderService.hideLoader();
       },
-      error: (err) => {},
+      error: (err) => {
+        this.loaderService.hideLoader();
+      },
     });
   }
 
@@ -121,13 +127,13 @@ export class ContactUsComponent implements OnInit {
     this.commonService.getCities(countryId).subscribe({
       next: (response: IResponse<any>) => {
         if (response?.success == 1) {
-          this.cities.set(response?.body[0] || []);
-          // this.filteredCities = this.contactUsForm
-          //   ?.get('city')
-          //   ?.valueChanges.pipe(
-          //     startWith(''),
-          //     map((value) => this._filterCity(value || ''))
-          //   );
+          this.cities.set(response?.body[0].cities || []);
+          this.filteredCities = this.contactUsForm
+            ?.get('city')
+            ?.valueChanges.pipe(
+              startWith(''),
+              map((value) => this._filterCity(value || ''))
+            );
         } else {
           console.error(response?.msg);
         }
@@ -143,10 +149,10 @@ export class ContactUsComponent implements OnInit {
     )?._id;
 
     this.loadCities(countryId);
+    this.contactUsForm.get('city')?.enable();
   }
 
   submitContactusDetails = () => {
-    console.log(this.contactUsForm.value);
     this.commonService.contactus(this.contactUsForm.value).subscribe({
       next: (response: IResponse<any>) => {
         if (response?.success == 1) {

@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { CommonService } from '../../../shared/services/common.service';
 import { IResponse } from '../../../shared/interfaces/response-i';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -55,7 +56,11 @@ export class HomeComponent implements OnInit {
     this.isMobileView.set(window.innerWidth < 1024);
   }
 
-  constructor(private router: Router, private commonService: CommonService) {}
+  constructor(
+    private router: Router,
+    private commonService: CommonService,
+    private loaderService: LoaderService
+  ) {}
 
   ngOnInit(): void {
     this.images.set([
@@ -171,61 +176,62 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  goToWallTiles = () => {
+  goToWallTiles() {
     this.router.navigate(['/catalogue/679302f17665aeadd2a0a1a4']);
-  };
+  }
 
-  goToFloorTiles = () => {
+  goToFloorTiles() {
     this.router.navigate(['/catalogue/679303037665aeadd2a0a1a6']);
-  };
+  }
 
-  goToAllTiles = () => {
+  goToAllTiles() {
     this.router.navigate(['/catalogue/all']);
-  };
+  }
 
-  goToCatalogue = () => {
+  goToCatalogue() {
     this.router.navigate(['/catalogue']);
   }
 
-  goToAboutUs = () => {
+  goToAboutUs() {
     this.router.navigate(['about-us']);
   }
 
-  updateCatalogue = () => {
+  updateCatalogue() {
+    this.loaderService.showLoader();
     this.commonService.getCatalogues().subscribe({
       next: (response: IResponse<any>) => {
         if (response?.success == 1) {
-            this.images.update((imgs: any[]) => {
-              // Return the updated array
-              return imgs.map((catalogueImg: any) => {
-                const filteredCategory = response.body.filter((cat: any) => {
-                  return cat.category_id._id == catalogueImg.category;
-                });
-
-                // Take the first two categories, if available
-                const twoCategory = filteredCategory.slice(0, 2);
-
-                // Extract sizes
-                const sizes = twoCategory.map((category: any) => {
-                  return {
-                    name: `${category?.size_id?.height}X${category?.size_id?.width} ${category?.size_id?.unit}`,
-                    size_id: category?.size_id?._id, // Assigning _id to the key 'size_id'
-                  };
-                });
-
-                // Attach sizes to the catalogue image
-                catalogueImg.sizes = sizes;
-
-                return catalogueImg; // Return the modified catalogueImg
+          this.images.update((imgs: any[]) => {
+            // Return the updated array
+            return imgs.map((catalogueImg: any) => {
+              const filteredCategory = response.body.filter((cat: any) => {
+                return cat.category_id._id == catalogueImg.category;
               });
+
+              // Take the first two categories, if available
+              const twoCategory = filteredCategory.slice(0, 2);
+
+              // Extract sizes
+              const sizes = twoCategory.map((category: any) => {
+                return {
+                  name: `${category?.size_id?.height}X${category?.size_id?.width} ${category?.size_id?.unit}`,
+                  size_id: category?.size_id?._id, // Assigning _id to the key 'size_id'
+                };
+              });
+
+              // Attach sizes to the catalogue image
+              catalogueImg.sizes = sizes;
+
+              return catalogueImg; // Return the modified catalogueImg
             });
-            console.log(this.images()); // Ensure this logs the updated images
-          }
+          });
+        }
+        this.loaderService.hideLoader();
       },
       error: (err) => {
+        this.loaderService.hideLoader();
         console.error('Error fetching catalogues:', err);
       },
     });
-
-  };
+  }
 }

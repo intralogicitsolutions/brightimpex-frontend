@@ -191,9 +191,6 @@ export class CatalogueComponent implements OnInit {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
       this.stateData = navigation.extras.state;
-      // if (this.stateData?.filters) {
-      //   console.log({ filters: this.stateData?.filters });
-      // }
     }
 
     effect(() => {

@@ -60,11 +60,11 @@ export class AboutUsComponent implements OnInit {
     ]);
   }
 
-  navigateToContactus = () => {
+  navigateToContactus() {
     this.router.navigate(['/contact-us']);
-  };
+  }
 
-  goToCatalogue = () => {
+  goToCatalogue() {
     this.router.navigate(['/catalogue']);
   }
 }

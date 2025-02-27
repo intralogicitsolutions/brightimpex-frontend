@@ -64,7 +64,7 @@ export class SignupComponent {
         }
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
         this._snackbar.error(err?.msg);
       },
     });

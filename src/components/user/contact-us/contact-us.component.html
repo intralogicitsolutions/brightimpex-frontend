@@ -86,7 +86,7 @@
                                     [matAutocomplete]="country">
                                 <mat-autocomplete autoActiveFirstOption #country="matAutocomplete"
                                     (optionSelected)="onCountryChange($event)">
-                                    @for (country of countries(); track country?._id) {
+                                    @for (country of (filteredCountries | async); track country?._id) {
                                     <mat-option [value]="country?.name">{{country?.name}}</mat-option>
                                     }
                                 </mat-autocomplete>
@@ -108,7 +108,7 @@
                                 <input type="text" placeholder="City Name" matInput formControlName="city"
                                     [matAutocomplete]="city">
                                 <mat-autocomplete autoActiveFirstOption #city="matAutocomplete">
-                                    @for (city of cities().cities; track city?._id) {
+                                    @for (city of (filteredCities | async); track city?._id) {
                                     <mat-option [value]="city">{{city}}</mat-option>
                                     }
                                 </mat-autocomplete>
