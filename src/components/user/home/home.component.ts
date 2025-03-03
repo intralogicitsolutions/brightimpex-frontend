@@ -176,24 +176,8 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  goToWallTiles() {
-    this.router.navigate(['/catalogue/679302f17665aeadd2a0a1a4']);
-  }
-
-  goToFloorTiles() {
-    this.router.navigate(['/catalogue/679303037665aeadd2a0a1a6']);
-  }
-
-  goToAllTiles() {
-    this.router.navigate(['/catalogue/all']);
-  }
-
-  goToCatalogue() {
-    this.router.navigate(['/catalogue']);
-  }
-
-  goToAboutUs() {
-    this.router.navigate(['about-us']);
+  navigate(route: string) {
+    this.router.navigate([route]);
   }
 
   updateCatalogue() {

@@ -124,6 +124,7 @@ export class ContactUsComponent implements OnInit {
   }
 
   loadCities(countryId: string) {
+    this.loaderService.showLoader();
     this.commonService.getCities(countryId).subscribe({
       next: (response: IResponse<any>) => {
         if (response?.success == 1) {
@@ -137,8 +138,11 @@ export class ContactUsComponent implements OnInit {
         } else {
           console.error(response?.msg);
         }
+        this.loaderService.hideLoader();
       },
-      error: (err) => {},
+      error: (err) => {
+        this.loaderService.hideLoader();
+      },
     });
   }
 
@@ -152,22 +156,28 @@ export class ContactUsComponent implements OnInit {
     this.contactUsForm.get('city')?.enable();
   }
 
-  submitContactusDetails = () => {
-    this.commonService.contactus(this.contactUsForm.value).subscribe({
-      next: (response: IResponse<any>) => {
-        if (response?.success == 1) {
-          this._snackbar.success('Contact query sent successfully.');
-        } else {
-          this._snackbar.error(response?.msg);
-        }
-      },
-      error: (err) => {
-        this._snackbar.error(
-          err?.msg ||
-            err?.message ||
-            'Something went wrong, please try again later.'
-        );
-      },
-    });
+  submitContactusDetails() {
+    if(this.contactUsForm.valid) {
+      this.loaderService.showLoader();
+      this.commonService.contactus(this.contactUsForm.value).subscribe({
+        next: (response: IResponse<any>) => {
+          if (response?.success == 1) {
+            this.contactUsForm.reset();
+            this._snackbar.success('Contact query sent successfully.');
+          } else {
+            this._snackbar.error(response?.msg);
+          }
+          this.loaderService.hideLoader();
+        },
+        error: (err) => {
+          this.loaderService.hideLoader();
+          this._snackbar.error(
+            err?.msg ||
+              err?.message ||
+              'Something went wrong, please try again later.'
+          );
+        },
+      });
+    }
   };
 }

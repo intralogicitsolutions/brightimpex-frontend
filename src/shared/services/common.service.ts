@@ -256,12 +256,12 @@ export class CommonService {
 
   // ========== CONTACT US APIS ========== //
   contactus(contactDetails: any): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: this.token,
-    });
+    // const headers = new HttpHeaders({
+    //   Authorization: this.token,
+    // });
 
     return this.http
-      .post(`${this.apiRoot}/contact-us/query`, contactDetails, { headers })
+      .post(`${this.apiRoot}/contact-us/query`, contactDetails)
       .pipe(this.handleError());
   }
 

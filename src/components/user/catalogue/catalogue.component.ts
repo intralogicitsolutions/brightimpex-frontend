@@ -168,6 +168,10 @@ export class CatalogueComponent implements OnInit {
     return catalogues;
   });
 
+  displayedCataloguesIds: Signal<string[]> = computed(() => {
+    return this.filteredCatalogues().filter((e) => !e?.isHiddenBySize && !e?.isHiddenBySeries)?.map((e) => e?._id);
+  })
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -195,6 +199,7 @@ export class CatalogueComponent implements OnInit {
 
     effect(() => {
       const catalogues = this.filteredCatalogues();
+      const displayedCatalogueIds = this.displayedCataloguesIds();
 
       this.catalogueSizeIds.set(
         catalogues
@@ -208,8 +213,17 @@ export class CatalogueComponent implements OnInit {
           ?.map((e: any) => e?.series_id?._id)
       );
 
-      if (!this.isMobileView()) {
-        this.loadedCataloguesCount.set(this.filteredCatalogues()?.length);
+      const catalogueIndex = catalogues.findIndex(
+        (e) =>
+          e?._id ==
+          (displayedCatalogueIds?.[7] ||
+            displayedCatalogueIds?.[displayedCatalogueIds?.length - 1])
+      );
+
+      if(catalogueIndex !== -1) {
+        this.loadedCataloguesCount.set(catalogueIndex + 1);
+      } else {
+        this.loadedCataloguesCount.set(8);
       }
     });
   }
@@ -217,11 +231,7 @@ export class CatalogueComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.isMobileView.set(window.innerWidth < 1024);
-    if (!this.isMobileView()) {
-      this.loadedCataloguesCount.set(this.filteredCatalogues()?.length);
-    } else {
-      this.loadedCataloguesCount.set(8);
-    }
+    this.loadedCataloguesCount.set(8);
   }
 
   get catalogueProductLength(): number {
@@ -378,35 +388,43 @@ export class CatalogueComponent implements OnInit {
   }
 
   onPreview(doc_url: string) {
-    window.open(`${this.serverUrl}${doc_url}`, '_blank');
+    if(doc_url) {
+      window.open(`${this.serverUrl}${doc_url}`, '_blank');
+    } else {
+      this._snackbar.error('Catalogue document not found');
+    }
   }
 
   onDownload(doc_url: string, catalogueName: string) {
-    const fileUrl = `${this.serverUrl}${doc_url}`;
-    const fileName = `${catalogueName}.pdf`;
-
-    fetch(fileUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Error downloading the file');
-        }
-        return response.blob();
-      })
-      .then((blob) => {
-        const link = document.createElement('a');
-        const objectUrl = URL.createObjectURL(blob);
-
-        link.href = objectUrl;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-
-        URL.revokeObjectURL(objectUrl);
-      })
-      .catch((error) => {
-        console.error('Error downloading the file:', error);
-      });
+    if(doc_url) {
+      const fileUrl = `${this.serverUrl}${doc_url}`;
+      const fileName = `${catalogueName}.pdf`;
+  
+      fetch(fileUrl)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Error downloading the file');
+          }
+          return response.blob();
+        })
+        .then((blob) => {
+          const link = document.createElement('a');
+          const objectUrl = URL.createObjectURL(blob);
+  
+          link.href = objectUrl;
+          link.download = fileName;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+  
+          URL.revokeObjectURL(objectUrl);
+        })
+        .catch((error) => {
+          console.error('Error downloading the file:', error);
+        });
+    } else {
+      this._snackbar.error('Catalogue document not found');
+    }
   }
 
   toggleFilter() {

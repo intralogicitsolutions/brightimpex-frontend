@@ -141,73 +141,89 @@
                 </div>
             </div>
 
-            <div class="flex flex-wrap catalogues-list">
-                @for (catalogue of filteredCatalogues().slice(0, this.loadedCataloguesCount()); track catalogue?._id) {
-                @if (!catalogue?.isHiddenBySize && !catalogue?.isHiddenBySeries) {
-                <div class="catalogue">
-                    <div class="group relative overflow-hidden">
-                        <img [ngSrc]="serverUrl + catalogue?.image_path" width="210" height="324" alt=""
-                            class="catalogue-img w-full"
-                            [ngClass]="{'transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm': !isMobileView()}" />
-
-                        @if (!isMobileView()) {
-                        <div
-                            class="absolute inset-0 flex flex-col items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <div class="flex">
-                                <button (click)="onPreview(catalogue?.catalogue_doc_path)"
-                                    class="text-white py-2 mx-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                    <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
+            <div class="flex flex-col" style="width: 80%;">
+                <div class="flex flex-wrap catalogues-list">
+                    @for (catalogue of filteredCatalogues().slice(0, loadedCataloguesCount()); track catalogue?._id;) {
+                    @if (!catalogue?.isHiddenBySize && !catalogue?.isHiddenBySeries) {
+                    <div class="catalogue">
+                        <div class="group relative overflow-hidden">
+                            <img [ngSrc]="serverUrl + catalogue?.image_path" width="210" height="324" alt=""
+                                class="catalogue-img w-full"
+                                [ngClass]="{'transition-tramsform duration-500 ease-in-out group-hover:scale-110 group-hover:blur-sm': !isMobileView()}" />
+    
+                            @if (!isMobileView()) {
+                            <div
+                                class="absolute inset-0 flex flex-col items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <div class="flex">
+                                    <button (click)="onPreview(catalogue?.catalogue_doc_path)"
+                                        class="text-white py-2 mx-2 rounded-md transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
+                                        <img src="assets/icons/preview.svg" alt="" class="w-14 h-14">
+                                    </button>
+                                    <button (click)="onDownload(catalogue?.catalogue_doc_path, catalogue?.name)"
+                                        class="text-white py-2 mx-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
+                                        <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
+                                    </button>
+                                </div>
+                                @if (isAdmin()) {
+                                <button (click)="openCatalogueDialog(catalogue)"
+                                    class="catalogue-edit-btn text-white rounded-md transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                                    <mat-icon>edit</mat-icon>
                                 </button>
-                                <button (click)="onDownload(catalogue?.catalogue_doc_path, catalogue?.name)"
-                                    class="text-white py-2 mx-2 rounded-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500">
-                                    <img src="assets/icons/download.svg" alt="" class="w-14 h-14">
-                                </button>
+                                }
                             </div>
-                            @if (isAdmin()) {
-                            <button (click)="openCatalogueDialog(catalogue)"
-                                class="catalogue-edit-btn text-white rounded-md transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                                <mat-icon>edit</mat-icon>
-                            </button>
                             }
                         </div>
-                        }
-                    </div>
-                    <div class="flex flex-col w-full pt-2">
-                        <span class="name">{{catalogue?.name}}</span>
-                        <span class="info">
-                            <span>{{catalogue?.size}}</span>
-                            <span class="bullet"></span>
-                            <span>{{catalogue?.series_id?.name}}</span>
-                        </span>
-                        @if (isMobileView()) {
-                        <div class="info">
-                            <span class="underline text-primary sans-medium cursor-pointer"
-                                (click)="onPreview(catalogue?.catalogue_doc_path)">View</span>
-                            <span class="bullet"></span>
-                            <span class="underline text-primary sans-medium cursor-pointer"
-                                (click)="onDownload(catalogue?.catalogue_doc_path, catalogue?.name)">Download</span>
-                            <span class="bullet"></span>
-                            <span class="underline text-primary sans-medium cursor-pointer"
-                                (click)="openCatalogueDialog(catalogue)">Modify</span>
+                        <div class="flex flex-col w-full pt-2">
+                            <span class="name">{{catalogue?.name}}</span>
+                            <span class="info">
+                                <span>{{catalogue?.size}}</span>
+                                <span class="bullet"></span>
+                                <span>{{catalogue?.series_id?.name}}</span>
+                            </span>
+                            @if (isMobileView()) {
+                            <div class="info">
+                                <span class="underline text-primary sans-medium cursor-pointer"
+                                    (click)="onPreview(catalogue?.catalogue_doc_path)">View</span>
+                                <span class="bullet"></span>
+                                <span class="underline text-primary sans-medium cursor-pointer"
+                                    (click)="onDownload(catalogue?.catalogue_doc_path, catalogue?.name)">Download</span>
+                                @if (isAdmin()) {
+                                <span class="bullet"></span>
+                                <span class="underline text-primary sans-medium cursor-pointer" (click)="openCatalogueDialog(catalogue)">Modify</span>
+                                }
+                            </div>
+                            }
                         </div>
-                        }
                     </div>
+                    }
+                    }
+    
+                    @if (isAdmin()) {
+                    <div class="catalogue flex justify-center items-center cursor-pointer add-catalogue-btn"
+                        (click)="openCatalogueDialog()">
+                        <mat-icon class="add-catalogue-icon">add</mat-icon>
+                    </div>
+                    }
                 </div>
-                }
-                }
-
-                @if (isAdmin()) {
-                <div class="catalogue flex justify-center items-center cursor-pointer add-catalogue-btn"
-                    (click)="openCatalogueDialog()">
-                    <mat-icon class="add-catalogue-icon">add</mat-icon>
-                </div>
+                @if (!isMobileView()) {
+                    <div class="w-full flex justify-center items-center py-12">
+                        @if (loadedCataloguesCount() < filteredCatalogues().length) { <button mat-flat-button color="primary"
+                            class="primary-btn" (click)="loadMoreCatalogues()">
+                            Load More
+                            </button>
+                            }
+                            <span class="pt-2 text-sm px-4">Couldn’t find what you’re looking for?</span>
+                            <a routerLink="/contact-us" class="underline text-primary text-sm flex items-center pt-2 sans-medium">
+                                Contact Us
+                            </a>
+                    </div>
                 }
             </div>
         </div>
         @if (isMobileView()) {
         <div class="w-full flex justify-center flex-col items-center py-12">
-            @if (this.loadedCataloguesCount() < this.filteredCatalogues().length) { <button mat-flat-button
-                color="primary" class="primary-btn" (click)="loadMoreCatalogues()">
+            @if (loadedCataloguesCount() < filteredCatalogues().length) { <button mat-flat-button color="primary"
+                class="primary-btn" (click)="loadMoreCatalogues()">
                 Load More
                 </button>
                 }
