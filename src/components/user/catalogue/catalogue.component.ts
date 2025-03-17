@@ -63,6 +63,7 @@ export class CatalogueComponent implements OnInit {
   @ViewChild('CategoryTemplate') CategoryTemplate!: TemplateRef<any>;
   @ViewChild('SizeTemplate') SizeTemplate!: TemplateRef<any>;
   @ViewChild('SeriesTemplate') SeriesTemplate!: TemplateRef<any>;
+  @ViewChild('MaterialTemplate') MaterialTemplate!: TemplateRef<any>;
   @ViewChild('CatalogueTemplate') CatalogueTemplate!: TemplateRef<any>;
   isFilterOpened: boolean = false;
   isCategorySelected: boolean = true;
@@ -73,11 +74,13 @@ export class CatalogueComponent implements OnInit {
   categoryForm!: FormGroup;
   sizeForm!: FormGroup;
   seriesForm!: FormGroup;
+  materialForm!: FormGroup;
   catalogueForm!: FormGroup;
 
   categoryDialogRef!: MatDialogRef<any>;
   sizeDialogRef!: MatDialogRef<any>;
   seriesDialogRef!: MatDialogRef<any>;
+  materialDialogRef!: MatDialogRef<any>;
   catalogueDialogRef!: MatDialogRef<any>;
 
   isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1024);
@@ -87,15 +90,19 @@ export class CatalogueComponent implements OnInit {
   catalogues: WritableSignal<any[]> = signal([]);
   catalogueSizes: WritableSignal<any> = signal([]);
   catalogueSeries: WritableSignal<any> = signal([]);
+  catalogueMaterial: WritableSignal<any> = signal([]);
   catalogueSizeIds: WritableSignal<string[]> = signal([]);
   catalogueSeriesIds: WritableSignal<string[]> = signal([]);
+  catalogueMaterialIds: WritableSignal<string[]> = signal([]);
   selectedCatalogueSizes: WritableSignal<any[]> = signal([]);
   selectedCatalogueSeries: WritableSignal<any[]> = signal([]);
+  selectedCatalogueMaterial: WritableSignal<any[]> = signal([]);
   loadedCataloguesCount: WritableSignal<number> = signal(8);
 
   selectedCategory: WritableSignal<any> = signal(null);
   selectedSize: WritableSignal<any> = signal(null);
   selectedSeries: WritableSignal<any> = signal(null);
+  selectedMaterial: WritableSignal<any> = signal(null);
   selectedCatalogue: WritableSignal<any> = signal(null);
 
   isAdmin: WritableSignal<boolean> = signal(false);
@@ -126,6 +133,19 @@ export class CatalogueComponent implements OnInit {
     });
   });
 
+  filteredCatalogueMaterial: Signal<any> = computed(() => {
+    const cataloguesMaterialIds = this.catalogueMaterialIds();
+    return this.catalogueMaterial()?.map((e: any) => {
+      if (cataloguesMaterialIds?.includes(e?._id)) {
+        e['disabled'] = false;
+      } else {
+        e['disabled'] = true;
+        e['checked'] = false;
+      }
+      return e;
+    });
+  });
+
   filteredCatalogues: Signal<any[]> = computed(() => {
     let catalogues;
 
@@ -143,12 +163,15 @@ export class CatalogueComponent implements OnInit {
       this.selectedCatalogueSizes()?.map((e) => e?._id) || [];
     const selectedSeries =
       this.selectedCatalogueSeries()?.map((e) => e?._id) || [];
+    const selectedMaterial =
+      this.selectedCatalogueMaterial()?.map((e) => e?._id) || [];
 
     catalogues?.forEach((catalogue) => {
       catalogue['isHiddenBySize'] = false;
       catalogue['isHiddenBySeries'] = false;
+      catalogue['isHiddenByMaterial'] = false;
 
-      if (selectedSizes?.length || selectedSeries?.length) {
+      if (selectedSizes?.length || selectedSeries?.length || selectedMaterial?.length) {
         if (
           selectedSizes?.length &&
           !selectedSizes?.includes(catalogue?.size_id?._id)
@@ -162,6 +185,13 @@ export class CatalogueComponent implements OnInit {
         ) {
           catalogue['isHiddenBySeries'] = true;
         }
+
+        if (
+          selectedMaterial?.length &&
+          !selectedMaterial?.includes(catalogue?.material_id?._id)
+        ) {
+          catalogue['isHiddenByMaterial'] = true;
+        }
       }
     });
 
@@ -169,7 +199,7 @@ export class CatalogueComponent implements OnInit {
   });
 
   displayedCataloguesIds: Signal<string[]> = computed(() => {
-    return this.filteredCatalogues().filter((e) => !e?.isHiddenBySize && !e?.isHiddenBySeries)?.map((e) => e?._id);
+    return this.filteredCatalogues().filter((e) => !e?.isHiddenBySize && !e?.isHiddenBySeries && !e?.isHiddenByMaterial)?.map((e) => e?._id);
   })
 
   constructor(
@@ -203,14 +233,20 @@ export class CatalogueComponent implements OnInit {
 
       this.catalogueSizeIds.set(
         catalogues
-          ?.filter((e) => !e?.isHiddenBySeries)
+          ?.filter((e) => !e?.isHiddenBySeries && !e?.isHiddenByMaterial)
           ?.map((e: any) => e?.size_id?._id)
       );
 
       this.catalogueSeriesIds.set(
         catalogues
-          ?.filter((e) => !e?.isHiddenBySize)
+          ?.filter((e) => !e?.isHiddenBySize && !e?.isHiddenByMaterial)
           ?.map((e: any) => e?.series_id?._id)
+      );
+
+      this.catalogueMaterialIds.set(
+        catalogues
+          ?.filter((e) => !e?.isHiddenBySize && !e?.isHiddenBySeries)
+          ?.map((e: any) => e?.material_id?._id)
       );
 
       const catalogueIndex = catalogues.findIndex(
@@ -236,7 +272,7 @@ export class CatalogueComponent implements OnInit {
 
   get catalogueProductLength(): number {
     return this.filteredCatalogues()?.filter(
-      (e) => !e?.isHiddenBySize && !e?.isHiddenBySeries
+      (e) => !e?.isHiddenBySize && !e?.isHiddenBySeries && !e?.isHiddenByMaterial
     )?.length;
   }
 
@@ -245,6 +281,7 @@ export class CatalogueComponent implements OnInit {
 
     this.loadCatalogueCatagories();
     this.loadCatalogueSeries();
+    this.loadCatalogueMaterial();
     this.loadCatalogues();
     this.loadCatalogueSizes();
 
@@ -264,6 +301,11 @@ export class CatalogueComponent implements OnInit {
       description: [''],
     });
 
+    this.materialForm = this.fb.group({
+      name: ['', [Validators.required]],
+      description: [''],
+    });
+
     this.catalogueForm = this.fb.group({
       name: ['', [Validators.required]],
       description: [''],
@@ -273,6 +315,7 @@ export class CatalogueComponent implements OnInit {
       catalogue_doc_path: ['', [Validators.required]],
       size_id: ['', [Validators.required]],
       series_id: ['', [Validators.required]],
+      material_id: ['', [Validators.required]],
       category_id: ['', [Validators.required]],
     });
   }
@@ -373,6 +416,21 @@ export class CatalogueComponent implements OnInit {
     });
   }
 
+  loadCatalogueMaterial() {
+    this.commonService.getCatalogueMaterial().subscribe({
+      next: (response: IResponse<any>) => {
+        if (response?.success == 1) {
+          this.catalogueMaterial.set(response?.body || []);
+        } else {
+          console.error(response?.msg);
+        }
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
+    });
+  }
+
   changeSize() {
     const selectedCatalogues = this.filteredCatalogueSizes()?.filter(
       (e: any) => e?.checked
@@ -385,6 +443,13 @@ export class CatalogueComponent implements OnInit {
       (e: any) => e?.checked
     );
     this.selectedCatalogueSeries.set(selectedCatalogues);
+  }
+
+  changeMaterial() {
+    const selectedCatalogues = this.filteredCatalogueMaterial()?.filter(
+      (e: any) => e?.checked
+    );
+    this.selectedCatalogueMaterial.set(selectedCatalogues);
   }
 
   onPreview(doc_url: string) {
@@ -438,6 +503,7 @@ export class CatalogueComponent implements OnInit {
         this.router.navigate([`catalogue/${currentTab?._id}`]);
         this.selectedCatalogueSizes.set([]);
         this.selectedCatalogueSeries.set([]);
+        this.selectedCatalogueMaterial.set([]);
         this.catalogueSizes.update((sizes) => {
           return sizes.map((e: any) => {
             e['checked'] = false;
@@ -446,6 +512,12 @@ export class CatalogueComponent implements OnInit {
         });
         this.catalogueSeries.update((series) => {
           return series.map((e: any) => {
+            e['checked'] = false;
+            return e;
+          });
+        });
+        this.catalogueMaterial.update((material) => {
+          return material.map((e: any) => {
             e['checked'] = false;
             return e;
           });
@@ -515,12 +587,32 @@ export class CatalogueComponent implements OnInit {
     });
   }
 
+  openMaterialDialog(material = null) {
+    this.selectedMaterial.set(material);
+    this.materialForm.reset();
+    this.materialForm.patchValue(material || {});
+
+    this.materialDialogRef = this.dialog.open(this.MaterialTemplate, {
+      height: '400px',
+      width: '700px',
+      maxWidth: '95vw',
+      autoFocus: false,
+    });
+
+    this.materialDialogRef.afterClosed().subscribe((result) => {
+      if (result == 'refresh') {
+        this.loadCatalogueMaterial();
+      }
+    });
+  }
+
   openCatalogueDialog(catalogue = null) {
     const catalogueData = JSON.parse(JSON.stringify(catalogue));
     if (catalogueData) {
       catalogueData['category_id'] = catalogueData['category_id']['_id'];
       catalogueData['size_id'] = catalogueData['size_id']['_id'];
       catalogueData['series_id'] = catalogueData['series_id']['_id'];
+      catalogueData['material_id'] = catalogueData['material_id']['_id'];
     }
     this.selectedCatalogue.set(catalogueData);
     this.catalogueForm.reset();
@@ -619,9 +711,9 @@ export class CatalogueComponent implements OnInit {
       seriesData['_id'] = this.selectedSeries()?._id;
     }
 
-    let addUpdateSeriesMethod: 'createSeries' | 'updateSeries' = seriesData?._id
-      ? 'updateSeries'
-      : 'createSeries';
+    let addUpdateSeriesMethod: 'createMaterial' | 'updateMaterial' = seriesData?._id
+      ? 'updateMaterial'
+      : 'createMaterial';
 
     this.commonService[addUpdateSeriesMethod](seriesData).subscribe({
       next: (response: IResponse<any>) => {
@@ -644,6 +736,41 @@ export class CatalogueComponent implements OnInit {
             'Something went wrong, please try again later'
         );
         this.seriesDialogRef.close('refresh');
+      },
+    });
+  }
+
+  onSubmitMaterial() {
+    const materialData = this.materialForm.value;
+    if (this.selectedMaterial()) {
+      materialData['_id'] = this.selectedMaterial()?._id;
+    }
+
+    let addUpdateMaterialMethod: 'createMaterial' | 'updateMaterial' = materialData?._id
+      ? 'updateMaterial'
+      : 'createMaterial';
+
+    this.commonService[addUpdateMaterialMethod](materialData).subscribe({
+      next: (response: IResponse<any>) => {
+        if (response?.success == 1) {
+          if (materialData?._id) {
+            this._snackbar.success(`Material updated successfully`);
+          } else {
+            this._snackbar.success(`Material created successfully`);
+          }
+        } else {
+          this._snackbar.error(response?.msg);
+        }
+
+        this.materialDialogRef.close('refresh');
+      },
+      error: (err: any) => {
+        this._snackbar.error(
+          err?.msg ||
+            err?.message ||
+            'Something went wrong, please try again later'
+        );
+        this.materialDialogRef.close('refresh');
       },
     });
   }
@@ -783,6 +910,39 @@ export class CatalogueComponent implements OnInit {
                 'Something went wrong, please try again later'
             );
             this.seriesDialogRef.close('refresh');
+          },
+        });
+      }
+    });
+  }
+
+  deleteMaterial() {
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      height: '200px',
+      width: '350px',
+      maxWidth: '95vw',
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'confirm') {
+        this.commonService.deleteMaterial(this.selectedMaterial()?._id).subscribe({
+          next: (response: IResponse<any>) => {
+            if (response?.success == 1) {
+              this._snackbar.success(`Material deleted successfully`);
+            } else {
+              this._snackbar.error(response?.msg);
+            }
+
+            this.materialDialogRef.close('refresh');
+          },
+          error: (err: any) => {
+            this._snackbar.error(
+              err?.msg ||
+                err?.message ||
+                'Something went wrong, please try again later'
+            );
+            this.materialDialogRef.close('refresh');
           },
         });
       }
