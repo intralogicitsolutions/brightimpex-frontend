@@ -6,4 +6,47 @@
             <app-footer />
         </div>
     </div>
+    <div class="social">
+        <div class="social-icon p-2 shadow-xl">
+            <img src="assets/icons/gmail.svg" alt="Gmail">
+        </div>
+        <div class="social-icon p-2 shadow-xl">
+            <img src="assets/icons/instagram-color.svg" alt="Instagram">
+        </div>
+        <div class="social-icon p-2 shadow-xl" (click)="showWhatsappChat = !showWhatsappChat">
+            <img src="assets/icons/whatsapp.svg" alt="WhatsApp">
+        </div>
+
+        @if (showWhatsappChat) {
+        <div class="flex flex-col bg-white wa-chat shadow-xl rounded">
+            <div class="w-full flex justify-between">
+                <span class="font-bold">WhatsApp Chat</span>
+                <mat-icon (click)="showWhatsappChat = false" class="cursor-pointer">close</mat-icon>
+            </div>
+            <div class="pt-2">
+                <p>
+                    Hi! Click one of our representatives below to chat on WhatsApp
+                </p>
+            </div>
+            <div class="flex items-center cursor-pointer hover:bg-blue-200 p-2 rounded-lg transition" (click)="openDialer(domesticContact.phone)">
+                <div class="w-20">
+                    <img src="assets/images/user.jpg" alt="User">
+                </div>
+                <div class="flex flex-col pl-2">
+                    <span>Domestic</span>
+                    <span class="font-bold">{{domesticContact.phone}}</span>
+                </div>
+            </div>
+            <div class="flex items-center cursor-pointer hover:bg-blue-200 p-2 rounded-lg transition" (click)="openDialer(exportContact.phone)">
+                <div class="w-20">
+                    <img src="assets/images/user.jpg" alt="User">
+                </div>
+                <div class="flex flex-col pl-2">
+                    <span>Export</span>
+                    <span class="font-bold">{{exportContact.phone}}</span>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
 </div>

@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { Component, signal, WritableSignal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-nav-bar',
@@ -42,5 +43,9 @@ export class NavBarComponent {
     } else if (name == 'li') {
       window.open('https://in.linkedin.com/', '_blank');
     }
+  }
+
+  openDialer() {
+    window.location.href = `tel:${environment.domesticContact.phone}`;
   }
 }
