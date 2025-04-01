@@ -6,7 +6,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal, WritableSignal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -26,8 +26,21 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class NavBarComponent {
   isMenuOpen: boolean = false;
+  isMobileView: WritableSignal<boolean> = signal(window.innerWidth < 1023);
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  moveToSocial(name: string) {
+    if (name == 'fb') {
+      window.open('https://www.facebook.com/', '_blank');
+    } else if (name == 'ig') {
+      window.open('https://www.instagram.com/', '_blank');
+    } else if (name == 'yt') {
+      window.open('https://www.youtube.com/', '_blank');
+    } else if (name == 'li') {
+      window.open('https://in.linkedin.com/', '_blank');
+    }
   }
 }
