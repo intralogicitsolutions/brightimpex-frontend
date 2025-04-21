@@ -14,13 +14,7 @@ export class CommonService {
   isAdmin: WritableSignal<boolean> = signal(false);
 
   constructor(private http: HttpClient, private _snackbar: SnackbarService) {
-    this.token = localStorage.getItem('token') as string;
-
-    if (this._token) {
-      this.isAdmin.set(true);
-    } else {
-      this.isAdmin.set(false);
-    }
+    this.updateAdmin();
   }
 
   handleError() {
@@ -42,6 +36,15 @@ export class CommonService {
 
   set token(token: string) {
     this._token = token;
+  }
+
+  updateAdmin() {
+    this.token = localStorage.getItem('token') as string;
+    if (this._token) {
+      this.isAdmin.set(true);
+    } else {
+      this.isAdmin.set(false);
+    }
   }
 
   // ========== AUTH APIS ========== //
@@ -227,6 +230,45 @@ export class CommonService {
       .pipe(this.handleError());
   }
 
+  // ========== MATERIAL APIS ========== //
+
+  getCatalogueMaterial(): Observable<any> {
+    return this.http.get(`${this.apiRoot}/material`);
+  }
+
+  createMaterial(material: any): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: this.token,
+    });
+
+    return this.http
+      .post(`${this.apiRoot}/material`, material, { headers })
+      .pipe(this.handleError());
+  }
+
+  updateMaterial(material: any): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: this.token,
+    });
+
+    return this.http
+      .put(`${this.apiRoot}/material`, material, { headers })
+      .pipe(this.handleError());
+  }
+
+  deleteMaterial(materialId: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: this.token,
+    });
+
+    return this.http
+      .delete(`${this.apiRoot}/material`, {
+        headers,
+        params: { _id: materialId },
+      })
+      .pipe(this.handleError());
+  }
+
   // ========== UPLOAD APIS ========== //
   uploadImage(image: File): Observable<any> {
     const headers = new HttpHeaders({
@@ -256,12 +298,12 @@ export class CommonService {
 
   // ========== CONTACT US APIS ========== //
   contactus(contactDetails: any): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: this.token,
-    });
+    // const headers = new HttpHeaders({
+    //   Authorization: this.token,
+    // });
 
     return this.http
-      .post(`${this.apiRoot}/contact-us/query`, contactDetails, { headers })
+      .post(`${this.apiRoot}/contact-us/query`, contactDetails)
       .pipe(this.handleError());
   }
 
@@ -273,10 +315,8 @@ export class CommonService {
   }
 
   getCities(countryId: string): Observable<any> {
-
     return this.http
       .get(`${this.apiRoot}/common/get-cities-list/${countryId}`)
       .pipe(this.handleError());
-
   }
 }

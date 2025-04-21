@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { CommonService } from '../../../shared/services/common.service';
 import { IResponse } from '../../../shared/interfaces/response-i';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -55,26 +56,30 @@ export class HomeComponent implements OnInit {
     this.isMobileView.set(window.innerWidth < 1024);
   }
 
-  constructor(private router: Router, private commonService: CommonService) {}
+  constructor(
+    private router: Router,
+    private commonService: CommonService,
+    private loaderService: LoaderService
+  ) {}
 
   ngOnInit(): void {
     this.images.set([
       {
         img: '/assets/images/home/home-1.jpg',
         name: 'WALL COLLECTION',
-        sizes: ['12X18 mm', '12X24 mm'],
+        sizes: ['300X450 mm', '300X600 mm', '600X1200 mm'],
         category: '679302f17665aeadd2a0a1a4',
       },
       {
         img: '/assets/images/home/home-2.jpg',
         name: 'FLOOR COLLECTION',
-        sizes: ['12X24 mm', '12X18 mm'],
+        sizes: ['600X600 mm', '600X1200 mm', '800X1600 mm', '1200X1800 mm'],
         category: '679303037665aeadd2a0a1a6',
       },
       {
         img: '/assets/images/home/home-4.jpg',
         name: 'PARKING COLLECTION',
-        sizes: ['24X12 mm', '18X12 mm'],
+        sizes: ['400X400 mm', '600X600 mm'],
         category: '6793031e7665aeadd2a0a1aa',
       },
     ]);
@@ -100,16 +105,16 @@ export class HomeComponent implements OnInit {
         img: '/assets/images/catalogues/2.jpg',
       },
       {
-        name: 'Outdoor Walls',
-        img: '/assets/images/catalogues/3.jpg',
-      },
-      {
         name: 'Commercial Walls',
         img: '/assets/images/catalogues/4.jpg',
       },
       {
-        name: 'Waterproof Walls',
+        name: 'Walls',
         img: '/assets/images/catalogues/5.jpg',
+      },
+      {
+        name: 'Outdoor Parking',
+        img: '/assets/images/catalogues/3.jpg',
       },
     ]);
 
@@ -136,7 +141,7 @@ export class HomeComponent implements OnInit {
       },
     ]);
 
-    this.updateCatalogue();
+    // this.updateCatalogue();
   }
 
   nextSlide() {
@@ -171,61 +176,46 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  goToWallTiles = () => {
-    this.router.navigate(['/catalogue/679302f17665aeadd2a0a1a4']);
-  };
-
-  goToFloorTiles = () => {
-    this.router.navigate(['/catalogue/679303037665aeadd2a0a1a6']);
-  };
-
-  goToAllTiles = () => {
-    this.router.navigate(['/catalogue/all']);
-  };
-
-  goToCatalogue = () => {
-    this.router.navigate(['/catalogue']);
+  navigate(route: string) {
+    this.router.navigate([route]);
   }
 
-  goToAboutUs = () => {
-    this.router.navigate(['about-us']);
-  }
+  // updateCatalogue() {
+  //   this.loaderService.showLoader();
+  //   this.commonService.getCatalogues().subscribe({
+  //     next: (response: IResponse<any>) => {
+  //       if (response?.success == 1) {
+  //         this.images.update((imgs: any[]) => {
+  //           // Return the updated array
+  //           return imgs.map((catalogueImg: any) => {
+  //             const filteredCategory = response.body.filter((cat: any) => {
+  //               return cat.category_id._id == catalogueImg.category;
+  //             });
 
-  updateCatalogue = () => {
-    this.commonService.getCatalogues().subscribe({
-      next: (response: IResponse<any>) => {
-        if (response?.success == 1) {
-            this.images.update((imgs: any[]) => {
-              // Return the updated array
-              return imgs.map((catalogueImg: any) => {
-                const filteredCategory = response.body.filter((cat: any) => {
-                  return cat.category_id._id == catalogueImg.category;
-                });
+  //             // Take the first two categories, if available
+  //             const twoCategory = filteredCategory.slice(0, 2);
 
-                // Take the first two categories, if available
-                const twoCategory = filteredCategory.slice(0, 2);
+  //             // Extract sizes
+  //             const sizes = twoCategory.map((category: any) => {
+  //               return {
+  //                 name: `${category?.size_id?.height}X${category?.size_id?.width} ${category?.size_id?.unit}`,
+  //                 size_id: category?.size_id?._id, // Assigning _id to the key 'size_id'
+  //               };
+  //             });
 
-                // Extract sizes
-                const sizes = twoCategory.map((category: any) => {
-                  return {
-                    name: `${category?.size_id?.height}X${category?.size_id?.width} ${category?.size_id?.unit}`,
-                    size_id: category?.size_id?._id, // Assigning _id to the key 'size_id'
-                  };
-                });
+  //             // Attach sizes to the catalogue image
+  //             catalogueImg.sizes = sizes;
 
-                // Attach sizes to the catalogue image
-                catalogueImg.sizes = sizes;
-
-                return catalogueImg; // Return the modified catalogueImg
-              });
-            });
-            console.log(this.images()); // Ensure this logs the updated images
-          }
-      },
-      error: (err) => {
-        console.error('Error fetching catalogues:', err);
-      },
-    });
-
-  };
+  //             return catalogueImg; // Return the modified catalogueImg
+  //           });
+  //         });
+  //       }
+  //       this.loaderService.hideLoader();
+  //     },
+  //     error: (err) => {
+  //       this.loaderService.hideLoader();
+  //       console.error('Error fetching catalogues:', err);
+  //     },
+  //   });
+  // }
 }

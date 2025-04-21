@@ -1,3 +1,9 @@
 <div [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''" class="h-full w-full">
     <router-outlet #o="outlet" />
 </div>
+
+@if (isLoaderVisible()) {
+    <div class="spinner-container">
+        <mat-spinner class="spinner"></mat-spinner>
+    </div>
+}

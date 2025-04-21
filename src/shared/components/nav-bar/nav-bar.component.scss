@@ -81,6 +81,14 @@
         font-size: 15px;
         line-height: 19.08px;
     }
+
+    .mobile-icons-hide{
+      display: none;
+    }
+
+    .menu-icon-height{
+      height: 35px;
+    }
 }
 
 @media screen and (min-width: 1024px) {
@@ -91,4 +99,9 @@
     .mobile-menu {
         display: none;
     }
+
+    .mobile-logo-hide{
+      display: none;
+    }
+
 }

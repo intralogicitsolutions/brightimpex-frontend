@@ -86,7 +86,7 @@
                                     [matAutocomplete]="country">
                                 <mat-autocomplete autoActiveFirstOption #country="matAutocomplete"
                                     (optionSelected)="onCountryChange($event)">
-                                    @for (country of countries(); track country?._id) {
+                                    @for (country of (filteredCountries | async); track country?._id) {
                                     <mat-option [value]="country?.name">{{country?.name}}</mat-option>
                                     }
                                 </mat-autocomplete>
@@ -108,7 +108,7 @@
                                 <input type="text" placeholder="City Name" matInput formControlName="city"
                                     [matAutocomplete]="city">
                                 <mat-autocomplete autoActiveFirstOption #city="matAutocomplete">
-                                    @for (city of cities().cities; track city?._id) {
+                                    @for (city of (filteredCities | async); track city?._id) {
                                     <mat-option [value]="city">{{city}}</mat-option>
                                     }
                                 </mat-autocomplete>
@@ -118,19 +118,20 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="w-full flex items-center px-2">
-                        <button mat-flat-button color="primary" [disabled]="contactUsForm.invalid"
-                            class="submit-btn w-32" (click)="submitContactusDetails()">Send</button>
-                        <span class="px-4 text-sm">or</span>
-                        <a class="underline text-primary text-sm cursor-pointer flex items-center sans-medium"
-                            (click)="contactUsForm.reset()">
-                            Reset
-                            <mat-icon>restart_alt</mat-icon>
-                            <!-- <img src="assets/icons/arrow-right.svg" alt="" class="h-4 w-4 ml-1"> -->
-                        </a>
-                    </div>
                 </div>
             </form>
+            <div class="w-full flex items-center px-2">
+                <button mat-flat-button type="submit" color="primary" [disabled]="contactUsForm.invalid" class="submit-btn w-32"
+                    (click)="submitContactusDetails()">
+                    Send
+                </button>
+                <span class="px-4 text-sm">or</span>
+                <a class="underline text-primary text-sm cursor-pointer flex items-center sans-medium" 
+                    (click)="contactUsForm.reset()">
+                    Reset
+                    <mat-icon>restart_alt</mat-icon>
+                </a>
+            </div>
         </div>
     </div>
 </div>

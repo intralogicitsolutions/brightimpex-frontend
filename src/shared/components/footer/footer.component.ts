@@ -12,13 +12,17 @@ import { environment } from '../../../environments/environment';
 })
 export class FooterComponent {
   copyrightText: string = '@2024 All Rights Reserved. Bright Impex.';
-  phone: string = environment?.phone;
-  email: string = environment?.mail;
+  domesticMail: string = environment.domesticContact.mail;
+  domesticPhone: string = environment.domesticContact.phone;
+
+  exportPhone: string = environment.exportContact.phone;
+  exportMail: string = environment.exportContact.mail;
 
   selectedCategory: string = '';
 
   catalogueCatagories: WritableSignal<any> = signal([]);
   catalogueCatagoryId: WritableSignal<string> = signal('');
+
 
   constructor(
     private commonService: CommonService,
