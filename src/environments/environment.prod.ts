@@ -7,4 +7,5 @@ export const environment = {
   phone: '1800 309 309',
   mail: 'brightimpex8@gmail.com',
   location: 'Morbi, Rajkot, Gujarat',
+  instaUser:''
 };
