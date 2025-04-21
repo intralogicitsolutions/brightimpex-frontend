@@ -33,6 +33,10 @@ export class UserLandingComponent implements OnInit {
   }
 
   openDialer(phone: any) {
-    window.location.href = `tel:${phone}`;
+    // window.location.href = `tel:${phone}`;
+
+    const formattedPhone = phone.replace(/\D/g, '');
+    const whatsappUrl = `https://wa.me/${formattedPhone}`;
+    window.open(whatsappUrl, '_blank');
   }
 }

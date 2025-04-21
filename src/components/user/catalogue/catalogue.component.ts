@@ -612,7 +612,7 @@ export class CatalogueComponent implements OnInit {
       catalogueData['category_id'] = catalogueData['category_id']['_id'];
       catalogueData['size_id'] = catalogueData['size_id']['_id'];
       catalogueData['series_id'] = catalogueData['series_id']['_id'];
-      catalogueData['material_id'] = catalogueData['material_id']['_id'];
+      catalogueData['material_id'] = catalogueData?.['material_id']?.['_id'];
     }
     this.selectedCatalogue.set(catalogueData);
     this.catalogueForm.reset();
