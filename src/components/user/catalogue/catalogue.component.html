@@ -206,11 +206,7 @@
                         </div>
                         <div class="flex flex-col w-full pt-2">
                             <span class="name">{{catalogue?.name}}</span>
-                            <span class="info">
-                                <span>{{catalogue?.size}}</span>
-                                <span class="bullet"></span>
-                                <span>{{catalogue?.series_id?.name}}</span>
-                            </span>
+                                <span class="truncate" matTooltipPosition="above" [matTooltip]="catalogue.size +' &middot; ' + catalogue?.series">{{catalogue?.size}} &middot; {{catalogue?.series}}</span>
                             @if (isMobileView()) {
                             <div class="info">
                                 <span class="underline text-primary sans-medium cursor-pointer"
@@ -610,7 +606,7 @@
                         <mat-form-field appearance="outline" class="w-full">
                             <mat-label>Catalogue Size</mat-label>
 
-                            <mat-select formControlName="size_id">
+                            <mat-select multiple formControlName="size_id">
                                 @for (size of catalogueSizes(); track size?._id) {
                                 <mat-option [value]="size?._id">
                                     {{size?.height}} X {{size?.width}} {{size?.unit}}
@@ -627,7 +623,7 @@
                         <mat-form-field appearance="outline" class="w-full">
                             <mat-label>Catalogue Series</mat-label>
 
-                            <mat-select formControlName="series_id">
+                            <mat-select multiple formControlName="series_id">
                                 @for (series of catalogueSeries(); track series?._id) {
                                 <mat-option [value]="series?._id">{{series?.name}}</mat-option>
                                 }
@@ -642,7 +638,7 @@
                         <mat-form-field appearance="outline" class="w-full">
                             <mat-label>Catalogue Material</mat-label>
 
-                            <mat-select formControlName="material_id">
+                            <mat-select multiple formControlName="material_id">
                                 @for (material of catalogueMaterial(); track material?._id) {
                                 <mat-option [value]="material?._id">{{material?.name}}</mat-option>
                                 }

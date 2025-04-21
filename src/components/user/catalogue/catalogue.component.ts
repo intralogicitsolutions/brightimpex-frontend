@@ -37,6 +37,8 @@ import { DeleteConfirmationComponent } from '../../../shared/components/delete-c
 import { IResponse } from '../../../shared/interfaces/response-i';
 import { CommonService } from '../../../shared/services/common.service';
 import { SnackbarService } from '../../../shared/services/snackbar.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { LoaderService } from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-catalogue',
@@ -54,6 +56,7 @@ import { SnackbarService } from '../../../shared/services/snackbar.service';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    MatTooltipModule
   ],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
@@ -174,21 +177,21 @@ export class CatalogueComponent implements OnInit {
       if (selectedSizes?.length || selectedSeries?.length || selectedMaterial?.length) {
         if (
           selectedSizes?.length &&
-          !selectedSizes?.includes(catalogue?.size_id?._id)
+          !catalogue?.size_id?.some((s: any) => selectedSizes.includes(s._id))
         ) {
           catalogue['isHiddenBySize'] = true;
         }
 
         if (
           selectedSeries?.length &&
-          !selectedSeries?.includes(catalogue?.series_id?._id)
+          !catalogue?.series_id?.some((s: any) => selectedSeries.includes(s._id))
         ) {
           catalogue['isHiddenBySeries'] = true;
         }
 
         if (
           selectedMaterial?.length &&
-          !selectedMaterial?.includes(catalogue?.material_id?._id)
+          !catalogue?.material_id?.some((s: any) => selectedMaterial.includes(s._id))
         ) {
           catalogue['isHiddenByMaterial'] = true;
         }
@@ -208,7 +211,8 @@ export class CatalogueComponent implements OnInit {
     private commonService: CommonService,
     private dialog: MatDialog,
     private fb: FormBuilder,
-    private _snackbar: SnackbarService
+    private _snackbar: SnackbarService,
+    private loaderService: LoaderService
   ) {
     this.activatedRoute.paramMap.subscribe((params) => {
       this.catalogueCatagoryId.set(params?.get('id') || '');
@@ -234,19 +238,19 @@ export class CatalogueComponent implements OnInit {
       this.catalogueSizeIds.set(
         catalogues
           ?.filter((e) => !e?.isHiddenBySeries && !e?.isHiddenByMaterial)
-          ?.map((e: any) => e?.size_id?._id)
+          ?.flatMap((e: any) => e?.size_id?.map((s: any) => s._id) || [])
       );
 
       this.catalogueSeriesIds.set(
         catalogues
           ?.filter((e) => !e?.isHiddenBySize && !e?.isHiddenByMaterial)
-          ?.map((e: any) => e?.series_id?._id)
+          ?.flatMap((e: any) => e?.series_id?.map((s: any) => s._id) || [])
       );
 
       this.catalogueMaterialIds.set(
         catalogues
           ?.filter((e) => !e?.isHiddenBySize && !e?.isHiddenBySeries)
-          ?.map((e: any) => e?.material_id?._id)
+          ?.flatMap((e: any) => e?.material_id?.map((s: any) => s._id) || [])
       );
 
       const catalogueIndex = catalogues.findIndex(
@@ -327,10 +331,15 @@ export class CatalogueComponent implements OnInit {
           if (response?.body?.length) {
             this.catalogues.set(
               response?.body?.map((e: any) => {
-                e[
-                  'size'
-                ] = `${e?.size_id?.height}X${e?.size_id?.width} ${e?.size_id?.unit}`;
-                return e;
+                // e[
+                //   'size'
+                // ] = `${e?.size_id?.height}X${e?.size_id?.width} ${e?.size_id?.unit}`;
+                // return e;
+                e['size'] = e.size_id
+              ?.map((s: any) => `${s.height}X${s.width} ${s.unit}`)
+              .join(', ');
+              e['series'] = e.series_id?.map((s: any) => s.name).join(', ');
+            return e;
               })
             );
           }
@@ -464,7 +473,7 @@ export class CatalogueComponent implements OnInit {
     if(doc_url) {
       const fileUrl = `${this.serverUrl}${doc_url}`;
       const fileName = `${catalogueName}.pdf`;
-  
+
       fetch(fileUrl)
         .then((response) => {
           if (!response.ok) {
@@ -475,13 +484,13 @@ export class CatalogueComponent implements OnInit {
         .then((blob) => {
           const link = document.createElement('a');
           const objectUrl = URL.createObjectURL(blob);
-  
+
           link.href = objectUrl;
           link.download = fileName;
           document.body.appendChild(link);
           link.click();
           link.remove();
-  
+
           URL.revokeObjectURL(objectUrl);
         })
         .catch((error) => {
@@ -610,9 +619,9 @@ export class CatalogueComponent implements OnInit {
     const catalogueData = JSON.parse(JSON.stringify(catalogue));
     if (catalogueData) {
       catalogueData['category_id'] = catalogueData['category_id']['_id'];
-      catalogueData['size_id'] = catalogueData['size_id']['_id'];
-      catalogueData['series_id'] = catalogueData['series_id']['_id'];
-      catalogueData['material_id'] = catalogueData?.['material_id']?.['_id'];
+      catalogueData['size_id'] = catalogueData['size_id'].map((s: any) => s._id);
+      catalogueData['series_id'] = catalogueData['series_id'].map((s: any) => s._id);
+      catalogueData['material_id'] = catalogueData['material_id'].map((m: any) => m._id);
     }
     this.selectedCatalogue.set(catalogueData);
     this.catalogueForm.reset();
@@ -988,6 +997,7 @@ export class CatalogueComponent implements OnInit {
     const image = event?.target?.files[0];
 
     if (image) {
+      this.loaderService.showLoader();
       this.commonService.uploadImage(image).subscribe({
         next: (response: IResponse<any>) => {
           if (response?.success == 1) {
@@ -997,6 +1007,7 @@ export class CatalogueComponent implements OnInit {
           } else {
             this._snackbar.error(response?.msg);
           }
+          this.loaderService.hideLoader();
         },
         error: (err) => {
           this._snackbar.error(
@@ -1004,6 +1015,7 @@ export class CatalogueComponent implements OnInit {
               err?.message ||
               'Something went wrong, please try again later'
           );
+          this.loaderService.hideLoader();
         },
       });
     }
@@ -1013,6 +1025,7 @@ export class CatalogueComponent implements OnInit {
     const document = event?.target?.files[0];
 
     if (document) {
+      this.loaderService.showLoader();
       this.commonService.uploadDocument(document).subscribe({
         next: (response: IResponse<any>) => {
           if (response?.success == 1) {
@@ -1022,6 +1035,7 @@ export class CatalogueComponent implements OnInit {
           } else {
             this._snackbar.error(response?.msg);
           }
+          this.loaderService.hideLoader();
         },
         error: (err) => {
           this._snackbar.error(
@@ -1029,6 +1043,7 @@ export class CatalogueComponent implements OnInit {
               err?.message ||
               'Something went wrong, please try again later'
           );
+          this.loaderService.hideLoader();
         },
       });
     }

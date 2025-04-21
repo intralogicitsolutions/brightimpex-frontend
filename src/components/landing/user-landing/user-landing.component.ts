@@ -39,4 +39,16 @@ export class UserLandingComponent implements OnInit {
     const whatsappUrl = `https://wa.me/${formattedPhone}`;
     window.open(whatsappUrl, '_blank');
   }
+
+  openGmailCompose(){
+    const to = environment.mail
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}`
+    window.open(gmailUrl, '_blank');
+  }
+
+  openInstagramProfile(){
+    const userName = environment.instaUser;
+    const url = `https://www.instagram.com/${userName}/`;
+    window.open(url, '_blank');
+  }
 }
