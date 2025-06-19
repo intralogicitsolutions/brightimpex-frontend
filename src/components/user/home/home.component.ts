@@ -120,24 +120,24 @@ export class HomeComponent implements OnInit {
 
     this.productImages.set([
       {
-        name: 'The Ultima - 12X24 mm',
+        name: '600x1200/1200x2400 ',
         img: '/assets/images/catalogues/6.jpg',
-        desc: 'The Ultima, an extra-large Vitrified Slabs by Kajaria, is bigger than your dreams. While their large size exuberates the grandeur of real marble, their stunning looks charm connoisseurs across the globe.',
+        desc: "Elevate your space with our premium 600x1200 mm tiles perfectly designed for those who appreciate modern luxury and bold design. These large format tiles offer a seamless, spacious look, ideal for both walls and floors in residential and commercial settings. Available in a variety of elegant finishes matte, glossy or textured they bring sophistication and durability together in perfect harmony. Crafted with precision and tested for quality, our 600x1200 mm tiles are more than a surface they're a statement.",
       },
       {
-        name: 'DuRock - 40X40 mm',
+        name: '400x400/600x6000 ',
         img: '/assets/images/catalogues/7.jpg',
-        desc: 'DuRock - Outdoor Ceramic Floor Tiles can be safely used in all internal and external spaces that are exposed to high load and DuRock - Outdoor Ceramic Floor Tiles can be safely used in all internal and external.',
+        desc: 'Designed to withstand the elements, our 400x400 mm outdoor tiles are the perfect blend of durability and style. Ideal for patios, pathways, balconies, and garden areas, these tiles are built to handle heavy foot traffic and changing weather conditions without compromising on appearance. With anti-slip surfaces, weather-resistant finishes, and a variety of earthy textures and tones, they offer a safe and stylish solution for any outdoor space. Rugged, reliable, and refined these tiles are made to last.',
       },
       {
-        name: 'Step Stone',
+        name: '800x2400/800x3200',
         img: '/assets/images/catalogues/8.jpg',
-        desc: 'Ready to Install Vitrified Steps: Stairs and staircases are not defined by their functionality alone. These practical units are also interesting from a design perspective. Ready to Install Vitrified Steps.',
+        desc: "Transform your spaces with our premium 800 x 2400 mm to 800x3200 slab tiles, the perfect fusion of style, durability, and modern sophistication. Whether you're designing a sleek, contemporary home or a high-end commercial space, these large-format porcelain tiles bring a seamless, luxurious aesthetic to any environment. With their minimal grout lines, these tiles create a flawless, expansive look that enhances any room be it a living room, bathroom, kitchen, or retail space.",
       },
       {
-        name: 'Vitronite',
+        name: '300x300',
         img: '/assets/images/catalogues/3.jpg',
-        desc: 'New Age Modern Counter Tops: The incredible range of slabs are designed for modern application and to create a chic and urban aura for a space. New Age Modern Counter Tops.',
+        desc: "Our 300 x 300 mm tiles are the perfect blend of style, functionality, and affordability, making them ideal for a wide range of applications. Whether you're renovating a kitchen, bathroom, or outdoor area, this tiles offer the ideal solution for residential and commercial spaces alike. With a wide selection of finishes, including matte, glossy, textured, and patterned designs, these tiles can seamlessly fit into any design aesthetic",
       },
     ]);
 
